@@ -1,158 +1,193 @@
-// public/app.js - Core Application Logic and State Management (Updated for Full-Stack)
+// public/app.js - Core Application Logic (Customer View)
 
-import { AppState, ServiceCatalog, API_BASE_URL } from './config.js';
+import { AppState, API_BASE_URL } from './config.js';
 import { showPaymentModal } from './payment.js';
 
 // --- DOM Elements ---
 const serviceRequestSection = document.getElementById('service-request-section');
 const trackingSection = document.getElementById('tracking-section');
-// const driverDashboard = document.getElementById('driver-dashboard');
+const currentStatusSpan = document.getElementById('current-status');
+const etaDisplay = document.getElementById('eta-display');
+const driverNameSpan = document.getElementById('driver-name');
+const driverPlateSpan = document.getElementById('driver-plate');
 
-// --- Helper Functions ---
+// --- Theme Management ---
 
+/**
+ * Initializes the theme based on local storage or system preference.
+ */
 export function initializeTheme() {
-    if (AppState.isDarkMode) {
-        document.body.classList.add('dark');
+    const isDark = localStorage.getItem('theme') === 'dark' || 
+                   (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    
+    if (isDark) {
+        document.documentElement.classList.add('dark');
+        AppState.isDarkMode = true;
+    } else {
+        document.documentElement.classList.remove('dark');
+        AppState.isDarkMode = false;
     }
 }
 
+/**
+ * Toggles the theme between light and dark mode.
+ */
 export function toggleTheme() {
     AppState.isDarkMode = !AppState.isDarkMode;
     if (AppState.isDarkMode) {
-        document.body.classList.add('dark');
+        document.documentElement.classList.add('dark');
         localStorage.setItem('theme', 'dark');
     } else {
-        document.body.classList.remove('dark');
+        document.documentElement.classList.remove('dark');
         localStorage.setItem('theme', 'light');
     }
 }
 
+// --- Service Request & Tracking ---
+
 /**
- * Sends a service request to the backend API.
- * @param {string} serviceType - The selected service.
+ * Handles the submission of a new service request to the backend.
+ * @param {string} serviceType - The type of service requested (e.g., 'flat-tire').
  */
 export async function handleServiceRequest(serviceType) {
-    if (!serviceType) {
-        alert('Please select a service type.');
+    if (AppState.serviceRequest) {
+        alert('You already have an active service request.');
         return;
     }
 
+    // 1. Simulate getting user's location
+    const location = '40.7128, -74.0060 (New York City)'; // Static location for demo
+
     try {
+        // 2. POST the request to the backend API
         const response = await fetch(`${API_BASE_URL}/request`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                serviceType,
-                location: 'Customer GPS Location (Simulated)',
-            }),
+            body: JSON.stringify({ serviceType, location }),
         });
 
         if (!response.ok) throw new Error('Failed to create service request.');
         
-        const newRequest = await response.json();
-        AppState.serviceRequest = newRequest;
-
-        // Update UI to tracking view
-        serviceRequestSection.classList.add('hidden');
-        trackingSection.classList.remove('hidden');
-        updateTrackingUI();
-
-        // Start polling for real-time status updates
-        startTrackingPolling(newRequest.id);
+        const requestData = await response.json();
+        AppState.serviceRequest = requestData;
+        
+        // 3. Switch to tracking view and start polling
+        switchToTrackingView();
+        startPolling();
 
     } catch (error) {
-        console.error('Service request error:', error);
-        alert('Could not process request. Please ensure the server is running.');
+        console.error('Service request submission error:', error);
+        alert('Error: Could not submit service request. Check the server console.');
     }
 }
 
 /**
- * Starts polling the API for real-time request status updates.
- * @param {string} requestId - The ID of the active request.
+ * Switches the UI from the request form to the tracking status view.
  */
-function startTrackingPolling(requestId) {
-    // Clear any existing interval
+function switchToTrackingView() {
+    serviceRequestSection.classList.add('hidden');
+    trackingSection.classList.remove('hidden');
+}
+
+/**
+ * Starts the interval for fetching real-time status updates from the API.
+ */
+function startPolling() {
+    // Clear any previous interval
     if (AppState.pollInterval) clearInterval(AppState.pollInterval);
 
-    AppState.pollInterval = setInterval(async () => {
-        try {
-            const response = await fetch(`${API_BASE_URL}/request/${requestId}`);
-            if (!response.ok) throw new Error('Failed to fetch request status.');
-
-            const updatedRequest = await response.json();
-            AppState.serviceRequest = updatedRequest;
-            updateTrackingUI();
-
-            if (updatedRequest.status === 'Completed') {
-                clearInterval(AppState.pollInterval);
-                AppState.pollInterval = null;
-                handleServiceCompletion();
-            }
-        } catch (error) {
-            console.error('Polling error:', error);
-        }
-    }, 5000); // Poll every 5 seconds
+    // Fetch immediately, then every 5 seconds
+    fetchStatusUpdate(); 
+    AppState.pollInterval = setInterval(fetchStatusUpdate, 5000); 
 }
 
-
 /**
- * Updates the Tracking section based on the AppState.serviceRequest.
+ * Fetches the latest status and driver details for the active request.
  */
-export function updateTrackingUI() {
-    const request = AppState.serviceRequest;
-    if (!request) return;
+async function fetchStatusUpdate() {
+    if (!AppState.serviceRequest || AppState.isDriver) {
+        // Stop polling if request is complete or user switches to driver view
+        clearInterval(AppState.pollInterval);
+        AppState.pollInterval = null;
+        return;
+    }
 
-    document.getElementById('current-status').textContent = request.status;
+    try {
+        const response = await fetch(`${API_BASE_URL}/request/${AppState.serviceRequest.id}`);
+        if (!response.ok) throw new Error('Failed to fetch status update.');
 
-    if (request.status === 'Accepted' || request.status === 'In Progress') {
-        const driver = request.driver || {}; // Use driver object from API
-        document.getElementById('eta-display').textContent = request.eta || 'Calculating...';
-        document.getElementById('driver-name').textContent = driver.name || 'Mobile Technician N/A';
-        document.getElementById('driver-plate').textContent = driver.plate || 'N/A';
-    } else {
-        document.getElementById('eta-display').textContent = '...';
-        document.getElementById('driver-name').textContent = 'Waiting for match...';
-        document.getElementById('driver-plate').textContent = '...';
+        const updatedRequest = await response.json();
+        AppState.serviceRequest = updatedRequest;
+
+        // 1. Update UI Elements
+        updateTrackingUI(updatedRequest);
+
+        // 2. Check for Completion
+        if (updatedRequest.status === 'Completed') {
+            clearInterval(AppState.pollInterval);
+            AppState.pollInterval = null;
+            
+            // Show payment modal
+            showPaymentModal(updatedRequest.price);
+            AppState.serviceRequest = null; // Clear the active request
+        }
+    } catch (error) {
+        console.error('Status polling error:', error);
     }
 }
 
 /**
- * Handles service completion, triggering the payment process.
+ * Updates the tracking section DOM elements.
+ * @param {object} request - The latest request object from the API.
  */
-function handleServiceCompletion() {
-    if (!AppState.serviceRequest) return;
-    
-    // The status is 'Completed', now trigger the modal
-    showPaymentModal(AppState.serviceRequest.price);
+function updateTrackingUI(request) {
+    currentStatusSpan.textContent = request.status;
+    currentStatusSpan.className = 'font-bold'; 
 
-    AppState.serviceRequest = null; // Clear local request after payment modal is triggered
+    if (request.status === 'Pending') {
+        currentStatusSpan.classList.add('text-yellow-500');
+        etaDisplay.textContent = 'Searching...';
+        driverNameSpan.textContent = 'N/A';
+        driverPlateSpan.textContent = 'N/A';
+    } else if (request.driver) {
+        currentStatusSpan.classList.add('text-green-500');
+        etaDisplay.textContent = request.eta || 'Tracking...';
+        driverNameSpan.textContent = request.driver.name;
+        driverPlateSpan.textContent = request.driver.plate;
+    } else {
+        currentStatusSpan.classList.add('text-indigo-500');
+    }
 }
 
 /**
- * Clears the active service request and resets the UI.
+ * Handles cancelling an active request. (Simulated)
  */
 export async function cancelRequest() {
     if (!AppState.serviceRequest) return;
 
-    if (confirm('Are you sure you want to cancel the service request?')) {
-        try {
-            // Update backend status to 'Cancelled'
-            await fetch(`${API_BASE_URL}/request/${AppState.serviceRequest.id}/status`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status: 'Cancelled' }),
-            });
+    const confirmed = confirm('Are you sure you want to cancel this service request?');
+    if (!confirmed) return;
 
-            if (AppState.pollInterval) clearInterval(AppState.pollInterval);
-            AppState.pollInterval = null;
-            AppState.serviceRequest = null;
-            trackingSection.classList.add('hidden');
-            serviceRequestSection.classList.remove('hidden');
-            alert('Service request cancelled.');
+    try {
+        // 1. Tell the backend to cancel the request
+        await fetch(`${API_BASE_URL}/request/${AppState.serviceRequest.id}/status`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: 'Cancelled' }),
+        });
 
-        } catch (error) {
-            console.error('Cancel request error:', error);
-            alert('Could not cancel request. Driver may be en-route.');
-        }
+        // 2. Cleanup local state
+        clearInterval(AppState.pollInterval);
+        AppState.pollInterval = null;
+        AppState.serviceRequest = null;
+        
+        // 3. Reset UI to request form
+        trackingSection.classList.add('hidden');
+        serviceRequestSection.classList.remove('hidden');
+        alert('Service request has been cancelled.');
+
+    } catch (error) {
+        console.error('Cancellation error:', error);
+        alert('Error: Failed to cancel request.');
     }
 }
