@@ -1,33 +1,20 @@
-// public/config.js - Global Application Configuration
+// public/config.js - Global Configuration and State
 
-// Initialize Tailwind CSS with a custom dark selector based on a class 
-tailwind.config = {
-    darkMode: 'class',
-    theme: [
-        extend: {
-            colors: {
-                'primary': '#4f46e5',
-
-            }
-        }
-    ]
-}
-
-// Full-Stack Configuration
-export const API_BASE_URL = 'http://localhost:3000/api'; // <--- New API URL
-
-// Global state management object
+/**
+ * Global application state storage.
+ * The front-end configuration should NOT contain secrets like DB credentials.
+ */
 export const AppState = {
-    isDarkMode: localStorage.getItem('theme') === 'dark',
-    isDriver: false,
-    serviceRequest: null, // Stores the current active request object
-    pollInterval: null, // For real-time tracking polling
+    isDarkMode: false,
+    serviceRequest: null, // Stores the currently active request object for the customer
+    pollInterval: null,   // Stores the timer ID for the status polling loop
+    isDriver: false       // True if the demo is currently showing the driver dashboard
 };
 
-
-// Core service types and estimated base prices
-export const ServiceCatalog = {
-    'flat-tire': { name: 'Flat Tire Service', basePrice: 75.00 },
-    'locksmith': { name: 'Automotive Locksmith', basePrice: 150.00 },
-    'emergency': { name: 'Emergency Roadside Assist', basePrice: 50.00 },
-};
+/**
+ * API Base URL:
+ * Since the server is expected to serve the frontend on the same origin (localhost:3000),
+ * we use a relative path to prevent hardcoding the protocol and port.
+ * This is the correct way to handle this in a single-origin web application.
+ */
+export const API_BASE_URL = '/api';

@@ -1,5 +1,9 @@
 # Dependencies
 /node_modules
+/init.js
+/payment.js
+/driver.js
+server.js
 
 # Logs
 npm-debug.log*
