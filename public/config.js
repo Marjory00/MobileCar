@@ -2,7 +2,6 @@
 
 /**
  * Global application state storage.
- * The front-end configuration should NOT contain secrets like DB credentials.
  */
 export const AppState = {
     isDarkMode: false,
@@ -13,8 +12,8 @@ export const AppState = {
 
 /**
  * API Base URL:
- * Since the server is expected to serve the frontend on the same origin (localhost:3000),
- * we use a relative path to prevent hardcoding the protocol and port.
- * This is the correct way to handle this in a single-origin web application.
+ * We use a relative path (/api) because the Node.js server is now serving the 
+ * frontend from the same origin (http://localhost:3000). This keeps the code clean 
+ * and prevents hardcoding the port.
  */
 export const API_BASE_URL = '/api';

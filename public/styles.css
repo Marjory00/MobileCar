@@ -59,5 +59,6 @@ select:focus-visible {
 
 /* 5. Mobile Layout Container Max Width */
 #app-container {
-    padding-bottom: 70px; /* Space for the floating DEMO buttons */
+    /* Adds space for the floating DEMO buttons at the bottom */
+    padding-bottom: 70px; 
 }
