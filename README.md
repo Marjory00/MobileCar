@@ -6,7 +6,7 @@ Created by Marjory D. Marquez
 
 **On-Demand Automotive Service Platform**
 
-MobileCar (codenamed MobileFive) is a comprehensive, full-stack web application designed to streamline **on-demand automotive emergency services**. Built with a focus on efficiency, transparency, and a mobile-first user experience, it connects customers needing roadside assistance with nearby mobile service providers in real-time.
+**MobileCar** is a comprehensive, full-stack web application designed to streamline **on-demand automotive emergency services**. Built with a focus on efficiency, transparency, and a mobile-first user experience, it connects customers needing roadside assistance with nearby mobile service providers in real-time.
 
 ---
 
