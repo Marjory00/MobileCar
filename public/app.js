@@ -5,7 +5,8 @@ let currentRequestId = null;
 let statusPollingInterval = null;
 const POLLING_RATE_MS = 5000; // Poll every 5 seconds
 let simulatedEta = 15;
-const SIMULATED_ETA_DECREMENT = 5; // Updated to 5 to make the 15-min ETA decrease faster
+const SIMULATED_ETA_DECREMENT = 3; // Reduced to 3 to make the ETA decrease smoother (was 5)
+let lastStatusUpdate = Date.now(); // Track the last time a status update occurred
 
 // --- UI Element Selectors ---
 const UI = {
@@ -44,7 +45,7 @@ const UI = {
 function setupSyncListeners() {
     // 1. Listen for Driver status changes (triggered by driver.js's handleDriverAction)
     document.addEventListener('driverStatusChange', (e) => {
-        const newStatus = e.detail.status;
+        const { status: newStatus, providerName } = e.detail;
         console.log(`[App] Received direct status update from driver: ${newStatus}`);
         
         // Stop the polling temporarily to accept the driver's update immediately
@@ -52,23 +53,27 @@ function setupSyncListeners() {
             clearInterval(statusPollingInterval);
             statusPollingInterval = null;
         }
-
+        lastStatusUpdate = Date.now(); // Reset timer for next ETA calculation
+        
         // Manually update simulatedEta based on driver status for consistent display
-        if (newStatus === 'Arrived' || newStatus === 'Completed') {
+        if (newStatus === 'Arrived' || newStatus === 'Completed' || newStatus === 'Canceled') {
             simulatedEta = 0;
         } else if (newStatus === 'En Route') {
-            // If they just accepted, reset to a high ETA to start countdown
-            simulatedEta = 10; 
+            // If they just accepted, reset to an initial ETA (e.g., 10 or 15) to start countdown
+            // Use the initial ETA from the request process or a default
+            simulatedEta = 15; 
         }
 
         // Apply the update to the UI
         updateTrackingUI({
-            providerName: UI.providerNameDisplay?.textContent,
+            providerName: providerName || UI.providerNameDisplay?.textContent,
             status: newStatus,
             eta: simulatedEta,
+            // Photo URL isn't usually sent on status change, use existing
+            providerPhotoUrl: UI.providerPhoto?.src
         });
 
-        // Restart polling if the job isn't completed yet
+        // Restart polling if the job isn't completed or canceled yet
         if (newStatus !== 'Completed' && newStatus !== 'Canceled') {
             startStatusPolling();
         } else if (newStatus === 'Completed') {
@@ -76,6 +81,9 @@ function setupSyncListeners() {
             document.dispatchEvent(new CustomEvent('serviceCompleted', { detail: { requestId: currentRequestId } }));
         }
     });
+    
+    // FIX: Set up a listener for app reset initiated by another module (e.g., driver)
+    document.addEventListener('resetApp', resetCustomerApp);
 }
 
 
@@ -130,11 +138,13 @@ export async function handleServiceRequest(serviceType, location) {
         UI.submitButton.disabled = true;
         UI.submitButton.textContent = 'Searching for Provider...';
     }
+    
     // HIDE THE SERVICE SELECTION GRID AND THE REQUEST FORM CONTAINER (location/vehicle card)
     if (UI.serviceSelectionGrid) {
         UI.serviceSelectionGrid.classList.add('hidden');
     }
-    if (UI.requestForm) { // FIX: Ensure the request form card is hidden
+    // FIX: Ensure the main request form card is hidden
+    if (UI.requestForm) { 
         UI.requestForm.classList.add('hidden');
     }
 
@@ -161,6 +171,7 @@ export async function handleServiceRequest(serviceType, location) {
             
             // Initial ETA setup
             simulatedEta = data.eta; 
+            lastStatusUpdate = Date.now();
             
             if (UI.trackingContainer) UI.trackingContainer.classList.remove('hidden');
             
@@ -174,7 +185,8 @@ export async function handleServiceRequest(serviceType, location) {
                 detail: {
                     serviceType: serviceType,
                     location: location,
-                    requestId: currentRequestId
+                    requestId: currentRequestId,
+                    providerName: data.providerName // Pass provider name
                 }
             }));
 
@@ -212,9 +224,11 @@ export function cancelRequest() {
     
     console.log(`[App] Request ${currentRequestId} officially cancelled.`);
     alert('Service request canceled.');
+    // Dispatch cancel event so driver.js clears the job too
+    document.dispatchEvent(new CustomEvent('driverStatusChange', { 
+        detail: { status: 'Canceled', providerName: UI.providerNameDisplay?.textContent } 
+    }));
     resetCustomerApp();
-    // Dispatch reset event so driver.js clears the job too
-    document.dispatchEvent(new CustomEvent('resetApp'));
 }
 
 
@@ -243,19 +257,26 @@ async function fetchStatusUpdate() {
     // --- Core Status & ETA Simulation Logic ---
     const currentStatusText = UI.statusText?.textContent;
     let newStatus = currentStatusText;
-
+    
     // Only decrement ETA if the status is "En Route"
     if (currentStatusText === 'En Route') {
-        simulatedEta = Math.max(simulatedEta - SIMULATED_ETA_DECREMENT, 1);
-        if (simulatedEta <= 1) {
-            // Once ETA hits 1, trigger the next status change after one more poll
-            newStatus = 'Arrived';
-            simulatedEta = 0;
+        // Calculate minutes passed since last update
+        const timeSinceLastUpdate = (Date.now() - lastStatusUpdate) / 1000; // Time in seconds
+        
+        // Use SIMULATED_ETA_DECREMENT to represent a more realistic drop over 5 seconds
+        // (This is a simplified simulation since driver.js controls status, but good for local countdown)
+        simulatedEta = Math.max(simulatedEta - SIMULATED_ETA_DECREMENT, 0); // FIX: Ensure ETA doesn't go below 0
+        lastStatusUpdate = Date.now();
+
+        if (simulatedEta <= 0) {
+            // FIX: Don't automatically switch to 'Arrived' here. The driver.js should trigger this via custom event.
+            // If the ETA hits 0, the status should stay 'En Route' until the driver manually triggers 'Arrived'.
+            simulatedEta = 0; // Keep it at 0
         }
     } else if (currentStatusText === 'Assigned') {
-        // Automatically move from Assigned to En Route after one poll cycle if driver hasn't accepted
-        newStatus = 'En Route';
-    } 
+        // FIX: The driver.js module should be responsible for moving status from 'Assigned' to 'En Route'. 
+        // We'll keep it 'Assigned' here and rely on the custom event to trigger the change.
+    }
     
     // --- End Simulation Logic ---
 
@@ -266,17 +287,16 @@ async function fetchStatusUpdate() {
         status: newStatus,
         eta: simulatedEta,
         // Simple mock location updates based on time/eta decrement
-        currentLat: 39.18 + (15 - simulatedEta) * 0.0001, 
-        currentLon: -77.20 - (15 - simulatedEta) * 0.0002 
+        // Only update location if En Route
+        currentLat: (newStatus === 'En Route' || newStatus === 'Arrived') ? 39.18 + (15 - simulatedEta) * 0.0001 : 39.18, 
+        currentLon: (newStatus === 'En Route' || newStatus === 'Arrived') ? -77.20 - (15 - simulatedEta) * 0.0002 : -77.20
     };
     
     updateTrackingUI(data);
     
-    if (data.status === 'Completed') {
+    if (data.status === 'Completed' || data.status === 'Canceled') {
         clearInterval(statusPollingInterval);
         statusPollingInterval = null;
-        console.log('[App] Service completed. Waiting for payment.');
-        document.dispatchEvent(new CustomEvent('serviceCompleted', { detail: { requestId: currentRequestId } }));
     }
 }
 
@@ -299,7 +319,7 @@ function updateTrackingUI(data) {
         // Remove all status classes for a clean update
         UI.statusText.classList.remove('text-green-600', 'text-yellow-600', 'text-blue-600', 'dark:text-blue-400', 'dark:text-green-400', 'dark:text-yellow-400', 'text-red-600', 'dark:text-red-400', 'bg-blue-100', 'dark:bg-blue-900/50', 'bg-green-100', 'dark:bg-green-900/50', 'bg-yellow-100', 'dark:bg-yellow-900/50', 'bg-red-100', 'dark:bg-red-900/50');
         
-        // Apply new status classes with background for the pill look (FIX)
+        // Apply new status classes with background for the pill look 
         if (data.status === 'Assigned' || data.status === 'En Route') {
             UI.statusText.classList.add('text-blue-600', 'dark:text-blue-400', 'bg-blue-100', 'dark:bg-blue-900/50');
         } else if (data.status === 'Arrived') {
@@ -317,10 +337,10 @@ function updateTrackingUI(data) {
         etaText = 'Arrived!';
     } else if (data.status === 'Completed') {
         etaText = 'Service Complete';
-    } else if (data.status === 'Canceled') {
+    } else if (data.status === 'Canceled' || data.eta <= 0) {
         etaText = '--';
     } else {
-        etaText = `${data.eta} min`;
+        etaText = `${Math.ceil(data.eta)} min`; // FIX: Use Math.ceil for ETA display to show 1 min instead of 0
     }
     
     if (UI.etaDisplay) UI.etaDisplay.textContent = etaText;
@@ -377,7 +397,8 @@ export function resetCustomerApp() {
     // Switch UI back to request view
     if (UI.trackingContainer) UI.trackingContainer.classList.add('hidden');
     if (UI.serviceSelectionGrid) UI.serviceSelectionGrid.classList.remove('hidden');
-    if (UI.requestForm) UI.requestForm.classList.remove('hidden'); // FIX: Show the request form card again
+    // FIX: Show the request form card again
+    if (UI.requestForm) UI.requestForm.classList.remove('hidden'); 
     
     // Reset buttons
     if (UI.submitButton) {
@@ -385,7 +406,7 @@ export function resetCustomerApp() {
         UI.submitButton.textContent = 'REQUEST ASSISTANCE'; 
     }
     
-    // Reset service card highlights (FIX: Updated classes to match new Tailwind design)
+    // Reset service card highlights
     document.querySelectorAll('.service-icon-card').forEach(c => c.classList.remove('border-2', 'border-indigo-500', 'ring-2', 'ring-indigo-500', 'shadow-xl'));
     
     console.log('[App] Customer application state reset.');

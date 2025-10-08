@@ -2,10 +2,16 @@
 
 // --- UI Element Selectors ---
 const UI_PROFILE = {
-    profileModal: document.getElementById('user-profile-view'), // FIX 1: Use the user-profile-view container ID, not 'profile-modal'
-    closeButton: document.getElementById('close-profile-btn'), // FIX 1: Updated to a common 'close' button ID for the profile view
+    profileModal: document.getElementById('user-profile-view'),
+    closeButton: document.getElementById('close-profile-btn'),
 
-    // Profile Info
+    // Profile Info Display & Edit Containers (Crucial for Edit Toggle)
+    profileInfoContainer: document.getElementById('profile-info-display'), 
+    profileEditContainer: document.getElementById('profile-edit-form'), 
+    editProfileToggle: document.getElementById('edit-profile-toggle'),
+    cancelEditBtn: document.getElementById('cancel-edit-btn'), 
+    
+    // Profile Info Elements
     userName: document.getElementById('profile-user-name'),
     userEmail: document.getElementById('profile-user-email'),
     membershipStatus: document.getElementById('profile-membership-status'),
@@ -20,11 +26,6 @@ const UI_PROFILE = {
     editNameInput: document.getElementById('edit-name-input'),
     editEmailInput: document.getElementById('edit-email-input'),
     saveProfileBtn: document.getElementById('save-profile-btn'),
-    
-    // FIX 2: Add selector for the "Edit Profile" button/link that toggles the edit state
-    editProfileToggle: document.getElementById('edit-profile-toggle'), 
-    profileInfoContainer: document.getElementById('profile-info-display'), // Container for read-only data
-    profileEditContainer: document.getElementById('profile-edit-form'), // Container for edit form
 };
 
 // --- SIMULATED USER DATA ---
@@ -44,17 +45,12 @@ const MOCK_USER_DATA = {
 
 // --- CORE PROFILE FUNCTIONS ---
 
-/**
- * Loads mock user data, prioritizing any saved data in localStorage.
- * @returns {object} The user's combined profile data.
- */
 function loadUserProfileData() {
+    // Clone and load local data
+    const data = JSON.parse(JSON.stringify(MOCK_USER_DATA));
     const savedName = localStorage.getItem('user_name');
     const savedEmail = localStorage.getItem('user_email');
     
-    // FIX: Clone the MOCK_USER_DATA to prevent direct modification of the constant default object
-    const data = JSON.parse(JSON.stringify(MOCK_USER_DATA));
-
     if (savedName) data.name = savedName;
     if (savedEmail) data.email = savedEmail;
 
@@ -69,14 +65,11 @@ function renderProfileInfo(data) {
     if (UI_PROFILE.userEmail) UI_PROFILE.userEmail.textContent = data.email;
     if (UI_PROFILE.membershipStatus) UI_PROFILE.membershipStatus.textContent = data.membership;
     
-    // Pre-fill edit form
+    // Pre-fill edit form (Only done on rendering read-only data)
     if (UI_PROFILE.editNameInput) UI_PROFILE.editNameInput.value = data.name;
     if (UI_PROFILE.editEmailInput) UI_PROFILE.editEmailInput.value = data.email;
 }
 
-/**
- * Renders the list of saved vehicles.
- */
 function renderVehicles(vehicles) {
     if (!UI_PROFILE.savedVehiclesContainer) return;
     UI_PROFILE.savedVehiclesContainer.innerHTML = vehicles.map(v => `
@@ -90,9 +83,6 @@ function renderVehicles(vehicles) {
     `).join('');
 }
 
-/**
- * Renders the service history list.
- */
 function renderHistory(history) {
     if (!UI_PROFILE.historyList) return;
     UI_PROFILE.historyList.innerHTML = history.map(h => `
@@ -109,7 +99,7 @@ function renderHistory(history) {
     `).join('');
     
     // Attach listener for receipt buttons
-    UI_PROFILE.historyList.querySelectorAll('.view-receipt-btn').forEach(btn => { // FIX 3: Use a specific class for better targeting
+    UI_PROFILE.historyList.querySelectorAll('.view-receipt-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const historyId = e.target.dataset.id;
             alert(`[Receipt] Displaying detailed receipt for transaction ID ${historyId}.`);
@@ -118,12 +108,48 @@ function renderHistory(history) {
 }
 
 /**
+ * Toggles between the read-only profile view and the edit form.
+ * @param {boolean} [showInfoView] - Explicitly set the view state (true for read-only/info, false for edit form).
+ */
+function toggleEditMode(showInfoView) {
+    const info = UI_PROFILE.profileInfoContainer;
+    const edit = UI_PROFILE.profileEditContainer;
+    const toggleBtn = UI_PROFILE.editProfileToggle;
+    
+    if (!info || !edit || !toggleBtn) {
+        console.error("Profile view containers or toggle button are missing.");
+        return;
+    }
+
+    // Determine the target state. If showInfoView is undefined, we toggle the current state.
+    const shouldShowInfo = showInfoView === undefined ? info.classList.contains('hidden') : showInfoView;
+
+    if (shouldShowInfo) {
+        // ACTION: Show Read-Only/Info View
+        info.classList.remove('hidden');
+        edit.classList.add('hidden');
+        toggleBtn.textContent = 'Edit Profile';
+    } else {
+        // ACTION: Show Edit Form View
+        info.classList.add('hidden');
+        edit.classList.remove('hidden');
+        toggleBtn.textContent = 'Cancel Edit';
+        
+        // Ensure inputs are pre-filled with current data when entering edit mode
+        const data = loadUserProfileData();
+        if (UI_PROFILE.editNameInput) UI_PROFILE.editNameInput.value = data.name;
+        if (UI_PROFILE.editEmailInput) UI_PROFILE.editEmailInput.value = data.email;
+    }
+    console.log(`[Profile] Switched to ${shouldShowInfo ? 'Read-Only' : 'Edit'} mode.`);
+}
+
+/**
  * Saves profile changes from the edit form.
  */
 function saveProfileChanges() {
-    // FIX 4: Add mandatory null checks for input fields before accessing 'value'
+    // Robust checks
     if (!UI_PROFILE.editNameInput || !UI_PROFILE.editEmailInput) {
-        console.error("Edit form inputs are missing from the DOM.");
+        alert("Error: Profile edit form is not fully loaded.");
         return;
     }
     
@@ -151,40 +177,17 @@ function saveProfileChanges() {
     // Re-render the display section with new data
     renderProfileInfo(MOCK_USER_DATA);
     
-    // FIX 5: Switch back to read-only view after saving
-    toggleEditMode(false); 
+    // Switch back to read-only view after saving
+    toggleEditMode(true); // Explicitly set to read-only view
     
-    alert("Profile details updated successfully!");
-    console.log("[Profile] Profile saved.");
+    alert("Profile details updated successfully! 🎉");
+    console.log("[Profile] Profile saved and updated.");
 }
-
-/**
- * Toggles between the read-only profile view and the edit form.
- * @param {boolean} [isEditing] - Explicitly set the state (true for edit, false for read-only).
- */
-function toggleEditMode(isEditing) {
-    if (!UI_PROFILE.profileInfoContainer || !UI_PROFILE.profileEditContainer) return;
-
-    const currentlyEditing = isEditing !== undefined ? isEditing : UI_PROFILE.profileInfoContainer.classList.contains('hidden');
-    
-    if (currentlyEditing) {
-        // Switch to read-only
-        UI_PROFILE.profileInfoContainer.classList.remove('hidden');
-        UI_PROFILE.profileEditContainer.classList.add('hidden');
-        if (UI_PROFILE.editProfileToggle) UI_PROFILE.editProfileToggle.textContent = 'Edit Profile';
-    } else {
-        // Switch to edit form
-        UI_PROFILE.profileInfoContainer.classList.add('hidden');
-        UI_PROFILE.profileEditContainer.classList.remove('hidden');
-        if (UI_PROFILE.editProfileToggle) UI_PROFILE.editProfileToggle.textContent = 'Cancel Edit';
-    }
-}
-
 
 // --- EXPORTED FUNCTIONS ---
 
 /**
- * Opens the profile view and updates all content. This function is called from index.js.
+ * Opens the profile view and updates all content. This function is called via a CustomEvent from index.js.
  */
 export function openProfileView() {
     const data = loadUserProfileData();
@@ -192,11 +195,9 @@ export function openProfileView() {
     renderVehicles(data.vehicles);
     renderHistory(data.history);
     
-    // Ensure read-only mode is active when the view is opened
-    toggleEditMode(false); 
+    // Ensure the read-only mode is active when the view is opened
+    toggleEditMode(true); 
     
-    // FIX 1: The UI is now handled by index.js's ShowProfile/HideAllViews functions.
-    // The profile view is already visible if this is called after ShowProfile('user-profile-view').
     console.log("[Profile] Data refreshed for user profile view.");
 }
 
@@ -204,12 +205,26 @@ export function openProfileView() {
  * Attaches all event listeners for the profile view.
  */
 export function setupProfileListeners() {
-    // 1. Profile Edit Toggle Listener
-    UI_PROFILE.editProfileToggle?.addEventListener('click', () => toggleEditMode());
+    // 1. Profile Edit Toggle Listener (Toggles between read-only and edit form)
+    UI_PROFILE.editProfileToggle?.addEventListener('click', () => {
+        // If the current text is 'Edit Profile', we are in the info view and need to switch to edit (false)
+        const isCurrentlyInfoView = UI_PROFILE.editProfileToggle.textContent.includes('Edit Profile');
+        toggleEditMode(!isCurrentlyInfoView);
+    });
 
     // 2. Save Profile button listener
     UI_PROFILE.saveProfileBtn?.addEventListener('click', saveProfileChanges);
     
-    // FIX 6: Removed the unnecessary close button listener, as closing is handled by the globally exposed HideAllViews function in index.js
-    // FIX 6: Removed the document.getElementById('open-profile-btn') listener, as opening is handled by the globally exposed ShowProfile function in index.js
+    // 3. Cancel Edit button listener (Handles the button inside the form)
+    UI_PROFILE.cancelEditBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleEditMode(true); // Explicitly switch back to read-only view
+    });
+
+    // 4. Listen for the custom event dispatched when the profile is opened from the header button
+    document.addEventListener('openProfileView', openProfileView);
+    
+    console.log("[Profile] Listeners set up.");
 }
+
+export { setupProfileListeners as initProfile };
