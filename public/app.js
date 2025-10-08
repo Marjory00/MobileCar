@@ -12,9 +12,12 @@ const UI = {
     driverApp: document.getElementById('driver-app'),
     
     // Request form elements
-    requestForm: document.getElementById('request-form-container'),
-    submitButton: document.getElementById('submit-request'),
-    serviceType: document.getElementById('service-type'),
+    requestForm: document.getElementById('request-form-container'), // The info card at the top
+    // 🛑 FIX: Update selector to the new submission button
+    submitButton: document.getElementById('request-assistance-btn'),
+    
+    // 🛑 FIX: This element is no longer used for selection 🛑
+    // serviceType: document.getElementById('service-type'),
     
     // Tracking elements
     trackingContainer: document.getElementById('tracking-container'),
@@ -24,6 +27,9 @@ const UI = {
     
     // Global components
     themeToggle: document.getElementById('theme-toggle'),
+    
+    // New elements used in reset for the main form card (which now holds the service cards)
+    serviceSelectionGrid: document.getElementById('service-selection-grid')
 };
 
 // --- CORE FUNCTIONS ---
@@ -39,8 +45,17 @@ export async function handleServiceRequest(serviceType, location) {
         return;
     }
 
-    UI.submitButton.disabled = true;
-    UI.submitButton.textContent = 'Searching for Provider...';
+    // Update the main action button state
+    if (UI.submitButton) {
+        UI.submitButton.disabled = true;
+        UI.submitButton.textContent = 'Searching for Provider...';
+    }
+
+    // Hide the selection area, but keep the location/vehicle info card (requestForm) visible 
+    // to show where help is going.
+    if (UI.serviceSelectionGrid) {
+        UI.serviceSelectionGrid.classList.add('hidden');
+    }
 
     try {
         const response = await fetch('/api/request', {
@@ -56,21 +71,31 @@ export async function handleServiceRequest(serviceType, location) {
             alert(`Request sent! Provider found: ${data.providerName} (ETA: ${data.eta} min)`);
             
             // Switch UI to tracking view
-            UI.requestForm.classList.add('hidden');
-            UI.trackingContainer.classList.remove('hidden');
+            // Keep requestForm (location/vehicle card) visible, hide the large selection area, show tracking
+            if (UI.trackingContainer) UI.trackingContainer.classList.remove('hidden');
             
             updateTrackingUI(data); // Initial update
             startStatusPolling(); // Start real-time updates (Simulated)
         } else {
             alert(`Request Failed: ${data.message || 'No providers available.'}`);
-            UI.submitButton.disabled = false;
-            UI.submitButton.textContent = 'Submit Request';
+            
+            // Restore UI state
+            if (UI.submitButton) {
+                UI.submitButton.disabled = false;
+                UI.submitButton.textContent = 'REQUEST ASSISTANCE';
+            }
+            if (UI.serviceSelectionGrid) UI.serviceSelectionGrid.classList.remove('hidden');
         }
     } catch (error) {
         console.error('Service request failed:', error);
         alert('An internal error occurred during the request.');
-        UI.submitButton.disabled = false;
-        UI.submitButton.textContent = 'Submit Request';
+        
+        // Restore UI state
+        if (UI.submitButton) {
+            UI.submitButton.disabled = false;
+            UI.submitButton.textContent = 'REQUEST ASSISTANCE';
+        }
+        if (UI.serviceSelectionGrid) UI.serviceSelectionGrid.classList.remove('hidden');
     }
 }
 
@@ -137,8 +162,8 @@ async function fetchStatusUpdate() {
  * Updates the tracking UI elements based on the latest status data.
  */
 function updateTrackingUI(data) {
-    UI.providerNameDisplay.textContent = data.providerName || 'Provider Assigned';
-    UI.statusText.textContent = `Status: ${data.status}`;
+    if (UI.providerNameDisplay) UI.providerNameDisplay.textContent = data.providerName || 'Provider Assigned';
+    if (UI.statusText) UI.statusText.textContent = `Status: ${data.status}`;
     
     let etaText = `${data.eta || 1} min`;
     if (data.status === 'Arrived') {
@@ -146,10 +171,7 @@ function updateTrackingUI(data) {
     } else if (data.status === 'Completed') {
         etaText = 'Service Complete';
     }
-    UI.etaDisplay.textContent = etaText;
-    
-    // Visually update the status steps (e.g., changing classes on progress bar elements)
-    // (Implementation of the visual progress bar is left to the index.html/CSS)
+    if (UI.etaDisplay) UI.etaDisplay.textContent = etaText;
 }
 
 
@@ -172,7 +194,7 @@ export function initializeTheme() {
 export function toggleTheme() {
     const isDark = document.documentElement.classList.toggle('dark');
     localStorage.theme = isDark ? 'dark' : 'light';
-    UI.themeToggle.textContent = isDark ? '☀️' : '🌙';
+    if (UI.themeToggle) UI.themeToggle.textContent = isDark ? '☀️' : '🌙';
 }
 
 /**
@@ -186,13 +208,16 @@ export function resetCustomerApp() {
     }
     
     // Switch UI back to request view
-    UI.trackingContainer.classList.add('hidden');
-    UI.requestForm.classList.remove('hidden');
+    if (UI.trackingContainer) UI.trackingContainer.classList.add('hidden');
+    // 🛑 FIX: Show the service selection grid again
+    if (UI.serviceSelectionGrid) UI.serviceSelectionGrid.classList.remove('hidden');
     
-    // Reset form and buttons
-    UI.serviceType.value = '';
-    UI.submitButton.disabled = false;
-    UI.submitButton.textContent = 'Submit Request';
+    // Reset buttons
+    if (UI.submitButton) {
+        UI.submitButton.disabled = false;
+        // Use the proper text for the fixed request button
+        UI.submitButton.textContent = 'REQUEST ASSISTANCE'; 
+    }
     
     console.log('[App] Customer application state reset.');
 }
