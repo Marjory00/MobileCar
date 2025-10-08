@@ -13,11 +13,8 @@ const UI = {
     
     // Request form elements
     requestForm: document.getElementById('request-form-container'), // The info card at the top
-    // 🛑 FIX: Update selector to the new submission button
     submitButton: document.getElementById('request-assistance-btn'),
-    
-    // 🛑 FIX: This element is no longer used for selection 🛑
-    // serviceType: document.getElementById('service-type'),
+    serviceSelectionGrid: document.getElementById('service-selection-grid'),
     
     // Tracking elements
     trackingContainer: document.getElementById('tracking-container'),
@@ -28,8 +25,8 @@ const UI = {
     // Global components
     themeToggle: document.getElementById('theme-toggle'),
     
-    // New elements used in reset for the main form card (which now holds the service cards)
-    serviceSelectionGrid: document.getElementById('service-selection-grid')
+    // New: The main content wrapper to be hidden/shown when switching views
+    mainContent: document.getElementById('main-content') 
 };
 
 // --- CORE FUNCTIONS ---
@@ -45,33 +42,37 @@ export async function handleServiceRequest(serviceType, location) {
         return;
     }
 
-    // Update the main action button state
     if (UI.submitButton) {
         UI.submitButton.disabled = true;
         UI.submitButton.textContent = 'Searching for Provider...';
     }
 
-    // Hide the selection area, but keep the location/vehicle info card (requestForm) visible 
-    // to show where help is going.
+    // Hide the service selection grid (icons) when tracking starts
     if (UI.serviceSelectionGrid) {
         UI.serviceSelectionGrid.classList.add('hidden');
     }
 
     try {
-        const response = await fetch('/api/request', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: 'demo-user-123', location, serviceType })
+        // SIMULATED API CALL to /api/request
+        const data = await new Promise(resolve => {
+            setTimeout(() => {
+                resolve({
+                    success: true,
+                    requestId: 'REQ-' + Date.now(),
+                    providerName: 'Sarah J.',
+                    providerPhoto: 'sarah.jpg',
+                    eta: 15, // minutes
+                    status: 'Assigned',
+                    // Location data for map simulation would go here
+                });
+            }, 1000);
         });
-
-        const data = await response.json();
 
         if (data.success) {
             currentRequestId = data.requestId;
             alert(`Request sent! Provider found: ${data.providerName} (ETA: ${data.eta} min)`);
             
             // Switch UI to tracking view
-            // Keep requestForm (location/vehicle card) visible, hide the large selection area, show tracking
             if (UI.trackingContainer) UI.trackingContainer.classList.remove('hidden');
             
             updateTrackingUI(data); // Initial update
@@ -108,7 +109,8 @@ export function cancelRequest() {
         statusPollingInterval = null;
     }
     
-    // In a real app, this would send an API call to the server to update the request status to 'Canceled'.
+    // SIMULATED: API call to server to cancel the request
+    console.log(`[App] Request ${currentRequestId} officially cancelled.`);
     
     alert('Service request canceled.');
     resetCustomerApp();
@@ -129,7 +131,7 @@ function startStatusPolling() {
 }
 
 /**
- * Fetches the latest status from the server API.
+ * Fetches the latest status from the server API (SIMULATED).
  */
 async function fetchStatusUpdate() {
     if (!currentRequestId) {
@@ -137,24 +139,30 @@ async function fetchStatusUpdate() {
         return;
     }
 
-    try {
-        const response = await fetch(`/api/status/${currentRequestId}`);
-        const data = await response.json();
-        
-        if (data.success) {
-            updateTrackingUI(data);
-            
-            if (data.status === 'Completed') {
-                clearInterval(statusPollingInterval);
-                statusPollingInterval = null;
-                // Trigger payment flow (handled by payment.js, which listens for the state change)
-                console.log('[App] Service completed. Waiting for payment.');
-                // We'll use a custom event to communicate this to payment.js
-                document.dispatchEvent(new CustomEvent('serviceCompleted', { detail: { requestId: currentRequestId } }));
-            }
-        }
-    } catch (error) {
-        console.error('Error fetching status:', error);
+    // SIMULATED STATUS UPDATE LOGIC
+    const statuses = ['Assigned', 'En Route', '5 min away', 'Arrived', 'Completed'];
+    // Randomly advance the status every poll (for demo purposes)
+    const currentStatusIndex = statuses.indexOf(UI.statusText?.textContent.split(': ')[1]) || 0;
+    const nextStatusIndex = Math.min(currentStatusIndex + 1, statuses.length - 1);
+    const newStatus = statuses[nextStatusIndex];
+    const newEta = nextStatusIndex === 0 ? 15 : (5 - nextStatusIndex) * 3; // Mock ETA decrease
+
+    const data = {
+        success: true,
+        requestId: currentRequestId,
+        providerName: UI.providerNameDisplay?.textContent || 'Sarah J.',
+        status: newStatus,
+        eta: newEta > 0 ? newEta : 0,
+    };
+    
+    updateTrackingUI(data);
+    
+    if (data.status === 'Completed') {
+        clearInterval(statusPollingInterval);
+        statusPollingInterval = null;
+        console.log('[App] Service completed. Waiting for payment.');
+        // Notify payment.js
+        document.dispatchEvent(new CustomEvent('serviceCompleted', { detail: { requestId: currentRequestId } }));
     }
 }
 
@@ -163,7 +171,21 @@ async function fetchStatusUpdate() {
  */
 function updateTrackingUI(data) {
     if (UI.providerNameDisplay) UI.providerNameDisplay.textContent = data.providerName || 'Provider Assigned';
-    if (UI.statusText) UI.statusText.textContent = `Status: ${data.status}`;
+    
+    if (UI.statusText) {
+        // Ensure status text is only the status itself for the simulation logic to work
+        UI.statusText.textContent = data.status; 
+        
+        // Change text color based on status
+        UI.statusText.classList.remove('text-green-600', 'text-yellow-600', 'text-blue-600');
+        if (data.status === 'Assigned' || data.status === 'En Route') {
+            UI.statusText.classList.add('text-blue-600', 'dark:text-blue-400');
+        } else if (data.status === 'Arrived') {
+            UI.statusText.classList.add('text-green-600', 'dark:text-green-400');
+        } else if (data.status === 'Completed') {
+            UI.statusText.classList.add('text-yellow-600', 'dark:text-yellow-400');
+        }
+    }
     
     let etaText = `${data.eta || 1} min`;
     if (data.status === 'Arrived') {
@@ -172,6 +194,9 @@ function updateTrackingUI(data) {
         etaText = 'Service Complete';
     }
     if (UI.etaDisplay) UI.etaDisplay.textContent = etaText;
+
+    // In a real app, this is where you'd update the map view with the provider's coordinates.
+    // E.g., MapLibreGL.updateMarker(data.providerLat, data.providerLon);
 }
 
 
@@ -209,15 +234,16 @@ export function resetCustomerApp() {
     
     // Switch UI back to request view
     if (UI.trackingContainer) UI.trackingContainer.classList.add('hidden');
-    // 🛑 FIX: Show the service selection grid again
     if (UI.serviceSelectionGrid) UI.serviceSelectionGrid.classList.remove('hidden');
     
     // Reset buttons
     if (UI.submitButton) {
         UI.submitButton.disabled = false;
-        // Use the proper text for the fixed request button
         UI.submitButton.textContent = 'REQUEST ASSISTANCE'; 
     }
+    
+    // Reset service card highlights (requires access to serviceCards, usually in index.js)
+    document.querySelectorAll('.service-icon-card').forEach(c => c.classList.remove('border-2', 'border-indigo-500'));
     
     console.log('[App] Customer application state reset.');
 }

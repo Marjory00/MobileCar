@@ -1,68 +1,130 @@
-// public/driver.js - Handles Driver Dashboard Logic (Demo/Admin Dashboard Component)
+// public/driver.js - Logic for the Driver/Provider Side Simulation
 
-const UI = {
+// --- UI Element Selectors ---
+const UI_DRIVER = {
+    // Containers
     customerApp: document.getElementById('customer-app'),
     driverApp: document.getElementById('driver-app'),
-    driverRequestList: document.getElementById('driver-request-list') // Target container for driver requests
+    
+    // Driver view elements (to be dynamically added in real app)
+    driverStatusDisplay: null,
+    driverActionBtn: null,
+    driverRequestInfo: null,
 };
 
+// --- State and View Control ---
+
 /**
- * Sets up any initial listeners specific to the driver view.
+ * Sets up listeners for the driver actions.
  */
 export function setupDriverListeners() {
-    console.log('[Driver] Driver listeners set up.');
+    // Since driver elements are dynamically managed in this demo,
+    // we set listeners on the document for simplicity.
+    document.addEventListener('click', (e) => {
+        if (e.target.id === 'driver-action-btn') {
+            handleDriverAction();
+        }
+    });
 }
 
 /**
- * Switches the primary view to the Customer application.
- */
-export function switchToCustomerView() {
-    if (UI.driverApp && UI.customerApp) {
-        UI.driverApp.classList.add('hidden');
-        UI.customerApp.classList.remove('hidden');
-        console.log('[View] Switched to Customer View.');
-    }
-}
-
-/**
- * Switches the primary view to the Driver application (Dashboard).
+ * Switches the view to the Driver interface.
  */
 export function switchToDriverView() {
-    if (UI.driverApp && UI.customerApp) {
-        UI.customerApp.classList.add('hidden');
-        UI.driverApp.classList.remove('hidden');
-        // Load requests when the driver view is active
-        fetchDriverRequests();
-        console.log('[View] Switched to Driver View.');
+    if (UI_DRIVER.customerApp && UI_DRIVER.driverApp) {
+        UI_DRIVER.customerApp.classList.add('hidden');
+        UI_DRIVER.driverApp.classList.remove('hidden');
+        renderDriverView();
+        console.log('[Driver] Switched to Driver View.');
     }
 }
 
 /**
- * Fetches and displays the list of open service requests for the demo.
+ * Switches the view back to the Customer interface.
  */
-async function fetchDriverRequests() {
-    // NOTE: In a complete app, this would query a dedicated endpoint like /api/driver/requests.
-    // Since we haven't created that, we'll use a dynamic placeholder based on current time.
-    
-    const lastRequestTime = new Date().toLocaleTimeString();
+export function switchToCustomerView() {
+    if (UI_DRIVER.customerApp && UI_DRIVER.driverApp) {
+        UI_DRIVER.customerApp.classList.remove('hidden');
+        UI_DRIVER.driverApp.classList.add('hidden');
+        console.log('[Driver] Switched to Customer View.');
+    }
+}
 
-    if (UI.driverRequestList) {
-        UI.driverRequestList.innerHTML = `
-            <h3 class="text-xl font-semibold mb-4 text-green-700 dark:text-green-400">Active Service Requests</h3>
-            <p class="text-sm text-gray-500 mb-2">
-                (Simulated Data - Last Updated: ${lastRequestTime})
-            </p>
-            <div class="p-4 bg-white dark:bg-gray-800 border border-yellow-400 rounded shadow-md mb-3">
-                <p class="font-bold">Request ID: TEMP-001</p>
-                <p>Service: **Tire Change**</p>
-                <p>Location: 456 Demo Blvd.</p>
-                <p class="text-sm mt-1">Status: **Waiting for Acceptance**</p>
-                <button class="mt-2 text-sm bg-green-500 hover:bg-green-600 text-white p-2 rounded">[Simulate Accept]</button>
+/**
+ * Renders the driver's current status and actions.
+ */
+function renderDriverView() {
+    if (!UI_DRIVER.driverApp) return;
+
+    // Mock request details for the driver
+    const mockRequest = {
+        service: 'Tire Change',
+        customer: 'John D. (Membership #456)',
+        location: '19875 Central Park Ave, Clarksburg, MD',
+        status: 'En Route',
+        eta: '10 min',
+    };
+
+    UI_DRIVER.driverApp.innerHTML = `
+        <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-6">Provider Dashboard</h2>
+        <div id="driver-request-info" class="bg-white dark:bg-gray-700 p-6 rounded-xl shadow-lg space-y-4">
+            <h3 class="text-xl font-semibold text-indigo-600 dark:text-indigo-400">Active Job: ${mockRequest.service}</h3>
+            <p>Customer: <span class="font-medium">${mockRequest.customer}</span></p>
+            <p>Destination: <span class="font-medium">${mockRequest.location}</span></p>
+            <p>Current Status: <span id="driver-status-display" class="font-bold text-green-500">${mockRequest.status}</span></p>
+            <p>Customer ETA: <span class="font-bold">${mockRequest.eta}</span></p>
+            
+            <div class="h-48 bg-gray-200 dark:bg-gray-600 rounded-lg flex items-center justify-center text-gray-500">
+                [Live Map Simulation: Driver to Customer Route]
             </div>
             
-            <div class="p-4 bg-white dark:bg-gray-800 border border-gray-300 rounded shadow-md">
-                <p>No other active requests.</p>
-            </div>
-        `;
+            <button id="driver-action-btn" class="w-full p-3 mt-4 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition">
+                Mark as Arrived
+            </button>
+        </div>
+    `;
+
+    // Update references
+    UI_DRIVER.driverStatusDisplay = document.getElementById('driver-status-display');
+    UI_DRIVER.driverActionBtn = document.getElementById('driver-action-btn');
+}
+
+/**
+ * Handles the driver action (e.g., Arrived, Completed) and triggers status update.
+ */
+function handleDriverAction() {
+    if (!UI_DRIVER.driverStatusDisplay || !UI_DRIVER.driverActionBtn) return;
+
+    let currentStatus = UI_DRIVER.driverStatusDisplay.textContent;
+    let newStatus, newButtonText;
+
+    switch (currentStatus) {
+        case 'En Route':
+        case '10 min away':
+            newStatus = 'Arrived';
+            newButtonText = 'Mark as Service Complete';
+            break;
+        case 'Arrived':
+            newStatus = 'Completed';
+            newButtonText = 'Job Finished (Switch to Customer View)';
+            break;
+        case 'Completed':
+            // Final action: switch back to customer view to see payment modal
+            switchToCustomerView();
+            return; 
+        default:
+            newStatus = 'En Route';
+            newButtonText = 'Mark as Arrived';
     }
+
+    // Update driver UI
+    UI_DRIVER.driverStatusDisplay.textContent = newStatus;
+    UI_DRIVER.driverActionBtn.textContent = newButtonText;
+
+    // SIMULATED: Trigger the customer's status polling update right away
+    // In a real application, the server would handle this.
+    console.warn(`[Driver] Triggering customer status update: ${newStatus}`);
+    
+    // Dispatch a dummy event to simulate the customer's polling receiving the update
+    document.dispatchEvent(new CustomEvent('driverStatusChange', { detail: { status: newStatus } }));
 }
