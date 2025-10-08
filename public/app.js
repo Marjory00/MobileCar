@@ -4,32 +4,114 @@
 let currentRequestId = null;
 let statusPollingInterval = null;
 const POLLING_RATE_MS = 5000; // Poll every 5 seconds
+let simulatedEta = 15;
+const SIMULATED_ETA_DECREMENT = 1;
 
-// --- UI Element Selectors (Ensures they exist in index.html) ---
+// --- UI Element Selectors ---
 const UI = {
     // Main containers
     customerApp: document.getElementById('customer-app'),
     driverApp: document.getElementById('driver-app'),
     
     // Request form elements
-    requestForm: document.getElementById('request-form-container'), // The info card at the top
+    requestForm: document.getElementById('request-form-container'),
     submitButton: document.getElementById('request-assistance-btn'),
     serviceSelectionGrid: document.getElementById('service-selection-grid'),
     
-    // Tracking elements
+    // Tracking elements (Real-Time Tracking components)
     trackingContainer: document.getElementById('tracking-container'),
     providerNameDisplay: document.getElementById('provider-name-display'),
     etaDisplay: document.getElementById('eta-display'),
     statusText: document.getElementById('status-text'),
+    providerPhoto: document.getElementById('provider-photo'), 
+    mapContainer: document.getElementById('map-simulation-container'), 
+
+    // Communication Elements
+    chatButton: document.getElementById('chat-with-provider-btn'),
+    callButton: document.getElementById('call-provider-btn'),
     
     // Global components
     themeToggle: document.getElementById('theme-toggle'),
-    
-    // New: The main content wrapper to be hidden/shown when switching views
     mainContent: document.getElementById('main-content') 
 };
 
+// --- SYNCHRONIZATION SETUP ---
+
+// New function to initialize cross-module listeners
+function setupSyncListeners() {
+    // 1. Listen for Driver status changes (triggered by driver.js's handleDriverAction)
+    document.addEventListener('driverStatusChange', (e) => {
+        const newStatus = e.detail.status;
+        console.log(`[App] Received direct status update from driver: ${newStatus}`);
+        
+        // Stop the polling temporarily to accept the driver's update immediately
+        if (statusPollingInterval) {
+            clearInterval(statusPollingInterval);
+            statusPollingInterval = null;
+        }
+
+        // Manually update simulatedEta based on driver status for consistent display
+        if (newStatus === 'Arrived') {
+            simulatedEta = 0;
+        } else if (newStatus === 'Completed') {
+            simulatedEta = 0;
+        } else if (newStatus === 'En Route') {
+            simulatedEta = 10; // Reset to an initial En Route value
+        }
+
+        // Apply the update to the UI
+        updateTrackingUI({
+            providerName: UI.providerNameDisplay?.textContent,
+            status: newStatus,
+            eta: simulatedEta,
+        });
+
+        // Restart polling if the job isn't completed yet
+        if (newStatus !== 'Completed') {
+            startStatusPolling();
+        } else {
+            console.log('[App] Service completed. Waiting for payment.');
+            document.dispatchEvent(new CustomEvent('serviceCompleted', { detail: { requestId: currentRequestId } }));
+        }
+    });
+}
+// Call setupSyncListeners immediately (or ensure index.js calls a primary setup function that includes it)
+// For simplicity in this file, we assume setupSyncListeners will be called when needed.
+
 // --- CORE FUNCTIONS ---
+
+/**
+ * Initiates an in-app chat simulation.
+ */
+function startChatSimulation() {
+    const provider = UI.providerNameDisplay?.textContent || 'Your Provider';
+    alert(`[SIMULATED CHAT] Opening chat window with ${provider}. You can now send messages.`);
+    console.log(`[Communication] Chat initiated with ${provider}.`);
+}
+
+/**
+ * Initiates an in-app call simulation.
+ */
+function startCallSimulation() {
+    const provider = UI.providerNameDisplay?.textContent || 'Your Provider';
+    alert(`[SIMULATED CALL] Calling ${provider}. (Real world: This would connect via VoIP/Twilio.)`);
+    console.log(`[Communication] Call initiated with ${provider}.`);
+}
+
+/**
+ * Attaches communication listeners once a provider is assigned.
+ */
+function setupCommunicationListeners() {
+    if (UI.chatButton && !UI.chatButton.hasAttribute('data-listener-attached')) {
+        UI.chatButton.addEventListener('click', startChatSimulation);
+        UI.chatButton.setAttribute('data-listener-attached', 'true');
+    }
+    if (UI.callButton && !UI.callButton.hasAttribute('data-listener-attached')) {
+        UI.callButton.addEventListener('click', startCallSimulation);
+        UI.callButton.setAttribute('data-listener-attached', 'true');
+    }
+}
+
 
 /**
  * Handles the initial service request submission.
@@ -47,40 +129,50 @@ export async function handleServiceRequest(serviceType, location) {
         UI.submitButton.textContent = 'Searching for Provider...';
     }
 
-    // Hide the service selection grid (icons) when tracking starts
     if (UI.serviceSelectionGrid) {
         UI.serviceSelectionGrid.classList.add('hidden');
     }
 
     try {
-        // SIMULATED API CALL to /api/request
+        // SIMULATED API CALL to /api/request (1 second delay)
         const data = await new Promise(resolve => {
             setTimeout(() => {
                 resolve({
                     success: true,
                     requestId: 'REQ-' + Date.now(),
-                    providerName: 'Sarah J.',
-                    providerPhoto: 'sarah.jpg',
-                    eta: 15, // minutes
+                    providerName: 'Sarah J. 🛠️', 
+                    providerPhotoUrl: 'https://via.placeholder.com/150/500E9C/FFFFFF?text=SJ', 
+                    eta: 15,
                     status: 'Assigned',
-                    // Location data for map simulation would go here
+                    currentLat: 39.18, 
+                    currentLon: -77.20 
                 });
             }, 1000);
         });
 
         if (data.success) {
             currentRequestId = data.requestId;
-            alert(`Request sent! Provider found: ${data.providerName} (ETA: ${data.eta} min)`);
+            console.log(`Request sent! Provider found: ${data.providerName} (ETA: ${data.eta} min)`);
             
-            // Switch UI to tracking view
             if (UI.trackingContainer) UI.trackingContainer.classList.remove('hidden');
             
             updateTrackingUI(data); // Initial update
-            startStatusPolling(); // Start real-time updates (Simulated)
+            setupCommunicationListeners(); // Attach the communication listeners
+            setupSyncListeners(); // Set up synchronization listeners for the driver
+            startStatusPolling(); // Start real-time updates
+
+            // NEW: Dispatch event for the driver module to pick up the new job details
+            document.dispatchEvent(new CustomEvent('requestSubmitted', {
+                detail: {
+                    serviceType: serviceType,
+                    location: location,
+                    requestId: currentRequestId
+                }
+            }));
+
         } else {
             alert(`Request Failed: ${data.message || 'No providers available.'}`);
             
-            // Restore UI state
             if (UI.submitButton) {
                 UI.submitButton.disabled = false;
                 UI.submitButton.textContent = 'REQUEST ASSISTANCE';
@@ -91,7 +183,6 @@ export async function handleServiceRequest(serviceType, location) {
         console.error('Service request failed:', error);
         alert('An internal error occurred during the request.');
         
-        // Restore UI state
         if (UI.submitButton) {
             UI.submitButton.disabled = false;
             UI.submitButton.textContent = 'REQUEST ASSISTANCE';
@@ -109,11 +200,11 @@ export function cancelRequest() {
         statusPollingInterval = null;
     }
     
-    // SIMULATED: API call to server to cancel the request
     console.log(`[App] Request ${currentRequestId} officially cancelled.`);
-    
     alert('Service request canceled.');
     resetCustomerApp();
+    // Dispatch reset event so driver.js clears the job too
+    document.dispatchEvent(new CustomEvent('resetApp'));
 }
 
 
@@ -139,20 +230,32 @@ async function fetchStatusUpdate() {
         return;
     }
 
-    // SIMULATED STATUS UPDATE LOGIC
-    const statuses = ['Assigned', 'En Route', '5 min away', 'Arrived', 'Completed'];
-    // Randomly advance the status every poll (for demo purposes)
-    const currentStatusIndex = statuses.indexOf(UI.statusText?.textContent.split(': ')[1]) || 0;
-    const nextStatusIndex = Math.min(currentStatusIndex + 1, statuses.length - 1);
-    const newStatus = statuses[nextStatusIndex];
-    const newEta = nextStatusIndex === 0 ? 15 : (5 - nextStatusIndex) * 3; // Mock ETA decrease
+    // --- Core Status & ETA Simulation Logic ---
+    const currentStatus = UI.statusText?.textContent;
+    let newStatus = currentStatus;
+
+    if (currentStatus === 'Assigned') {
+        simulatedEta = 15;
+        newStatus = 'En Route';
+    } else if (currentStatus === 'En Route' && simulatedEta > 3) {
+        simulatedEta = Math.max(simulatedEta - SIMULATED_ETA_DECREMENT, 1);
+        newStatus = 'En Route';
+    } else if (simulatedEta <= 3 && currentStatus === 'En Route') {
+        newStatus = 'Arrived';
+        simulatedEta = 0;
+    } else if (currentStatus === 'Arrived') {
+        newStatus = 'Completed';
+    }
+    // --- End Simulation Logic ---
 
     const data = {
         success: true,
         requestId: currentRequestId,
-        providerName: UI.providerNameDisplay?.textContent || 'Sarah J.',
+        providerName: UI.providerNameDisplay?.textContent || 'Sarah J. 🛠️',
         status: newStatus,
-        eta: newEta > 0 ? newEta : 0,
+        eta: simulatedEta,
+        currentLat: 39.18 + (15 - simulatedEta) * 0.0001, 
+        currentLon: -77.20 - (15 - simulatedEta) * 0.0002 
     };
     
     updateTrackingUI(data);
@@ -161,23 +264,27 @@ async function fetchStatusUpdate() {
         clearInterval(statusPollingInterval);
         statusPollingInterval = null;
         console.log('[App] Service completed. Waiting for payment.');
-        // Notify payment.js
         document.dispatchEvent(new CustomEvent('serviceCompleted', { detail: { requestId: currentRequestId } }));
     }
 }
 
 /**
- * Updates the tracking UI elements based on the latest status data.
+ * Updates the tracking UI elements (Name, Photo, ETA, Map).
  */
 function updateTrackingUI(data) {
     if (UI.providerNameDisplay) UI.providerNameDisplay.textContent = data.providerName || 'Provider Assigned';
     
+    // 1. Provider Photo
+    if (UI.providerPhoto && data.providerPhotoUrl) {
+        UI.providerPhoto.src = data.providerPhotoUrl;
+    }
+
+    // 2. Status Text and Color Update
     if (UI.statusText) {
-        // Ensure status text is only the status itself for the simulation logic to work
         UI.statusText.textContent = data.status; 
         
-        // Change text color based on status
-        UI.statusText.classList.remove('text-green-600', 'text-yellow-600', 'text-blue-600');
+        UI.statusText.classList.remove('text-green-600', 'text-yellow-600', 'text-blue-600', 'dark:text-blue-400', 'dark:text-green-400', 'dark:text-yellow-400');
+        
         if (data.status === 'Assigned' || data.status === 'En Route') {
             UI.statusText.classList.add('text-blue-600', 'dark:text-blue-400');
         } else if (data.status === 'Arrived') {
@@ -187,16 +294,23 @@ function updateTrackingUI(data) {
         }
     }
     
-    let etaText = `${data.eta || 1} min`;
+    // 3. ETA Update
+    let etaText;
     if (data.status === 'Arrived') {
         etaText = 'Arrived!';
     } else if (data.status === 'Completed') {
         etaText = 'Service Complete';
+    } else {
+        etaText = `${data.eta} min`;
     }
+    
     if (UI.etaDisplay) UI.etaDisplay.textContent = etaText;
 
-    // In a real app, this is where you'd update the map view with the provider's coordinates.
-    // E.g., MapLibreGL.updateMarker(data.providerLat, data.providerLon);
+    // 4. Live Map Simulation (only update coordinates if they exist in data)
+    if (UI.mapContainer && data.currentLat && data.currentLon) {
+        UI.mapContainer.textContent = 
+            `Live Map: Provider at Lat: ${data.currentLat.toFixed(5)}, Lon: ${data.currentLon.toFixed(5)} — ETA: ${etaText}`;
+    }
 }
 
 
@@ -232,6 +346,8 @@ export function resetCustomerApp() {
         statusPollingInterval = null;
     }
     
+    simulatedEta = 15; 
+    
     // Switch UI back to request view
     if (UI.trackingContainer) UI.trackingContainer.classList.add('hidden');
     if (UI.serviceSelectionGrid) UI.serviceSelectionGrid.classList.remove('hidden');
@@ -242,7 +358,7 @@ export function resetCustomerApp() {
         UI.submitButton.textContent = 'REQUEST ASSISTANCE'; 
     }
     
-    // Reset service card highlights (requires access to serviceCards, usually in index.js)
+    // Reset service card highlights 
     document.querySelectorAll('.service-icon-card').forEach(c => c.classList.remove('border-2', 'border-indigo-500'));
     
     console.log('[App] Customer application state reset.');

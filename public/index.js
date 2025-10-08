@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // References to core display elements
     const locationDisplay = document.getElementById('location-display');
-    const vehicleDisplay = document.getElementById('vehicle-display'); // New element added in HTML update
+    const vehicleDisplay = document.getElementById('vehicle-display');
     const serviceCards = document.querySelectorAll('.service-icon-card');
     const requestButton = document.getElementById('request-assistance-btn');
 
@@ -18,8 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const detailsModal = document.getElementById('details-modal');
     const closeDetailsBtn = document.getElementById('close-details-modal');
     const confirmDetailsBtn = document.getElementById('confirm-details-btn');
-    const editLocationBtn = document.getElementById('edit-location-btn'); // Button on main screen
-    const changeVehicleBtn = document.getElementById('change-vehicle-btn'); // Button on main screen
+    const editLocationBtn = document.getElementById('edit-location-btn');
+    const changeVehicleBtn = document.getElementById('change-vehicle-btn');
     const useGpsBtn = document.getElementById('use-gps-btn');
     const locationInput = document.getElementById('manual-location-input');
     const locationStatus = document.getElementById('location-status');
@@ -44,19 +44,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- NEW HOME SCREEN LOGIC ---
+    // ----------------------------------------------------
+    // 3. Service Selection Logic (The requested feature) 🛠️
+    // ----------------------------------------------------
     
-    // A. Service Card Selection Logic (existing logic)
+    // A. Service Card Selection Logic
     serviceCards.forEach(card => {
         card.addEventListener('click', (event) => {
+            // Remove highlight from all cards
             serviceCards.forEach(c => c.classList.remove('border-2', 'border-indigo-500'));
+            
+            // Highlight the selected card and set the service type
             event.currentTarget.classList.add('border-2', 'border-indigo-500');
             selectedService = event.currentTarget.dataset.service;
             console.log(`Service selected: ${selectedService}`);
         });
     });
     
-    // B. Primary Request Button Submission Listener (existing logic)
+    // B. Primary Request Button Submission Listener
     if (requestButton) {
         requestButton.addEventListener('click', () => {
             if (!selectedService) {
@@ -72,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ----------------------------------------------------
-    // 3. Location & Vehicle Details Modal Logic 🚗📍
+    // 4. Location & Vehicle Details Modal Logic 🚗📍
     // ----------------------------------------------------
 
     // Function to open the modal
@@ -130,19 +135,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('add-vehicle-btn')?.addEventListener('click', () => {
         alert("Redirecting to the Vehicle Profile Management Screen...");
     });
-    // --- END Location & Vehicle Details Modal Logic ---
     
-    // 4. Setup Payment Listeners (Payment Module)
+    // 5. Setup Payment Listeners (Payment Module)
     setupPaymentListeners();
 
-    // 5. Setup Driver Listeners (Driver Module)
+    // 6. Setup Driver Listeners (Driver Module)
     setupDriverListeners();
     
-    // --- 6. DEMO FEATURE: Quick Switcher for Customer/Driver ---
+    // 7. DEMO FEATURE: Quick Switcher for Customer/Driver
     const addSwitcher = () => {
         const switcher = document.createElement('div');
         switcher.className = 'fixed bottom-4 right-4 z-30 flex space-x-2';
-        // 🛑 FIX: Missing HTML re-inserted here 🛑
         switcher.innerHTML = `
             <button id="switch-customer" class="p-2 bg-indigo-500 text-white rounded-full shadow-lg hover:bg-indigo-600 transition text-sm font-medium">Customer View</button>
             <button id="switch-driver" class="p-2 bg-pink-500 text-white rounded-full shadow-lg hover:bg-pink-600 transition text-sm font-medium">Driver View</button>
