@@ -1,44 +1,103 @@
-// public/index.js - Application Entry Point and Initialization
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MobileCar Assistance</title>
+    <link rel="stylesheet" href="/css/styles.css"> 
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
+    <div id="main-content" class="min-h-screen flex flex-col p-4 sm:p-6 pb-24">
+        
+        <button id="theme-toggle" class="fixed top-4 left-4 p-2 bg-gray-200 dark:bg-gray-700 rounded-full text-2xl z-50">
+            🌙
+        </button>
 
-import { initializeTheme, toggleTheme, handleServiceRequest, cancelRequest } from './app.js';
-import { setupPaymentListeners } from './payment.js';
-import { setupDriverListeners, switchToDriverView, switchToCustomerView } from './driver.js';
+        <div id="customer-app" class="max-w-md mx-auto w-full flex flex-col flex-grow">
+            
+            <header class="flex justify-between items-center pb-6">
+                <h1 class="text-xl font-bold text-gray-900 dark:text-white">MobileCar Assist</h1>
+                <button id="profile-btn" class="text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </button>
+            </header>
 
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Initial Theme Setup
-    initializeTheme();
+            <section id="request-form-container" class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-lg mb-6 flex-shrink-0">
+                <div class="mb-4 border-b border-gray-100 dark:border-gray-700 pb-3">
+                    <p class="text-sm font-semibold text-gray-500 dark:text-gray-400">Sending help to:</p>
+                    <div class="flex justify-between items-center mt-1">
+                        <p id="location-display" class="text-lg font-bold text-gray-900 dark:text-white truncate">Simulated Location: Current Street</p>
+                        <button class="text-xs text-indigo-600 dark:text-indigo-400 font-medium whitespace-nowrap">Edit Location</button>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center">
+                    <p class="text-sm font-semibold text-gray-500 dark:text-gray-400">Vehicle: <span class="text-gray-900 dark:text-white font-bold">2020 Honda Civic</span></p>
+                    <button class="text-xs text-indigo-600 dark:text-indigo-400 font-medium">Change Vehicle</button>
+                </div>
+            </section>
 
-    // 2. Setup Core App Listeners (App Module)
-    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
-    document.getElementById('cancel-request').addEventListener('click', cancelRequest);
+            <section id="service-selection-grid" class="mb-8 flex-grow overflow-y-auto">
+                <h2 class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-3">Quickly select your issue:</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    
+                    <button data-service="Tire Change" class="service-icon-card flex flex-col items-center justify-center p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md transition-transform hover:scale-[1.02]">
+                        <span class="text-indigo-500 dark:text-indigo-400 mb-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-4m0 0V3m0 0l-4 4m4-4l4 4m-4 10h.01M16 4h1a2 2 0 012 2v10a2 2 0 01-2 2h-1m-7-2H7a2 2 0 01-2-2V6a2 2 0 012-2h1"/></svg></span>
+                        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">Flat Tire</span>
+                    </button>
 
-    // Service Request Submission Listener
-    document.getElementById('submit-request').addEventListener('click', () => {
-        const serviceType = document.getElementById('service-type').value;
-        handleServiceRequest(serviceType);
-    });
+                    <button data-service="Jump Start" class="service-icon-card flex flex-col items-center justify-center p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md transition-transform hover:scale-[1.02]">
+                        <span class="text-indigo-500 dark:text-indigo-400 mb-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg></span>
+                        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">Jump Start</span>
+                    </button>
 
-    // 3. Setup Payment Listeners (Payment Module)
-    setupPaymentListeners();
+                    <button data-service="Fuel Delivery" class="service-icon-card flex flex-col items-center justify-center p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md transition-transform hover:scale-[1.02]">
+                        <span class="text-indigo-500 dark:text-indigo-400 mb-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9.25 21a1 1 0 01-1 1H4a1 1 0 01-1-1v-4H1a1 1 0 01-1-1V6a1 1 0 011-1h6a1 1 0 011 1v10h1L9.75 17zM18 10h1a3 3 0 013 3v5a3 3 0 01-3 3h-1M5 5h14a2 2 0 012 2v3a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/></svg></span>
+                        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">Fuel Delivery</span>
+                    </button>
 
-    // 4. Setup Driver Listeners (Driver Module)
-    setupDriverListeners();
-    
-    // --- 5. DEMO FEATURE: Quick Switcher for Customer/Driver ---
-    // Creates and attaches the floating buttons used for demoing the two user views.
-    const addSwitcher = () => {
-        const switcher = document.createElement('div');
-        switcher.className = 'fixed bottom-4 right-4 z-30 flex space-x-2';
-        switcher.innerHTML = `
-            <button id="switch-customer" class="p-2 bg-indigo-500 text-white rounded-full shadow-lg hover:bg-indigo-600 transition text-sm font-medium">Customer View</button>
-            <button id="switch-driver" class="p-2 bg-pink-500 text-white rounded-full shadow-lg hover:bg-pink-600 transition text-sm font-medium">Driver View</button>
-        `;
-        document.body.appendChild(switcher);
+                    <button data-service="Towing" class="service-icon-card flex flex-col items-center justify-center p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md transition-transform hover:scale-[1.02]">
+                        <span class="text-indigo-500 dark:text-indigo-400 mb-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v14L9 19zM19 19a2 2 0 01-2 2H7a2 2 0 01-2-2V5.414a1 1 0 01.293-.707l1.707-1.707A1 1 0 018 3.414V19z"/></svg></span>
+                        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">Towing</span>
+                    </button>
+                    
+                    </div>
+            </section>
+            
+            <div id="tracking-container" class="hidden p-6 bg-white dark:bg-gray-800 rounded-lg shadow-xl mt-auto">
+                <h2 class="text-2xl font-bold mb-4">Tracking Your Provider</h2>
+                <div class="space-y-3">
+                    <p>Provider: <span id="provider-name-display" class="font-semibold text-indigo-600">...</span></p>
+                    <p class="text-gray-500">Service Status:</p>
+                    <p id="status-text" class="text-xl font-extrabold text-green-600">Requested</p>
+                    <p class="text-gray-500">Estimated Arrival:</p>
+                    <p id="eta-display" class="text-4xl font-extrabold text-red-600">...</p>
+                </div>
+                <button id="cancel-request" 
+                        class="mt-6 w-full p-3 bg-red-500 text-white font-semibold rounded hover:bg-red-600">
+                    Cancel Request
+                </button>
+            </div>
+        </div>
 
-        // Attach listeners to the floating buttons
-        document.getElementById('switch-customer').addEventListener('click', switchToCustomerView);
-        document.getElementById('switch-driver').addEventListener('click', switchToDriverView);
-    };
+        <div class="fixed bottom-0 left-0 right-0 p-4 bg-white dark:bg-gray-900 shadow-2xl border-t border-gray-200 dark:border-gray-700 z-40 max-w-md mx-auto">
+            <button id="request-assistance-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-extrabold py-4 rounded-xl text-lg tracking-wider transition-colors shadow-lg shadow-red-500/50 focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-opacity-50">
+                REQUEST ASSISTANCE
+            </button>
+        </div>
+        
+        <div id="driver-app" class="hidden max-w-2xl mx-auto p-6 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-inner">
+             </div>
+        
+        <div id="payment-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+             </div>
+        
+    </div>
 
-    addSwitcher();
-});
+    <script type="module" src="/index.js"></script>
+    <script type="module" src="/app.js"></script>
+    <script type="module" src="/payment.js"></script>
+    <script type="module" src="/driver.js"></script>
+</body>
+</html>

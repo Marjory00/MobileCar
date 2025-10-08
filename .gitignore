@@ -4,6 +4,7 @@
 /payment.js
 /driver.js
 server.js
+server/node_modules/
 
 # Logs
 npm-debug.log*

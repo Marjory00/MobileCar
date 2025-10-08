@@ -1,163 +1,241 @@
-// server/server.js
-
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import mongoose from 'mongoose'; // 1. Import Mongoose
-import path from 'path'; // 2. Import path for static file serving
+import mongoose from 'mongoose';
+import path from 'path'; 
 import { fileURLToPath } from 'url';
 
+// Load environment variables
 dotenv.config();
-const app = express();
 const PORT = process.env.PORT || 3000;
-const MONGO_URI = process.env.MONGO_URI;
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/mobilecar_demo';
+
+// NEW IMPORTS: Mongoose Models and Auth/Feedback Routes
+import User from './models/User.js';     
+import Feedback from './models/Feedback.js';
+import authRoutes from './authRoutes.js'; 
 
 // Helper to define __dirname for ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// --- 1. Database Connection ---
-mongoose.connect(MONGO_URI)
-    .then(() => console.log('MongoDB connected successfully!'))
-    .catch(err => console.error('MongoDB connection error:', err));
+// --- 2. Mongoose Schemas and Models (To be refactored later) ---
 
-// --- 2. Mongoose Schemas and Models ---
-
-// Define the Service Request Schema
+// NOTE: These two schemas would typically be in separate files (models/ServiceRequest.js, etc.)
 const serviceRequestSchema = new mongoose.Schema({
-    id: String, // Used for client-side matching (from Date.now())
-    serviceType: { type: String, required: true },
+    userId: { type: String, required: true },
     location: { type: String, required: true },
-    status: { type: String, default: 'Pending' }, // Pending, Accepted, In Progress, Completed
-    driverId: String,
-    price: Number,
-    createdAt: { type: Date, default: Date.now },
-});
-
+    serviceType: { type: String, required: true },
+    status: { type: String, enum: ['Requested', 'Accepted', 'En Route', 'Arrived', 'Completed', 'Paid'], default: 'Requested' },
+    providerId: String,
+    providerName: String,
+    estimatedArrivalTime: Date,
+    completionTime: Date,
+    paymentDetails: Object,
+}, { timestamps: true });
 const ServiceRequest = mongoose.model('ServiceRequest', serviceRequestSchema);
 
-// Define the Driver Schema
 const driverSchema = new mongoose.Schema({
-    id: { type: String, unique: true },
+    driverId: { type: String, unique: true },
     name: String,
-    status: { type: String, default: 'offline' }, // online, offline
-    lat: Number,
-    lon: Number,
-    plate: String
+    serviceType: String,
+    location: { lat: Number, lng: Number },
+    status: { type: String, enum: ['Available', 'Busy'], default: 'Available' },
 });
-
 const Driver = mongoose.model('Driver', driverSchema);
 
 // --- Initialization: Ensure Demo Drivers Exist ---
+const initialDrivers = [
+    { driverId: 'P101', name: 'Rapid Towing', serviceType: 'Towing', location: { lat: 38.900, lng: -77.010 } },
+    { driverId: 'P102', name: 'FastFix Tires', serviceType: 'Tire Change', location: { lat: 38.905, lng: -77.015 } },
+    { driverId: 'P103', name: 'JumpStart Experts', serviceType: 'Jump Start', location: { lat: 38.910, lng: -77.020 } },
+];
 async function initializeDrivers() {
-    // Only add drivers if the collection is empty
-    const driverCount = await Driver.countDocuments();
-    if (driverCount === 0) {
-        const demoDrivers = [
-            { id: 'DRV-001', name: 'Sarah K.', status: 'online', lat: 40.71, lon: -74.00, plate: 'XYZ-5432' },
-            { id: 'DRV-002', name: 'Mike J.', status: 'offline', lat: 40.72, lon: -74.01, plate: 'ABC-1234' }
-        ];
-        await Driver.insertMany(demoDrivers);
-        console.log('Demo drivers added to the database.');
+    try {
+        await Driver.deleteMany({});
+        await Driver.insertMany(initialDrivers);
+        console.log('Demo drivers initialized. 🚗');
+    } catch (error) {
+        // You should handle errors related to the database operation itself here
+        console.error('Error initializing demo drivers:', error);
     }
 }
-// Run driver initialization after successful connection
-mongoose.connection.once('open', initializeDrivers);
+
+// ---------------------------------------------------------------------
+// --- 1. Database Connection ---
+mongoose.connect(MONGODB_URI)
+    .then(() => {
+        console.log('MongoDB connected successfully. 🔗');
+        initializeDrivers(); 
+    })
+    .catch(err => console.error('MongoDB connection error:', err));
+// ---------------------------------------------------------------------
 
 
-// Middleware
+// ---------------------------------------------------------------------
+// EXPRESS APP INITIALIZATION
+const app = express(); 
+// ---------------------------------------------------------------------
+
+
+// --- Middleware ---
 app.use(cors());
 app.use(express.json());
 
 // --- 3. Serve Frontend Static Files ---
 app.use(express.static(path.join(__dirname, '../public')));
 
-
-// --- 4. API Endpoints (Now using Mongoose) ---
-
-// 1. POST: Create a new service request
-app.post('/api/request', async (req, res) => {
-    const { serviceType, location } = req.body;
-    
-    const price = serviceType === 'flat-tire' ? 75.00 : serviceType === 'locksmith' ? 150.00 : 50.00;
-
-    const newRequestData = {
-        id: Date.now().toString(),
-        serviceType,
-        location,
-        status: 'Pending',
-        price,
-    };
-
-    let newRequest = new ServiceRequest(newRequestData);
-
-    // Simulate driver matching and acceptance
-    const availableDriver = await Driver.findOne({ status: 'online' }).lean();
-    
-    if (availableDriver) {
-        newRequest.driverId = availableDriver.id;
-        newRequest.status = 'Accepted';
-        console.log(`Request ${newRequest.id} matched to ${availableDriver.name}`);
-        
-        // Simulate status progression after a delay (In Progress)
-        setTimeout(async () => {
-            await updateRequestStatus(newRequest.id, 'In Progress');
-        }, 5000);
-    }
-    
-    newRequest = await newRequest.save();
-    res.status(201).json(newRequest);
+// 🛑 FIX: Explicitly serve index.html for the root path (/) 🛑
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
-// 2. GET: Get status of a specific request
-app.get('/api/request/:id', async (req, res) => {
-    const request = await ServiceRequest.findOne({ id: req.params.id }).lean();
-    
-    if (!request) {
-        return res.status(404).json({ message: 'Request not found' });
-    }
-    
-    // Attach driver details for the frontend
-    if (request.driverId) {
-        request.driver = await Driver.findOne({ id: request.driverId }, 'name plate').lean(); // Only fetch name and plate
-        request.eta = request.status === 'Accepted' ? '15 minutes' : request.status === 'In Progress' ? 'Arrived!' : null;
-    }
 
-    res.json(request);
-});
+// --- NEW ROUTING: Auth and Feedback ---
+app.use('/api', authRoutes);
 
-// 3. PUT: Update request status (e.g., Driver completes service or Customer cancels)
-app.put('/api/request/:id/status', async (req, res) => {
-    const { status } = req.body;
-    
-    const updatedRequest = await ServiceRequest.findOneAndUpdate(
-        { id: req.params.id }, 
-        { status: status }, 
-        { new: true } // Return the updated document
-    );
-    
-    if (updatedRequest) {
-        console.log(`Request ${updatedRequest.id} status updated to: ${status}`);
-        res.json(updatedRequest);
-    } else {
-        res.status(404).json({ message: 'Request not found' });
+
+// --- 4. API Endpoints (Core Service Logic) ---
+
+/**
+ * Helper function to simulate provider matching.
+ * Finds the nearest provider based on service type.
+ */
+function findNearestProvider(serviceType) {
+    const available = initialDrivers.filter(p => p.serviceType === serviceType);
+    if (available.length > 0) {
+        return { 
+            id: available[0].driverId, 
+            name: available[0].name, 
+            eta: 12,
+            location: available[0].location
+        }; 
     }
-});
-
-// Helper to update status (used by setTimeout)
-async function updateRequestStatus(id, status) {
-    // Note: This helper doesn't need to return the doc or handle response
-    await ServiceRequest.findOneAndUpdate({ id: id }, { status: status });
+    return null; 
 }
 
-// 4. GET: Driver Dashboard - Get all pending/active requests
-app.get('/api/driver/requests', async (req, res) => {
-    const activeRequests = await ServiceRequest.find({ 
-        // Find requests that are NOT Completed or Cancelled
-        status: { $nin: ['Completed', 'Cancelled'] } 
-    }).lean();
-    res.json(activeRequests);
+/**
+ * POST /api/request
+ */
+app.post('/api/request', async (req, res) => {
+    const { userId, location, serviceType } = req.body;
+    
+    const provider = findNearestProvider(serviceType);
+
+    if (!provider) {
+        return res.status(404).json({ success: false, message: 'No service providers available nearby.' });
+    }
+
+    try {
+        const etaTime = new Date(Date.now() + provider.eta * 60000); 
+        
+        const newRequest = new ServiceRequest({
+            userId: userId || 'demo-user-123',
+            location: location,
+            serviceType: serviceType,
+            status: 'Requested',
+            providerId: provider.id,
+            providerName: provider.name,
+            estimatedArrivalTime: etaTime,
+        });
+
+        await newRequest.save();
+        
+        console.log(`[SERVICE] New request created: ${newRequest._id} (Provider: ${provider.name})`);
+
+        res.json({
+            success: true,
+            requestId: newRequest._id,
+            status: newRequest.status,
+            providerName: provider.name,
+            eta: provider.eta,
+        });
+
+    } catch (error) {
+        console.error('Error creating service request:', error);
+        res.status(500).json({ success: false, message: 'Internal server error.' });
+    }
 });
+
+/**
+ * GET /api/status/:requestId
+ */
+app.get('/api/status/:requestId', async (req, res) => {
+    const { requestId } = req.params;
+
+    try {
+        const request = await ServiceRequest.findById(requestId);
+
+        if (!request) {
+            return res.status(404).json({ success: false, message: 'Request not found.' });
+        }
+        
+        // --- SIMULATE STATE PROGRESSION ---
+        if (request.status === 'Requested') {
+            request.status = 'Accepted';
+        } else if (request.status === 'Accepted' && Math.random() < 0.3) {
+            request.status = 'En Route';
+        } else if (request.status === 'En Route' && Math.random() < 0.4) {
+            request.status = 'Arrived';
+        } else if (request.status === 'Arrived' && Math.random() < 0.5) {
+            request.status = 'Completed';
+            request.completionTime = new Date();
+        }
+
+        await request.save();
+
+        let remainingTime = Math.ceil((request.estimatedArrivalTime - Date.now()) / 60000);
+        remainingTime = Math.max(0, remainingTime); 
+
+        res.json({
+            success: true,
+            status: request.status,
+            providerName: request.providerName,
+            eta: remainingTime,
+        });
+
+    } catch (error) {
+        console.error('Error fetching request status:', error);
+        res.status(500).json({ success: false, message: 'Internal server error.' });
+    }
+});
+
+/**
+ * POST /api/payment/:requestId
+ */
+app.post('/api/payment/:requestId', async (req, res) => {
+    const { requestId } = req.params;
+    const { paymentMethod, amount } = req.body;
+    
+    try {
+        const request = await ServiceRequest.findById(requestId);
+        
+        if (!request || request.status !== 'Completed') {
+             return res.status(400).json({ success: false, message: 'Service must be completed before payment.' });
+        }
+
+        request.status = 'Paid';
+        request.paymentDetails = { 
+            method: paymentMethod, 
+            amount: parseFloat(amount), 
+            transactionId: `TX-${Date.now()}` 
+        };
+        await request.save();
+
+        console.log(`[PAYMENT] Request ${requestId} paid with ${paymentMethod} for $${amount}.`);
+
+        res.json({
+            success: true,
+            message: 'Payment processed successfully! Thank you for using MobileCar.',
+            transactionId: request.paymentDetails.transactionId
+        });
+
+    } catch (error) {
+        console.error('Error processing payment:', error);
+        res.status(500).json({ success: false, message: 'Internal server error.' });
+    }
+});
+
 
 // Start Server
 app.listen(PORT, () => {
