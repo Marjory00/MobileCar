@@ -5,7 +5,7 @@ let currentRequestId = null;
 let statusPollingInterval = null;
 const POLLING_RATE_MS = 5000; // Poll every 5 seconds
 let simulatedEta = 15;
-const SIMULATED_ETA_DECREMENT = 1;
+const SIMULATED_ETA_DECREMENT = 5; // Updated to 5 to make the 15-min ETA decrease faster
 
 // --- UI Element Selectors ---
 const UI = {
@@ -37,7 +37,10 @@ const UI = {
 
 // --- SYNCHRONIZATION SETUP ---
 
-// New function to initialize cross-module listeners
+/**
+ * Sets up listeners for custom events dispatched by other modules (like driver.js) 
+ * to instantly update the customer's tracking status.
+ */
 function setupSyncListeners() {
     // 1. Listen for Driver status changes (triggered by driver.js's handleDriverAction)
     document.addEventListener('driverStatusChange', (e) => {
@@ -51,12 +54,11 @@ function setupSyncListeners() {
         }
 
         // Manually update simulatedEta based on driver status for consistent display
-        if (newStatus === 'Arrived') {
-            simulatedEta = 0;
-        } else if (newStatus === 'Completed') {
+        if (newStatus === 'Arrived' || newStatus === 'Completed') {
             simulatedEta = 0;
         } else if (newStatus === 'En Route') {
-            simulatedEta = 10; // Reset to an initial En Route value
+            // If they just accepted, reset to a high ETA to start countdown
+            simulatedEta = 10; 
         }
 
         // Apply the update to the UI
@@ -67,16 +69,15 @@ function setupSyncListeners() {
         });
 
         // Restart polling if the job isn't completed yet
-        if (newStatus !== 'Completed') {
+        if (newStatus !== 'Completed' && newStatus !== 'Canceled') {
             startStatusPolling();
-        } else {
+        } else if (newStatus === 'Completed') {
             console.log('[App] Service completed. Waiting for payment.');
             document.dispatchEvent(new CustomEvent('serviceCompleted', { detail: { requestId: currentRequestId } }));
         }
     });
 }
-// Call setupSyncListeners immediately (or ensure index.js calls a primary setup function that includes it)
-// For simplicity in this file, we assume setupSyncListeners will be called when needed.
+
 
 // --- CORE FUNCTIONS ---
 
@@ -102,6 +103,7 @@ function startCallSimulation() {
  * Attaches communication listeners once a provider is assigned.
  */
 function setupCommunicationListeners() {
+    // We check the data-listener-attached attribute to prevent adding multiple listeners
     if (UI.chatButton && !UI.chatButton.hasAttribute('data-listener-attached')) {
         UI.chatButton.addEventListener('click', startChatSimulation);
         UI.chatButton.setAttribute('data-listener-attached', 'true');
@@ -128,9 +130,12 @@ export async function handleServiceRequest(serviceType, location) {
         UI.submitButton.disabled = true;
         UI.submitButton.textContent = 'Searching for Provider...';
     }
-
+    // HIDE THE SERVICE SELECTION GRID AND THE REQUEST FORM CONTAINER (location/vehicle card)
     if (UI.serviceSelectionGrid) {
         UI.serviceSelectionGrid.classList.add('hidden');
+    }
+    if (UI.requestForm) { // FIX: Ensure the request form card is hidden
+        UI.requestForm.classList.add('hidden');
     }
 
     try {
@@ -154,14 +159,17 @@ export async function handleServiceRequest(serviceType, location) {
             currentRequestId = data.requestId;
             console.log(`Request sent! Provider found: ${data.providerName} (ETA: ${data.eta} min)`);
             
+            // Initial ETA setup
+            simulatedEta = data.eta; 
+            
             if (UI.trackingContainer) UI.trackingContainer.classList.remove('hidden');
             
             updateTrackingUI(data); // Initial update
             setupCommunicationListeners(); // Attach the communication listeners
-            setupSyncListeners(); // Set up synchronization listeners for the driver
+            setupSyncListeners(); // **Crucial:** Set up synchronization listeners for the driver
             startStatusPolling(); // Start real-time updates
 
-            // NEW: Dispatch event for the driver module to pick up the new job details
+            // Dispatch event for the driver module to pick up the new job details
             document.dispatchEvent(new CustomEvent('requestSubmitted', {
                 detail: {
                     serviceType: serviceType,
@@ -178,6 +186,7 @@ export async function handleServiceRequest(serviceType, location) {
                 UI.submitButton.textContent = 'REQUEST ASSISTANCE';
             }
             if (UI.serviceSelectionGrid) UI.serviceSelectionGrid.classList.remove('hidden');
+            if (UI.requestForm) UI.requestForm.classList.remove('hidden'); // Show form again on failure
         }
     } catch (error) {
         console.error('Service request failed:', error);
@@ -188,6 +197,7 @@ export async function handleServiceRequest(serviceType, location) {
             UI.submitButton.textContent = 'REQUEST ASSISTANCE';
         }
         if (UI.serviceSelectionGrid) UI.serviceSelectionGrid.classList.remove('hidden');
+        if (UI.requestForm) UI.requestForm.classList.remove('hidden'); // Show form again on error
     }
 }
 
@@ -231,21 +241,22 @@ async function fetchStatusUpdate() {
     }
 
     // --- Core Status & ETA Simulation Logic ---
-    const currentStatus = UI.statusText?.textContent;
-    let newStatus = currentStatus;
+    const currentStatusText = UI.statusText?.textContent;
+    let newStatus = currentStatusText;
 
-    if (currentStatus === 'Assigned') {
-        simulatedEta = 15;
-        newStatus = 'En Route';
-    } else if (currentStatus === 'En Route' && simulatedEta > 3) {
+    // Only decrement ETA if the status is "En Route"
+    if (currentStatusText === 'En Route') {
         simulatedEta = Math.max(simulatedEta - SIMULATED_ETA_DECREMENT, 1);
+        if (simulatedEta <= 1) {
+            // Once ETA hits 1, trigger the next status change after one more poll
+            newStatus = 'Arrived';
+            simulatedEta = 0;
+        }
+    } else if (currentStatusText === 'Assigned') {
+        // Automatically move from Assigned to En Route after one poll cycle if driver hasn't accepted
         newStatus = 'En Route';
-    } else if (simulatedEta <= 3 && currentStatus === 'En Route') {
-        newStatus = 'Arrived';
-        simulatedEta = 0;
-    } else if (currentStatus === 'Arrived') {
-        newStatus = 'Completed';
-    }
+    } 
+    
     // --- End Simulation Logic ---
 
     const data = {
@@ -254,6 +265,7 @@ async function fetchStatusUpdate() {
         providerName: UI.providerNameDisplay?.textContent || 'Sarah J. 🛠️',
         status: newStatus,
         eta: simulatedEta,
+        // Simple mock location updates based on time/eta decrement
         currentLat: 39.18 + (15 - simulatedEta) * 0.0001, 
         currentLon: -77.20 - (15 - simulatedEta) * 0.0002 
     };
@@ -275,22 +287,27 @@ function updateTrackingUI(data) {
     if (UI.providerNameDisplay) UI.providerNameDisplay.textContent = data.providerName || 'Provider Assigned';
     
     // 1. Provider Photo
-    if (UI.providerPhoto && data.providerPhotoUrl) {
-        UI.providerPhoto.src = data.providerPhotoUrl;
+    if (UI.providerPhoto) {
+        // Use a default placeholder if the URL isn't in the data
+        UI.providerPhoto.src = data.providerPhotoUrl || 'https://via.placeholder.com/150/A0AEC0/FFFFFF?text=P'; 
     }
 
     // 2. Status Text and Color Update
     if (UI.statusText) {
         UI.statusText.textContent = data.status; 
         
-        UI.statusText.classList.remove('text-green-600', 'text-yellow-600', 'text-blue-600', 'dark:text-blue-400', 'dark:text-green-400', 'dark:text-yellow-400');
+        // Remove all status classes for a clean update
+        UI.statusText.classList.remove('text-green-600', 'text-yellow-600', 'text-blue-600', 'dark:text-blue-400', 'dark:text-green-400', 'dark:text-yellow-400', 'text-red-600', 'dark:text-red-400', 'bg-blue-100', 'dark:bg-blue-900/50', 'bg-green-100', 'dark:bg-green-900/50', 'bg-yellow-100', 'dark:bg-yellow-900/50', 'bg-red-100', 'dark:bg-red-900/50');
         
+        // Apply new status classes with background for the pill look (FIX)
         if (data.status === 'Assigned' || data.status === 'En Route') {
-            UI.statusText.classList.add('text-blue-600', 'dark:text-blue-400');
+            UI.statusText.classList.add('text-blue-600', 'dark:text-blue-400', 'bg-blue-100', 'dark:bg-blue-900/50');
         } else if (data.status === 'Arrived') {
-            UI.statusText.classList.add('text-green-600', 'dark:text-green-400');
+            UI.statusText.classList.add('text-green-600', 'dark:text-green-400', 'bg-green-100', 'dark:bg-green-900/50');
         } else if (data.status === 'Completed') {
-            UI.statusText.classList.add('text-yellow-600', 'dark:text-yellow-400');
+            UI.statusText.classList.add('text-yellow-600', 'dark:text-yellow-400', 'bg-yellow-100', 'dark:bg-yellow-900/50');
+        } else if (data.status === 'Canceled') {
+            UI.statusText.classList.add('text-red-600', 'dark:text-red-400', 'bg-red-100', 'dark:bg-red-900/50');
         }
     }
     
@@ -300,16 +317,23 @@ function updateTrackingUI(data) {
         etaText = 'Arrived!';
     } else if (data.status === 'Completed') {
         etaText = 'Service Complete';
+    } else if (data.status === 'Canceled') {
+        etaText = '--';
     } else {
         etaText = `${data.eta} min`;
     }
     
     if (UI.etaDisplay) UI.etaDisplay.textContent = etaText;
 
-    // 4. Live Map Simulation (only update coordinates if they exist in data)
+    // 4. Live Map Simulation
     if (UI.mapContainer && data.currentLat && data.currentLon) {
-        UI.mapContainer.textContent = 
-            `Live Map: Provider at Lat: ${data.currentLat.toFixed(5)}, Lon: ${data.currentLon.toFixed(5)} — ETA: ${etaText}`;
+        // Only show location if provider is en route or assigned
+        if (data.status === 'En Route' || data.status === 'Assigned' || data.status === 'Arrived') {
+            UI.mapContainer.textContent = 
+                `Live Map: Provider at Lat: ${data.currentLat.toFixed(5)}, Lon: ${data.currentLon.toFixed(5)}`;
+        } else {
+            UI.mapContainer.textContent = 'Live Map: Provider Location Pending...';
+        }
     }
 }
 
@@ -322,8 +346,10 @@ function updateTrackingUI(data) {
 export function initializeTheme() {
     if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark');
+        if (UI.themeToggle) UI.themeToggle.textContent = '☀️';
     } else {
         document.documentElement.classList.remove('dark');
+        if (UI.themeToggle) UI.themeToggle.textContent = '🌙';
     }
 }
 
@@ -351,6 +377,7 @@ export function resetCustomerApp() {
     // Switch UI back to request view
     if (UI.trackingContainer) UI.trackingContainer.classList.add('hidden');
     if (UI.serviceSelectionGrid) UI.serviceSelectionGrid.classList.remove('hidden');
+    if (UI.requestForm) UI.requestForm.classList.remove('hidden'); // FIX: Show the request form card again
     
     // Reset buttons
     if (UI.submitButton) {
@@ -358,8 +385,8 @@ export function resetCustomerApp() {
         UI.submitButton.textContent = 'REQUEST ASSISTANCE'; 
     }
     
-    // Reset service card highlights 
-    document.querySelectorAll('.service-icon-card').forEach(c => c.classList.remove('border-2', 'border-indigo-500'));
+    // Reset service card highlights (FIX: Updated classes to match new Tailwind design)
+    document.querySelectorAll('.service-icon-card').forEach(c => c.classList.remove('border-2', 'border-indigo-500', 'ring-2', 'ring-indigo-500', 'shadow-xl'));
     
     console.log('[App] Customer application state reset.');
 }

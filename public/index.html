@@ -4,139 +4,319 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MobileCar Assistance</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/css/styles.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
-    <div id="main-content" class="min-h-screen flex flex-col p-4 sm:p-6 pb-24">
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white font-[Inter] min-h-screen">
+    <div id="main-content" class="min-h-screen flex flex-col relative">
         
-        <button id="theme-toggle" class="fixed top-4 left-4 p-2 bg-gray-200 dark:bg-gray-700 rounded-full text-2xl z-50">
+        <button id="theme-toggle" class="fixed top-4 left-4 p-2 bg-white dark:bg-gray-800 rounded-full text-2xl z-50 shadow-lg border border-gray-200 dark:border-gray-700">
             🌙
         </button>
 
-        <div id="customer-app" class="max-w-md mx-auto w-full flex flex-col flex-grow">
+        <div id="customer-app" class="max-w-xl mx-auto w-full flex flex-col flex-grow p-4 sm:p-6 pb-24">
             
-            <header class="flex justify-between items-center pb-6">
-                <h1 class="text-xl font-bold text-gray-900 dark:text-white">MobileCar Assist</h1>
-                <button id="profile-btn" class="text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <header class="flex justify-between items-center py-4 mb-6 sticky top-0 bg-gray-100 dark:bg-gray-900 z-30">
+                <h1 class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">Roadside Assist</h1>
+                <button id="profile-btn" onclick="ShowProfile('user-profile-view')" class="p-2 text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </button>
             </header>
 
-            <section id="request-form-container" class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-lg mb-6 flex-shrink-0">
-                <div class="mb-4 border-b border-gray-100 dark:border-gray-700 pb-3">
-                    <p class="text-sm font-semibold text-gray-500 dark:text-gray-400">Sending help to:</p>
-                    <div class="flex justify-between items-center mt-1">
+            <section id="request-form-container" class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-lg mb-6 border border-gray-200 dark:border-gray-700">
+                <div class="flex items-center space-x-3 mb-3 pb-3 border-b border-gray-100 dark:border-gray-700">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.828 0l-4.243-4.243m-4.243 0a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 11a1 1 0 100 2 1 1 0 000-2z" />
+                    </svg>
+                    <div>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Current Location</p>
                         <p id="location-display" class="text-lg font-bold text-gray-900 dark:text-white truncate">Simulated Location: Current Street</p>
-                        <button id="edit-location-btn" class="text-xs text-indigo-600 dark:text-indigo-400 font-medium whitespace-nowrap">Edit Location</button>
                     </div>
                 </div>
                 <div class="flex justify-between items-center">
-                    <p class="text-sm font-semibold text-gray-500 dark:text-gray-400">Vehicle: <span id="vehicle-display" class="text-gray-900 dark:text-white font-bold">2020 Honda Civic</span></p>
-                    <button id="change-vehicle-btn" class="text-xs text-indigo-600 dark:text-indigo-400 font-medium">Change Vehicle</button>
+                    <div class="flex items-center space-x-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 11l6-6L17 11v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6z" />
+                        </svg>
+                        <p class="text-base font-semibold text-gray-900 dark:text-white">
+                            Vehicle: <span id="vehicle-display" class="font-bold">2020 Honda Civic</span>
+                        </p>
+                    </div>
+                    <button id="change-vehicle-btn" onclick="document.getElementById('details-modal').classList.remove('hidden')" class="text-sm text-indigo-600 dark:text-indigo-400 font-medium hover:underline">Change</button>
                 </div>
             </section>
 
-            <section id="service-selection-grid" class="mb-8 flex-grow overflow-y-auto">
-                <h2 class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-3">Quickly select your issue:</h2>
+            <section id="service-selection-grid" class="flex-grow">
+                <h2 class="text-xl font-bold text-gray-700 dark:text-gray-300 mb-4">What service do you require?</h2>
                 <div class="grid grid-cols-2 gap-4">
                     
-                    <button data-service="Tire Change" class="service-icon-card flex flex-col items-center justify-center p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md transition-transform hover:scale-[1.02]">
-                        <span class="text-indigo-500 dark:text-indigo-400 mb-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-4m0 0V3m0 0l-4 4m4-4l4 4m-4 10h.01M16 4h1a2 2 0 012 2v10a2 2 0 01-2 2h-1m-7-2H7a2 2 0 01-2-2V6a2 2 0 012-2h1"/></svg></span>
-                        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">Flat Tire</span>
+                    <button data-service="Tire Change" class="service-icon-card flex flex-col items-center justify-center p-5 bg-white dark:bg-gray-800 rounded-xl shadow-md transition-all duration-200 hover:shadow-xl hover:border-indigo-500 dark:hover:border-indigo-400 border border-gray-200 dark:border-gray-700">
+                        <span class="text-indigo-600 dark:text-indigo-400 mb-2 p-2 bg-indigo-50 dark:bg-indigo-900/50 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-4m0 0V3m0 0l-4 4m4-4l4 4m-4 10h.01M16 4h1a2 2 0 012 2v10a2 2 0 01-2 2h-1m-7-2H7a2 2 0 01-2-2V6a2 2 0 012-2h1"/></svg>
+                        </span>
+                        <span class="text-base font-semibold text-gray-800 dark:text-gray-200">Flat Tire</span>
                     </button>
 
-                    <button data-service="Jump Start" class="service-icon-card flex flex-col items-center justify-center p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md transition-transform hover:scale-[1.02]">
-                        <span class="text-indigo-500 dark:text-indigo-400 mb-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg></span>
-                        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">Jump Start</span>
+                    <button data-service="Jump Start" class="service-icon-card flex flex-col items-center justify-center p-5 bg-white dark:bg-gray-800 rounded-xl shadow-md transition-all duration-200 hover:shadow-xl hover:border-indigo-500 dark:hover:border-indigo-400 border border-gray-200 dark:border-gray-700">
+                        <span class="text-indigo-600 dark:text-indigo-400 mb-2 p-2 bg-indigo-50 dark:bg-indigo-900/50 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                        </span>
+                        <span class="text-base font-semibold text-gray-800 dark:text-gray-200">Jump Start</span>
                     </button>
 
-                    <button data-service="Fuel Delivery" class="service-icon-card flex flex-col items-center justify-center p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md transition-transform hover:scale-[1.02]">
-                        <span class="text-indigo-500 dark:text-indigo-400 mb-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9.25 21a1 1 0 01-1 1H4a1 1 0 01-1-1v-4H1a1 1 0 01-1-1V6a1 1 0 011-1h6a1 1 0 011 1v10h1L9.75 17zM18 10h1a3 3 0 013 3v5a3 3 0 01-3 3h-1M5 5h14a2 2 0 012 2v3a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/></svg></span>
-                        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">Fuel Delivery</span>
+                    <button data-service="Fuel Delivery" class="service-icon-card flex flex-col items-center justify-center p-5 bg-white dark:bg-gray-800 rounded-xl shadow-md transition-all duration-200 hover:shadow-xl hover:border-indigo-500 dark:hover:border-indigo-400 border border-gray-200 dark:border-gray-700">
+                        <span class="text-indigo-600 dark:text-indigo-400 mb-2 p-2 bg-indigo-50 dark:bg-indigo-900/50 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9.25 21a1 1 0 01-1 1H4a1 1 0 01-1-1v-4H1a1 1 0 01-1-1V6a1 1 0 011-1h6a1 1 0 011 1v10h1L9.75 17zM18 10h1a3 3 0 013 3v5a3 3 0 01-3 3h-1M5 5h14a2 2 0 012 2v3a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/></svg>
+                        </span>
+                        <span class="text-base font-semibold text-gray-800 dark:text-gray-200">Fuel Delivery</span>
                     </button>
 
-                    <button data-service="Towing" class="service-icon-card flex flex-col items-center justify-center p-4 bg-white dark:bg-gray-800 rounded-xl shadow-md transition-transform hover:scale-[1.02]">
-                        <span class="text-indigo-500 dark:text-indigo-400 mb-2"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v14L9 19zM19 19a2 2 0 01-2 2H7a2 2 0 01-2-2V5.414a1 1 0 01.293-.707l1.707-1.707A1 1 0 018 3.414V19z"/></svg></span>
-                        <span class="text-sm font-medium text-gray-800 dark:text-gray-200">Towing</span>
+                    <button data-service="Towing" class="service-icon-card flex flex-col items-center justify-center p-5 bg-white dark:bg-gray-800 rounded-xl shadow-md transition-all duration-200 hover:shadow-xl hover:border-indigo-500 dark:hover:border-indigo-400 border border-gray-200 dark:border-gray-700">
+                        <span class="text-indigo-600 dark:text-indigo-400 mb-2 p-2 bg-indigo-50 dark:bg-indigo-900/50 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19V6l12-3v14L9 19zM19 19a2 2 0 01-2 2H7a2 2 0 01-2-2V5.414a1 1 0 01.293-.707l1.707-1.707A1 1 0 018 3.414V19z"/></svg>
+                        </span>
+                        <span class="text-base font-semibold text-gray-800 dark:text-gray-200">Towing</span>
                     </button>
                     
+                </div>
+                
+                <div class="py-6 mt-6">
+                    <button id="request-assistance-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-extrabold py-4 rounded-xl text-lg tracking-wider transition-colors shadow-lg shadow-red-500/50 focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-opacity-50">
+                        REQUEST ASSISTANCE
+                    </button>
                 </div>
             </section>
             
-            <div id="tracking-container" class="hidden p-6 bg-white dark:bg-gray-800 rounded-lg shadow-xl mt-auto">
-                <h2 class="text-2xl font-bold mb-4">Tracking Your Provider</h2>
-                <div class="space-y-3">
-                    <p>Provider: <span id="provider-name-display" class="font-semibold text-indigo-600">...</span></p>
-                    <p class="text-gray-500">Service Status:</p>
-                    <p id="status-text" class="text-xl font-extrabold text-green-600">Requested</p>
-                    <p class="text-gray-500">Estimated Arrival:</p>
-                    <p id="eta-display" class="text-4xl font-extrabold text-red-600">...</p>
+            <div id="tracking-container" class="hidden p-6 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 mt-auto sticky bottom-0">
+                <div class="flex items-start justify-between mb-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Service is On The Way!</h2>
+                        <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Tracking Request ID: REQ-...</p>
+                    </div>
+                    <p id="status-text" class="text-lg font-extrabold text-blue-600 dark:text-blue-400 p-1 rounded-md">...</p>
                 </div>
+                
+                <div class="flex items-center space-x-4 mb-4 pb-4 border-b border-gray-100 dark:border-gray-700">
+                    <img id="provider-photo" src="https://via.placeholder.com/150/500E9C/FFFFFF?text=P" alt="Provider Photo" class="w-16 h-16 rounded-full object-cover shadow-md border-2 border-indigo-500">
+                    <div class="flex-grow">
+                        <p class="text-lg font-bold text-indigo-600 dark:text-indigo-400" id="provider-name-display">...</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Rating: 4.9 · Tow Truck</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="text-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                        <p class="text-xs font-medium text-gray-500 dark:text-gray-400">Estimated Arrival</p>
+                        <p id="eta-display" class="text-3xl font-extrabold text-red-600 dark:text-red-400 mt-1">...</p>
+                    </div>
+                    <div class="text-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                         <p class="text-xs font-medium text-gray-500 dark:text-gray-400">Vehicle</p>
+                         <p class="text-xl font-bold text-gray-900 dark:text-white mt-1">F-150</p>
+                    </div>
+                </div>
+
+                <div id="map-simulation-container" class="w-full h-32 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center text-sm text-gray-600 dark:text-gray-400 mb-4 overflow-hidden border border-gray-300 dark:border-gray-600">
+                    Live Map: Provider Location Pending...
+                </div>
+
+                <div class="flex space-x-3 mb-4">
+                    <button id="chat-with-provider-btn" class="flex-1 p-3 bg-indigo-500 text-white font-semibold rounded-lg hover:bg-indigo-600 flex items-center justify-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a9.006 9.006 0 01-5.748-1.921l-2.071 2.071a1 1 0 01-1.414-1.414l2.071-2.071A9.006 9.006 0 012 10c0-3.866 3.582-7 8-7s8 3.134 8 7z" clip-rule="evenodd" /></svg>
+                        <span>Chat</span>
+                    </button>
+                    <button id="call-provider-btn" class="flex-1 p-3 bg-indigo-500 text-white font-semibold rounded-lg hover:bg-indigo-600 flex items-center justify-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 3.699a1 1 0 01-.178.884l-1.66 1.66a10.978 10.978 0 006.101 6.101l1.66-1.66a1 1 0 01.884-.178l3.699.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" /></svg>
+                        <span>Call</span>
+                    </button>
+                </div>
+
                 <button id="cancel-request" 
-                        class="mt-6 w-full p-3 bg-red-500 text-white font-semibold rounded hover:bg-red-600">
+                        class="w-full p-3 bg-red-100 text-red-600 font-semibold rounded-lg hover:bg-red-200 dark:bg-red-900/50 dark:text-red-400 dark:hover:bg-red-900 transition">
                     Cancel Request
                 </button>
             </div>
         </div>
 
-        <div class="fixed bottom-0 left-0 right-0 p-4 bg-white dark:bg-gray-900 shadow-2xl border-t border-gray-200 dark:border-gray-700 z-40 max-w-md mx-auto">
-            <button id="request-assistance-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-extrabold py-4 rounded-xl text-lg tracking-wider transition-colors shadow-lg shadow-red-500/50 focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-opacity-50">
-                REQUEST ASSISTANCE
-            </button>
-        </div>
-        
-        <div id="driver-app" class="hidden max-w-2xl mx-auto p-6 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-inner"></div>
-        <div id="payment-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"></div>
-    </div>
-
-
-    <div id="details-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-md shadow-2xl transform transition-all duration-300">
-            
-            <header class="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Confirm Details</h2>
-                <button id="close-details-modal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+        <div id="user-profile-view" class="hidden fixed inset-0 bg-gray-50 dark:bg-gray-900 z-[99] overflow-y-auto p-4 sm:p-6">
+            <header class="flex justify-between items-center py-4 mb-6 sticky top-0 bg-gray-50 dark:bg-gray-900 z-10">
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">My Profile</h2>
+                <button id="close-profile-btn" onclick="HideAllViews()" class="p-2 text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
             </header>
-
-            <div class="p-6 space-y-6">
-
-                <section>
-                    <h3 class="text-lg font-semibold mb-3 text-indigo-600 dark:text-indigo-400">1. Current Location</h3>
-                    <div class="flex items-center space-x-3 mb-3">
-                        <button id="use-gps-btn" class="flex items-center justify-center p-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.828 0l-4.243-4.243m-1.414 2.828L5.121 21.657a1 1 0 001.414 0L12 16.414l5.465 5.243a1 1 0 001.414 0l1.414-1.414a1 1 0 000-1.414zM12 12a3 3 0 100-6 3 3 0 000 6z"/></svg>
-                        </button>
-                        <input type="text" id="manual-location-input" value="1234 Main St, Clarksburg, MD" placeholder="Enter street address or landmark" class="flex-grow p-3 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-indigo-500 focus:border-indigo-500">
-                    </div>
-                    <p id="location-status" class="text-xs text-gray-500 dark:text-gray-400 pl-11">Location is automatically detected via GPS.</p>
-                </section>
-
-                <section>
-                    <h3 class="text-lg font-semibold mb-3 text-indigo-600 dark:text-indigo-400">2. Select Vehicle</h3>
-                    <select id="vehicle-profile-select" class="w-full p-3 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white mb-4 focus:ring-indigo-500 focus:border-indigo-500">
-                        <option value="profile1" selected>2020 Honda Civic, Blue (Default)</option>
-                        <option value="profile2">2018 Ford F-150, Black</option>
-                        <option value="profile3">1995 Mazda Miata, Red</option>
-                    </select>
+            
+            <section class="max-w-md mx-auto space-y-6">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-xl font-semibold mb-3">Account Details</h3>
                     
-                    <button id="add-vehicle-btn" class="w-full p-2 text-sm text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-700 rounded-lg hover:bg-indigo-50 dark:hover:bg-gray-700 transition">
-                        + Add New Vehicle Profile
-                    </button>
-                </section>
-            </div>
+                    <div id="profile-info-display">
+                        <p class="text-lg font-medium">Name: <span id="profile-user-name" class="font-bold">...</span></p>
+                        <p class="text-lg font-medium">Email: <span id="profile-user-email" class="font-bold">...</span></p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Membership: <span id="profile-membership-status">...</span></p>
+                        <button id="edit-profile-toggle" class="mt-4 text-sm text-indigo-600 dark:text-indigo-400 hover:underline">Edit Profile</button>
+                    </div>
 
-            <footer class="p-6 pt-0">
-                <button id="confirm-details-btn" class="w-full p-4 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition shadow-lg shadow-indigo-500/50">
-                    SAVE & CONTINUE
-                </button>
-            </footer>
+                    <div id="profile-edit-form" class="hidden space-y-4">
+                        <div>
+                            <label for="edit-name-input" class="block text-sm font-medium">Name</label>
+                            <input type="text" id="edit-name-input" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700">
+                        </div>
+                        <div>
+                            <label for="edit-email-input" class="block text-sm font-medium">Email</label>
+                            <input type="email" id="edit-email-input" class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700">
+                        </div>
+                        <button id="save-profile-btn" class="w-full p-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition">Save Changes</button>
+                        <button id="cancel-edit-btn" onclick="document.getElementById('profile-edit-form').classList.add('hidden'); document.getElementById('profile-info-display').classList.remove('hidden');" class="mt-2 text-sm text-red-500 hover:underline w-full">Cancel</button>
+                    </div>
 
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-xl font-semibold mb-4">Saved Vehicles</h3>
+                    <div id="saved-vehicles-list" class="space-y-2">
+                        <p class="text-gray-500 dark:text-gray-400 text-sm">Loading vehicles...</p>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-xl font-semibold mb-4">Service History</h3>
+                    <ul id="service-history-list" class="divide-y divide-gray-200 dark:divide-gray-700">
+                        <li class="text-gray-500 dark:text-gray-400 text-sm p-3">Loading history...</li>
+                    </ul>
+                </div>
+
+                <button onclick="ShowProfile('driver-profile-view')" class="w-full p-4 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition shadow-md">Switch to Driver Mode</button>
+            </section>
         </div>
-    </div>
+
+        <div id="driver-profile-view" class="hidden fixed inset-0 bg-gray-50 dark:bg-gray-900 z-[99] overflow-y-auto p-4 sm:p-6">
+            <header class="flex justify-between items-center py-4 mb-6 sticky top-0 bg-gray-50 dark:bg-gray-900 z-10">
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Driver Dashboard</h2>
+                <button onclick="HideAllViews()" class="p-2 text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </header>
+            <section class="max-w-md mx-auto space-y-6">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+                    <h3 class="text-xl font-semibold mb-3">Status: <span class="text-green-600 dark:text-green-400">Available</span></h3>
+                    <p>Rating: **4.8 / 5.0**</p>
+                    <p>Jobs Completed: **154**</p>
+                    <button class="mt-4 w-full p-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition">Go Offline</button>
+                </div>
+                <div id="driver-job-status" class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hidden">
+                    <h3 class="text-xl font-semibold mb-3">Current Job</h3>
+                    <p id="driver-job-details">Waiting for job...</p>
+                </div>
+                <button onclick="HideAllViews()" class="w-full p-4 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-white font-semibold rounded-xl hover:bg-gray-400 dark:hover:bg-gray-600 transition shadow-md">Switch to Customer Mode</button>
+            </section>
+        </div>
+
+
+        <div id="driver-app" class="hidden max-w-2xl mx-auto p-6 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-inner"></div>
+        
+        <div id="payment-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-sm shadow-2xl">
+                <header class="p-5 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Payment Due</h2>
+                    <button id="close-payment-modal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">...</button>
+                </header>
+                <div class="p-5 space-y-4">
+                    <div class="flex justify-between items-center"><p>Service & Tax:</p><p id="service-fee-display" class="font-semibold text-sm text-right">--</p></div>
+                    <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg flex justify-between items-center">
+                        <div class="flex flex-col"><p class="text-xs text-gray-500 dark:text-gray-400">Payment Method</p><p id="payment-method-display" class="font-bold text-gray-900 dark:text-white">--</p></div>
+                        <button id="change-payment-btn" class="text-sm text-indigo-600 dark:text-indigo-400 font-medium hover:underline">Change</button>
+                    </div>
+                    <div class="flex justify-between items-center pt-3 border-t border-gray-200 dark:border-gray-700">
+                        <p class="text-xl font-extrabold text-gray-900 dark:text-white">Total Due</p>
+                        <p id="final-total-display" class="text-3xl font-extrabold text-red-600 dark:text-red-400">--</p>
+                    </div>
+                </div>
+                <footer class="p-5 pt-0">
+                    <button id="complete-payment-btn" class="w-full p-4 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition shadow-lg shadow-indigo-500/50">Pay Total</button>
+                </footer>
+            </div>
+        </div>
+
+
+        <div id="details-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-md shadow-2xl transform transition-all duration-300">
+                
+                <header class="p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Confirm Details</h2>
+                    <button id="close-details-modal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </header>
+
+                <div class="p-6 space-y-6">
+
+                    <section>
+                        <h3 class="text-lg font-semibold mb-3 text-indigo-600 dark:text-indigo-400">1. Current Location</h3>
+                        <div class="flex items-center space-x-3 mb-3">
+                            <button id="use-gps-btn" class="flex-shrink-0 flex items-center justify-center p-3 bg-green-500 text-white rounded-full hover:bg-green-600 transition shadow-md">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.828 0l-4.243-4.243m-1.414 2.828L5.121 21.657a1 1 0 001.414 0L12 16.414l5.465 5.243a1 1 0 001.414 0l1.414-1.414a1 1 0 000-1.414zM12 12a3 3 0 100-6 3 3 0 000 6z"/></svg>
+                            </button>
+                            <input type="text" id="manual-location-input" value="1234 Main St, Clarksburg, MD" placeholder="Enter street address or landmark" class="flex-grow p-3 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white focus:ring-indigo-500 focus:border-indigo-500">
+                        </div>
+                        <p id="location-status" class="text-xs text-gray-500 dark:text-gray-400 pl-11">Location is automatically detected via GPS.</p>
+                    </section>
+
+                    <section>
+                        <h3 class="text-lg font-semibold mb-3 text-indigo-600 dark:text-indigo-400">2. Select Vehicle</h3>
+                        <select id="vehicle-profile-select" class="w-full p-3 border border-gray-300 rounded-lg dark:bg-gray-700 dark:border-gray-600 text-gray-900 dark:text-white mb-4 focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="profile1" selected>2020 Honda Civic, Blue (Default)</option>
+                            <option value="profile2">2018 Ford F-150, Black</option>
+                            <option value="profile3">1995 Mazda Miata, Red</option>
+                        </select>
+                        
+                        <button id="add-vehicle-btn" class="w-full p-2 text-sm text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-700 rounded-lg hover:bg-indigo-50 dark:hover:bg-gray-700 transition">
+                            + Add New Vehicle Profile
+                        </button>
+                    </section>
+                </div>
+
+                <footer class="p-6 pt-0">
+                    <button id="confirm-details-btn" class="w-full p-4 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition shadow-lg shadow-indigo-500/50">
+                        SAVE & CONTINUE
+                    </button>
+                </footer>
+
+            </div>
+        </div>
+        </div>
+
+    <script>
+        // Global utility functions required for inline onclick attributes
+        const profileViews = ['user-profile-view', 'driver-profile-view'];
+        
+        function HideAllViews() {
+            document.getElementById('customer-app').classList.remove('hidden');
+            profileViews.forEach(viewId => {
+                const view = document.getElementById(viewId);
+                if (view) view.classList.add('hidden');
+            });
+        }
+
+        function ShowProfile(viewId) {
+            document.getElementById('customer-app').classList.add('hidden');
+            profileViews.forEach(viewId => {
+                const view = document.getElementById(viewId);
+                if (view) view.classList.add('hidden');
+            });
+            const viewToShow = document.getElementById(viewId);
+            if (viewToShow) viewToShow.classList.remove('hidden');
+            
+            // Dispatch a refresh event for the profile view to load the latest data
+            if (viewId === 'user-profile-view') {
+                 document.dispatchEvent(new CustomEvent('openProfileView'));
+            }
+        }
+    </script>
+
     <script type="module" src="/index.js"></script>
     <script type="module" src="/app.js"></script>
     <script type="module" src="/payment.js"></script>

@@ -1,180 +1,157 @@
-// public/index.js - Application Entry Point and Initialization
+// public/index.js - Core Initialization and Event Setup
 
-import { initializeTheme, toggleTheme, handleServiceRequest, cancelRequest } from './app.js';
-import { setupPaymentListeners } from './payment.js';
-import { setupDriverListeners, switchToDriverView, switchToCustomerView } from './driver.js';
+import { 
+    handleServiceRequest, 
+    initializeTheme, 
+    toggleTheme, 
+    resetCustomerApp, 
+    cancelRequest,
+    ShowProfile, // FIX: Import ShowProfile/HideAllViews if they are intended to be modular. 
+    HideAllViews  // However, I will keep them defined locally and attached to window for direct HTML calls.
+} from './app.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-    // State to track the service selected from the quick-select icons
-    let selectedService = null;
+// --- UI Element Selectors ---
+const UI = {
+    // Theme
+    themeToggle: document.getElementById('theme-toggle'),
 
-    // References to core display elements
-    const locationDisplay = document.getElementById('location-display');
-    const vehicleDisplay = document.getElementById('vehicle-display');
-    const serviceCards = document.querySelectorAll('.service-icon-card');
-    const requestButton = document.getElementById('request-assistance-btn');
-
-    // References to Modal elements
-    const detailsModal = document.getElementById('details-modal');
-    const closeDetailsBtn = document.getElementById('close-details-modal');
-    const confirmDetailsBtn = document.getElementById('confirm-details-btn');
-    const editLocationBtn = document.getElementById('edit-location-btn');
-    const changeVehicleBtn = document.getElementById('change-vehicle-btn');
-    const useGpsBtn = document.getElementById('use-gps-btn');
-    const locationInput = document.getElementById('manual-location-input');
-    const locationStatus = document.getElementById('location-status');
-    const vehicleSelect = document.getElementById('vehicle-profile-select');
-
-    // 1. Initial Theme Setup
-    initializeTheme();
-
-    // 2. Setup Core App Listeners (App Module)
-    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
-    document.getElementById('cancel-request').addEventListener('click', cancelRequest);
-
-    // Setup listener for the Feedback Link (existing logic)
-    const openFeedbackLink = document.getElementById('open-feedback-link');
-    if (openFeedbackLink) {
-        openFeedbackLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            const comments = prompt("Please rate our service (1-5) and provide comments:");
-            if (comments !== null) {
-                submitDemoFeedback(5, comments);
-            }
-        });
-    }
-
-    // ----------------------------------------------------
-    // 3. Service Selection Logic (The requested feature) 🛠️
-    // ----------------------------------------------------
+    // App Containers
+    customerApp: document.getElementById('customer-app'),
+    userProfileView: document.getElementById('user-profile-view'),
+    driverProfileView: document.getElementById('driver-profile-view'),
     
-    // A. Service Card Selection Logic
-    serviceCards.forEach(card => {
-        card.addEventListener('click', (event) => {
-            // Remove highlight from all cards
-            serviceCards.forEach(c => c.classList.remove('border-2', 'border-indigo-500'));
-            
-            // Highlight the selected card and set the service type
-            event.currentTarget.classList.add('border-2', 'border-indigo-500');
-            selectedService = event.currentTarget.dataset.service;
-            console.log(`Service selected: ${selectedService}`);
-        });
-    });
+    // FIX 1: Correctly select the bottom-fixed element, which is the tracking-container, or the entire main-content div
+    // The previous selector `document.querySelector('.fixed.bottom-0')` likely returned null or an incorrect element.
+    // In the HTML, the main content is within a flex column, and the 'REQUEST ASSISTANCE' button is *inside* the service-selection-grid, not fixed to the bottom.
+    // The tracking container *is* at the bottom. We'll use the main service sections instead.
+    requestFormContainer: document.getElementById('request-form-container'),
+    serviceSelectionGrid: document.getElementById('service-selection-grid'),
+    trackingContainer: document.getElementById('tracking-container'),
     
-    // B. Primary Request Button Submission Listener
-    if (requestButton) {
-        requestButton.addEventListener('click', () => {
-            if (!selectedService) {
-                alert('Please select a service type (Flat Tire, Towing, etc.) from the icons before requesting assistance.');
-                return;
-            }
-            
-            // The location is read from the location display element
-            const location = locationDisplay ? locationDisplay.textContent : "Unknown Location";
-            
-            handleServiceRequest(selectedService, location);
-        });
-    }
-
-    // ----------------------------------------------------
-    // 4. Location & Vehicle Details Modal Logic 🚗📍
-    // ----------------------------------------------------
-
-    // Function to open the modal
-    const openDetailsModal = () => {
-        if (detailsModal) detailsModal.classList.remove('hidden');
-    };
-
-    // Attach listeners to the main screen buttons
-    if (editLocationBtn) editLocationBtn.addEventListener('click', openDetailsModal);
-    if (changeVehicleBtn) changeVehicleBtn.addEventListener('click', openDetailsModal);
-
-    // Close modal listener
-    if (closeDetailsBtn) {
-        closeDetailsBtn.addEventListener('click', () => {
-            if (detailsModal) detailsModal.classList.add('hidden');
-        });
-    }
+    // Request/Cancel
+    serviceCards: document.querySelectorAll('.service-icon-card'),
+    submitButton: document.getElementById('request-assistance-btn'),
+    cancelButton: document.getElementById('cancel-request'),
     
-    // GPS Simulation Logic
-    if (useGpsBtn) {
-        useGpsBtn.addEventListener('click', () => {
-            locationStatus.textContent = '...Detecting precise location via satellite...';
-            useGpsBtn.disabled = true;
-
-            // Simulate a 2-second API call/GPS lookup
-            setTimeout(() => {
-                const newAddress = '19875 Central Park Ave, Clarksburg, MD 20871';
-
-                if (locationInput) locationInput.value = newAddress;
-                locationStatus.textContent = `Location Confirmed: GPS Active`;
-                useGpsBtn.disabled = false;
-            }, 2000);
-        });
-    }
+    // Request Details
+    locationDisplay: document.getElementById('location-display'),
     
-    // Confirm Details & Save Logic
-    if (confirmDetailsBtn) {
-        confirmDetailsBtn.addEventListener('click', () => {
-            // 1. Get updated values
-            const finalLocation = locationInput ? locationInput.value : 'Unknown Location';
-            const selectedVehicleText = vehicleSelect ? vehicleSelect.options[vehicleSelect.selectedIndex].text : 'Unknown Vehicle';
-            
-            // 2. Update the main screen display elements
-            if (locationDisplay) locationDisplay.textContent = finalLocation;
-            if (vehicleDisplay) {
-                // Only show Make/Model, trim any extra details (like the color/profile in parenthesis)
-                vehicleDisplay.textContent = selectedVehicleText.split('(')[0].trim();
-            }
-            
-            // 3. Close the modal
-            if (detailsModal) detailsModal.classList.add('hidden');
-        });
-    }
-    
-    document.getElementById('add-vehicle-btn')?.addEventListener('click', () => {
-        alert("Redirecting to the Vehicle Profile Management Screen...");
-    });
-    
-    // 5. Setup Payment Listeners (Payment Module)
-    setupPaymentListeners();
+    // Modals
+    detailsModal: document.getElementById('details-modal'),
+    closeDetailsModal: document.getElementById('close-details-modal'),
+    confirmDetailsBtn: document.getElementById('confirm-details-btn'), // FIX 2: Added missing selector for the confirm button
+};
 
-    // 6. Setup Driver Listeners (Driver Module)
-    setupDriverListeners();
-    
-    // 7. DEMO FEATURE: Quick Switcher for Customer/Driver
-    const addSwitcher = () => {
-        const switcher = document.createElement('div');
-        switcher.className = 'fixed bottom-4 right-4 z-30 flex space-x-2';
-        switcher.innerHTML = `
-            <button id="switch-customer" class="p-2 bg-indigo-500 text-white rounded-full shadow-lg hover:bg-indigo-600 transition text-sm font-medium">Customer View</button>
-            <button id="switch-driver" class="p-2 bg-pink-500 text-white rounded-full shadow-lg hover:bg-pink-600 transition text-sm font-medium">Driver View</button>
-        `;
-        document.body.appendChild(switcher);
-
-        // Attach listeners to the floating buttons
-        document.getElementById('switch-customer').addEventListener('click', switchToCustomerView);
-        document.getElementById('switch-driver').addEventListener('click', switchToDriverView);
-    };
-
-    addSwitcher();
-});
+// --- GLOBAL EXPOSED FUNCTIONS (REQUIRED FOR INLINE HTML ONCLICK) ---
 
 /**
- * Simulates the client-side API call to the new /api/feedback endpoint.
+ * Hides all profile views and shows the main Customer App.
  */
-async function submitDemoFeedback(rating, comments) {
-    try {
-        const response = await fetch('/api/feedback', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userId: 'demo-user-123', rating, comments })
+function HideAllViews() {
+    // Hide all profile views
+    if (UI.userProfileView) UI.userProfileView.classList.add('hidden');
+    if (UI.driverProfileView) UI.driverProfileView.classList.add('hidden');
+
+    // Show the customer app
+    if (UI.customerApp) UI.customerApp.classList.remove('hidden');
+}
+
+/**
+ * Hides the main customer app and shows the specified profile view.
+ * @param {string} profileId - The ID of the profile view to show ('user-profile-view' or 'driver-profile-view').
+ */
+function ShowProfile(profileId) {
+    // Hide the customer app
+    if (UI.customerApp) UI.customerApp.classList.add('hidden');
+
+    // Hide all profile views first
+    if (UI.userProfileView) UI.userProfileView.classList.add('hidden');
+    if (UI.driverProfileView) UI.driverProfileView.classList.add('hidden');
+
+    // Show the requested profile view, with null check
+    const view = document.getElementById(profileId);
+    if (view) view.classList.remove('hidden');
+}
+
+// Attach to the window so they can be called from inline HTML (onclick)
+window.ShowProfile = ShowProfile;
+window.HideAllViews = HideAllViews;
+
+
+// --- EVENT LISTENERS ---
+
+
+/**
+ * Initializes all event listeners for the customer app.
+ */
+function setupEventListeners() {
+    // 1. THEME TOGGLE
+    if (UI.themeToggle) {
+        UI.themeToggle.addEventListener('click', toggleTheme);
+    }
+
+    // 2. SERVICE SELECTION
+    let selectedService = null;
+    UI.serviceCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Remove selection border from all cards
+            UI.serviceCards.forEach(c => c.classList.remove('border-2', 'border-indigo-500', 'ring-2', 'ring-indigo-500'));
+            // Add selection border to the clicked card
+            this.classList.add('border-2', 'border-indigo-500', 'ring-2', 'ring-indigo-500');
+            selectedService = this.getAttribute('data-service');
         });
-        
-        const data = await response.json();
-        alert(data.message);
-    } catch (error) {
-        console.error('Failed to submit feedback:', error);
-        alert('Could not submit feedback due to a connection error.');
+    });
+
+    // 3. SERVICE SUBMISSION (Initial Request Button)
+    if (UI.submitButton) {
+        UI.submitButton.addEventListener('click', () => {
+            if (selectedService) {
+                // Show the details modal before calling handleServiceRequest
+                UI.detailsModal.classList.remove('hidden');
+            } else {
+                alert('Please tap one of the service icons before requesting assistance.');
+            }
+        });
+    }
+
+    // FIX 3: Add event listener for the confirmation button inside the modal
+    if (UI.confirmDetailsBtn) {
+        UI.confirmDetailsBtn.addEventListener('click', () => {
+            // 1. Close the modal
+            UI.detailsModal.classList.add('hidden');
+            
+            // 2. Extract details (simplified)
+            const location = UI.locationDisplay.textContent.replace('Simulated Location: ', '').trim();
+            
+            // 3. Call the core function to process the request
+            // This function should handle the UI switch from form to tracking in app.js
+            handleServiceRequest(selectedService, location); 
+        });
+    }
+
+    // 4. CANCEL REQUEST
+    if (UI.cancelButton) {
+        UI.cancelButton.addEventListener('click', cancelRequest);
+    }
+
+    // 5. DETAILS MODAL CLOSE
+    if (UI.closeDetailsModal) {
+        // Hides the modal without triggering the request
+        UI.closeDetailsModal.addEventListener('click', () => {
+            UI.detailsModal.classList.add('hidden');
+        });
     }
 }
+
+
+// --- INITIALIZATION ---
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Initialize the Dark/Light Theme
+    initializeTheme(); 
+
+    // 2. Set up all primary listeners
+    setupEventListeners();
+    
+    // 3. Listen for reset event (called after cancel or job complete)
+    document.addEventListener('resetApp', resetCustomerApp);
+});
