@@ -20,15 +20,17 @@
             
             <header class="flex justify-between items-center py-4 mb-6 sticky top-0 bg-gray-100 dark:bg-gray-900 z-30">
                 <div class="flex items-center space-x-3">
-                    <img src="/images/red-car.jpg" alt="MobileCar Logo" class="h-8 w-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600 dark:text-indigo-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zM4 5a2 2 0 012-2h4a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V5zM4.477 15.346l.859-2.062A8.995 8.995 0 0110 12h.001a8.995 8.995 0 014.664 1.284l.859 2.062A1 1 0 0115.362 17H4.638a1 1 0 01-.161-1.654zM16 10a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
                     
                     <h1 class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">MobileCar</h1>
                 </div>
-                                <button id="profile-btn" onclick="ShowProfile('user-profile-view')" class="p-2 text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </button>
+                                    <button id="profile-btn" onclick="ShowProfile('user-profile-view')" class="p-2 text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
             </header>
 
             <section id="request-form-container" class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-lg mb-6 border border-gray-200 dark:border-gray-700">
@@ -56,12 +58,26 @@
             </section>
 
             <section id="hero-image-container" class="mb-6 rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700">
-                <img src="/images/truck-towing.jpg" alt="A flatbed tow truck assisting a car on the side of a road" class="w-full object-cover" style="max-height: 200px;">
+                <img src="/images/locksmithman.jpg" alt="A flatbed tow truck assisting a car on the side of a road" class="w-full object-cover" style="max-height: 200px;">
             </section>
 
             <section id="service-selection-grid" class="flex-grow">
                 <h2 class="text-xl font-bold text-gray-700 dark:text-gray-300 mb-4">What service do you require?</h2>
                 <div class="grid grid-cols-2 gap-4">
+                    
+                    <button data-service="Lockout Service" class="service-icon-card flex flex-col items-center justify-center p-5 bg-white dark:bg-gray-800 rounded-xl shadow-md transition-all duration-200 hover:shadow-xl hover:border-indigo-500 dark:hover:border-indigo-400 border border-gray-200 dark:border-gray-700">
+                        <span class="text-indigo-600 dark:text-indigo-400 mb-2 p-2 bg-indigo-50 dark:bg-indigo-900/50 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 11V7a4 4 0 118 0v4m-5 0h2a1 1 0 011 1v3a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 011-1z" /><path stroke-linecap="round" stroke-linejoin="round" d="M8 11V7a4 4 0 118 0v4m-5 0h2a1 1 0 011 1v3a1 1 0 01-1 1h-2a1 1 0 01-1-1v-3a1 1 0 011-1z" /></svg>
+                        </span>
+                        <span class="text-base font-semibold text-gray-800 dark:text-gray-200">Lockout</span>
+                    </button>
+
+                    <button data-service="Accident Assistance" class="service-icon-card flex flex-col items-center justify-center p-5 bg-white dark:bg-gray-800 rounded-xl shadow-md transition-all duration-200 hover:shadow-xl hover:border-indigo-500 dark:hover:border-indigo-400 border border-gray-200 dark:border-gray-700">
+                        <span class="text-indigo-600 dark:text-indigo-400 mb-2 p-2 bg-indigo-50 dark:bg-indigo-900/50 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                        </span>
+                        <span class="text-base font-semibold text-gray-800 dark:text-gray-200">Accident</span>
+                    </button>
                     
                     <button data-service="Flat Tire" class="service-icon-card flex flex-col items-center justify-center p-5 bg-white dark:bg-gray-800 rounded-xl shadow-md transition-all duration-200 hover:shadow-xl hover:border-indigo-500 dark:hover:border-indigo-400 border border-gray-200 dark:border-gray-700">
                         <span class="text-indigo-600 dark:text-indigo-400 mb-2 p-2 bg-indigo-50 dark:bg-indigo-900/50 rounded-full">
@@ -130,8 +146,8 @@
                         <p id="eta-display" class="text-3xl font-extrabold text-red-600 dark:text-red-400 mt-1">15 min</p>
                     </div>
                     <div class="text-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-                            <p class="text-xs font-medium text-gray-500 dark:text-gray-400">Vehicle</p>
-                            <p class="text-xl font-bold text-gray-900 dark:text-white mt-1">F-150</p>
+                            <p class="text-xs font-medium text-gray-500 dark:text-gray-400">Service</p>
+                            <p id="tracking-service-display" class="text-xl font-bold text-gray-900 dark:text-white mt-1">Flat Tire</p>
                     </div>
                 </div>
 
@@ -243,13 +259,13 @@
                     </li>
                 </ul>
             </div><div class="pt-4 space-y-4 p-5 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-        <button onclick="alert('Simulated: Account deletion process initiated. This is irreversible!')" class="w-full text-center p-4 rounded-xl transition duration-150
-        text-white font-semibold
-        bg-gray-600 hover:bg-gray-700
-        shadow-md">
-        ⚠️ Delete Account
-    </button>
-    <button onclick="ShowProfile('driver-profile-view')" class="w-full p-4 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition shadow-md">Switch to Driver Mode</button></div>
+            <button onclick="alert('Simulated: Account deletion process initiated. This is irreversible!')" class="w-full text-center p-4 rounded-xl transition duration-150
+            text-white font-semibold
+            bg-gray-600 hover:bg-gray-700
+            shadow-md">
+            ⚠️ Delete Account
+        </button>
+        <button onclick="ShowProfile('driver-profile-view')" class="w-full p-4 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition shadow-md">Switch to Driver Mode</button></div>
         </section>
     </div>
 
@@ -373,6 +389,18 @@
         }
 
         // --- Core Application Logic (Simulated) ---
+        let selectedService = null;
+        let selectedVehicle = '2020 Honda Civic';
+        let currentLocation = 'Simulated Location: Current Street';
+        const serviceFees = {
+            "Flat Tire": 85.00,
+            "Jump Start": 50.00,
+            "Fuel Delivery": 75.00,
+            "Towing": 150.00,
+            "Lockout Service": 65.00,
+            "Accident Assistance": 0.00 // Towing costs apply later
+        };
+
 
         // 1. Theme Toggle Logic
         const htmlElement = document.documentElement;
@@ -401,211 +429,207 @@
         themeToggle.addEventListener('click', toggleTheme);
 
 
-        // 2. Modal Logic (Details Modal - for Vehicle/Location change and Request Confirmation)
+        // 2. Service Selection Logic
+        const serviceCards = document.querySelectorAll('.service-icon-card');
+        const requestBtn = document.getElementById('request-assistance-btn');
+        const selectionMessage = document.getElementById('service-selection-message');
+
+        function updateServiceSelection(event) {
+            const button = event.currentTarget;
+            const service = button.getAttribute('data-service');
+
+            if (selectedService === service) {
+                // Deselect
+                selectedService = null;
+                button.classList.remove('ring-4', 'ring-indigo-500', 'ring-opacity-50');
+                requestBtn.disabled = true;
+                selectionMessage.classList.remove('hidden');
+            } else {
+                // Select new service
+                selectedService = service;
+                // Remove selection from all others
+                serviceCards.forEach(card => card.classList.remove('ring-4', 'ring-indigo-500', 'ring-opacity-50'));
+                // Apply selection style to current button
+                button.classList.add('ring-4', 'ring-indigo-500', 'ring-opacity-50');
+                requestBtn.disabled = false;
+                selectionMessage.classList.add('hidden');
+            }
+        }
+
+        serviceCards.forEach(card => card.addEventListener('click', updateServiceSelection));
+
+
+        // 3. Modals and Request Flow
         const detailsModal = document.getElementById('details-modal');
+        const paymentModal = document.getElementById('payment-modal');
+        const trackingContainer = document.getElementById('tracking-container');
+
         const changeVehicleBtn = document.getElementById('change-vehicle-btn');
-        const closeDetailsModal = document.getElementById('close-details-modal');
+        const closeDetailsModalBtn = document.getElementById('close-details-modal');
         const confirmDetailsBtn = document.getElementById('confirm-details-btn');
         const vehicleSelect = document.getElementById('vehicle-profile-select');
-        const vehicleDisplay = document.getElementById('vehicle-display');
-        const locationDisplay = document.getElementById('location-display');
         const manualLocationInput = document.getElementById('manual-location-input');
-        
-        // Open modal when 'Change' or 'Request Assistance' is clicked (if service selected)
-        function openDetailsModal() {
-            // Pre-fill fields with current displayed info
-            manualLocationInput.value = locationDisplay.textContent.replace('Simulated Location: ', '').trim();
-            
-            // Set the selected option based on the current display
-            let currentVehicleText = vehicleDisplay.textContent;
-            let found = false;
-            for (let i = 0; i < vehicleSelect.options.length; i++) {
-                if (vehicleSelect.options[i].value === currentVehicleText || vehicleSelect.options[i].textContent.includes(currentVehicleText)) {
-                    vehicleSelect.value = vehicleSelect.options[i].value;
-                    found = true;
-                    break;
-                }
-            }
-            if (!found && vehicleSelect.options.length > 0) {
-                 vehicleSelect.selectedIndex = 0; // Default to first option if current isn't found
-            }
 
+        // Open details modal for confirmation or to change vehicle
+        requestBtn.addEventListener('click', () => {
+            if (selectedService) {
+                // Pre-fill modal fields
+                manualLocationInput.value = currentLocation;
+                vehicleSelect.value = selectedVehicle;
+
+                detailsModal.classList.remove('hidden');
+                document.getElementById('customer-app').classList.add('filter', 'blur-sm'); // Visual effect
+            }
+        });
+        
+        changeVehicleBtn.addEventListener('click', () => {
             detailsModal.classList.remove('hidden');
+            document.getElementById('customer-app').classList.add('filter', 'blur-sm'); // Visual effect
+        });
+
+        // Close modal function
+        function closeDetailsModal() {
+            detailsModal.classList.add('hidden');
+            document.getElementById('customer-app').classList.remove('filter', 'blur-sm');
         }
-        
-        changeVehicleBtn.addEventListener('click', openDetailsModal);
+        closeDetailsModalBtn.addEventListener('click', closeDetailsModal);
 
-        // Close details modal
-        closeDetailsModal.addEventListener('click', () => {
-            detailsModal.classList.add('hidden');
-        });
 
-        // Save and Continue (Confirms details, in a real app this would move to a confirmation/payment screen)
+        // Confirm details and initiate request
         confirmDetailsBtn.addEventListener('click', () => {
-            // Update the main UI with the selected vehicle and location
-            vehicleDisplay.textContent = vehicleSelect.value;
-            locationDisplay.textContent = `Simulated Location: ${manualLocationInput.value}`;
-            alert(`Details updated. Service: ${currentService} at ${manualLocationInput.value} with vehicle ${vehicleSelect.value}. Ready to request assistance.`);
-            detailsModal.classList.add('hidden');
+            // Update main view with new data
+            currentLocation = manualLocationInput.value;
+            selectedVehicle = vehicleSelect.value;
+
+            document.getElementById('location-display').textContent = currentLocation;
+            document.getElementById('vehicle-display').textContent = selectedVehicle;
+
+            closeDetailsModal();
+            
+            // SIMULATE REQUEST SUCCESS
+            if (selectedService) {
+                simulateRequestSent();
+            }
+        });
+
+        // Tracking Container and simulated flow
+        const closeTrackingBtn = document.getElementById('close-tracking-btn');
+        const cancelRequestBtn = document.getElementById('cancel-request');
+
+        function simulateRequestSent() {
+            // Update tracking view with request details
+            document.getElementById('tracking-service-display').textContent = selectedService;
+            document.getElementById('request-id-display').textContent = 'REQ-' + Math.floor(Math.random() * 90000 + 10000);
+            document.getElementById('eta-display').textContent = (Math.floor(Math.random() * 20) + 10) + ' min'; // 10-30 min ETA
+
+            // Hide main sections and show tracking
+            document.getElementById('request-form-container').classList.add('hidden');
+            document.getElementById('hero-image-container').classList.add('hidden');
+            document.getElementById('service-selection-grid').classList.add('hidden');
+            trackingContainer.classList.remove('hidden');
+        }
+
+        cancelRequestBtn.addEventListener('click', () => {
+            // Simulate cancellation
+            alert('Request for ' + selectedService + ' was successfully cancelled.');
+            resetMainView();
+        });
+
+        closeTrackingBtn.addEventListener('click', () => {
+            // Simulate service complete (show payment) - or just close
+            if (Math.random() > 0.5) { // 50% chance to go to payment
+                simulatePaymentDue();
+            } else {
+                resetMainView();
+            }
         });
         
-        // Payment Modal (Simulated to open after a successful job, or simply to show the flow)
-        const paymentModal = document.getElementById('payment-modal');
-        const closePaymentModal = document.getElementById('close-payment-modal');
+        // Payment Flow
+        const closePaymentModalBtn = document.getElementById('close-payment-modal');
         const completePaymentBtn = document.getElementById('complete-payment-btn');
 
-        closePaymentModal.addEventListener('click', () => {
+        function simulatePaymentDue() {
+            const fee = serviceFees[selectedService] || 0;
+            document.getElementById('service-fee-display').textContent = `$${fee.toFixed(2)}`;
+            document.getElementById('final-total-display').textContent = `$${fee.toFixed(2)}`;
+            paymentModal.classList.remove('hidden');
+            document.getElementById('customer-app').classList.add('filter', 'blur-sm');
+            trackingContainer.classList.add('hidden'); // Hide tracking once payment is due
+        }
+
+        closePaymentModalBtn.addEventListener('click', () => {
             paymentModal.classList.add('hidden');
+            document.getElementById('customer-app').classList.remove('filter', 'blur-sm');
+            resetMainView();
         });
-        
+
         completePaymentBtn.addEventListener('click', () => {
-            alert('Payment Successful! Thank you for using MobileCar.');
+            alert('Payment of ' + document.getElementById('final-total-display').textContent + ' successful!');
             paymentModal.classList.add('hidden');
-            document.getElementById('tracking-container').classList.add('hidden');
-            document.getElementById('request-form-container').classList.remove('hidden');
+            document.getElementById('customer-app').classList.remove('filter', 'blur-sm');
+            resetMainView();
         });
 
-        // 3. Service Selection Logic
-        const serviceCards = document.querySelectorAll('.service-icon-card');
-        const requestAssistanceBtn = document.getElementById('request-assistance-btn');
-        const serviceSelectionMessage = document.getElementById('service-selection-message');
-        let currentService = null;
-
-        serviceCards.forEach(card => {
-            card.addEventListener('click', () => {
-                const service = card.getAttribute('data-service');
-                
-                // Deselect all cards
-                serviceCards.forEach(c => {
-                    c.classList.remove('border-indigo-500', 'dark:border-indigo-400', 'shadow-xl');
-                    c.classList.add('border-gray-200', 'dark:border-gray-700', 'shadow-md');
-                });
-
-                // Select the current card
-                card.classList.add('border-indigo-500', 'dark:border-indigo-400', 'shadow-xl');
-                card.classList.remove('border-gray-200', 'dark:border-gray-700', 'shadow-md');
-                
-                currentService = service;
-                requestAssistanceBtn.removeAttribute('disabled');
-                serviceSelectionMessage.classList.add('hidden');
-            });
-        });
-
-        // 4. Request Assistance Logic
-        const trackingContainer = document.getElementById('tracking-container');
-        const requestFormContainer = document.getElementById('request-form-container');
-
-        requestAssistanceBtn.addEventListener('click', () => {
-            if (!currentService) {
-                serviceSelectionMessage.classList.remove('hidden');
-                return;
-            }
-            
-            // Simulation: Start Request
-            alert(`Requesting: ${currentService} at ${locationDisplay.textContent.replace('Simulated Location: ', '')}...`);
-            
-            // Hide selection form
-            requestFormContainer.classList.add('hidden');
-            
-            // Show tracking view
-            trackingContainer.classList.remove('hidden');
-            
-            // Update tracking details based on the request (simulated)
-            document.getElementById('status-text').textContent = 'En Route';
-            document.getElementById('request-id-display').textContent = `REQ-${Math.floor(Math.random() * 10000) + 10000}`;
-            document.getElementById('provider-name-display').textContent = 'Alex M.';
-            document.getElementById('eta-display').textContent = '15 min';
-
-            // Simulate completion after 10 seconds
-            setTimeout(() => {
-                document.getElementById('status-text').textContent = 'Arrived';
-                document.getElementById('eta-display').textContent = '0 min';
-                alert('Your service provider has arrived!');
-                
-                // Simulate job completion and payment after a few more seconds
-                setTimeout(() => {
-                    trackingContainer.classList.add('hidden');
-                    paymentModal.classList.remove('hidden');
-                    // Reset service selection state
-                    currentService = null;
-                    requestAssistanceBtn.setAttribute('disabled', 'true');
-                    serviceCards.forEach(c => {
-                        c.classList.remove('border-indigo-500', 'dark:border-indigo-400', 'shadow-xl');
-                        c.classList.add('border-gray-200', 'dark:border-gray-700', 'shadow-md');
-                    });
-                }, 5000); // 5 seconds to simulate service time
-            }, 10000); // 10 seconds to simulate travel time
-        });
-        
-        // Cancel Request Logic
-        const cancelRequestBtn = document.getElementById('cancel-request');
-        cancelRequestBtn.addEventListener('click', () => {
-            const confirmed = confirm('Are you sure you want to cancel your assistance request?');
-            if (confirmed) {
-                alert('Request has been cancelled.');
-                trackingContainer.classList.add('hidden');
-                requestFormContainer.classList.remove('hidden');
-                // Reset service selection state
-                currentService = null;
-                requestAssistanceBtn.setAttribute('disabled', 'true');
-                serviceCards.forEach(c => {
-                    c.classList.remove('border-indigo-500', 'dark:border-indigo-400', 'shadow-xl');
-                    c.classList.add('border-gray-200', 'dark:border-gray-700', 'shadow-md');
-                });
-            }
-        });
-
-        // Close Tracking View Button (Hides the sticky tracking bar)
-        document.getElementById('close-tracking-btn').addEventListener('click', () => {
+        function resetMainView() {
             trackingContainer.classList.add('hidden');
-            alert('Tracking minimized. You can still see your request in your service history (simulated).');
-        });
+            document.getElementById('request-form-container').classList.remove('hidden');
+            document.getElementById('hero-image-container').classList.remove('hidden');
+            document.getElementById('service-selection-grid').classList.remove('hidden');
+            
+            // Clear selection state
+            selectedService = null;
+            serviceCards.forEach(card => card.classList.remove('ring-4', 'ring-indigo-500', 'ring-opacity-50'));
+            requestBtn.disabled = true;
+            selectionMessage.classList.remove('hidden');
+        }
 
-
-        // 5. Profile Edit Logic
+        // 4. Profile Edit Logic
         const profileInfoDisplay = document.getElementById('profile-info-display');
         const profileEditForm = document.getElementById('profile-edit-form');
         const editProfileToggle = document.getElementById('edit-profile-toggle');
         const cancelEditBtn = document.getElementById('cancel-edit-btn');
-        const editNameInput = document.getElementById('edit-name-input');
-        const editEmailInput = document.getElementById('edit-email-input');
-        const profileUserName = document.getElementById('profile-user-name');
-        const profileUserEmail = document.getElementById('profile-user-email');
+        const saveProfileBtn = document.getElementById('save-profile-btn');
 
-        function toggleEditMode(showEdit) {
-            if (showEdit) {
-                // Populate form fields with current displayed info
-                editNameInput.value = profileUserName.textContent;
-                editEmailInput.value = profileUserEmail.textContent;
+        editProfileToggle.addEventListener('click', () => {
+            const isEditing = profileEditForm.classList.contains('hidden');
+            if (isEditing) {
+                // Switch to edit mode
+                document.getElementById('edit-name-input').value = document.getElementById('profile-user-name').textContent;
+                document.getElementById('edit-email-input').value = document.getElementById('profile-user-email').textContent;
 
                 profileInfoDisplay.classList.add('hidden');
                 profileEditForm.classList.remove('hidden');
                 editProfileToggle.textContent = 'View Profile';
             } else {
-                profileInfoDisplay.classList.remove('hidden');
+                // Switch to view mode
                 profileEditForm.classList.add('hidden');
+                profileInfoDisplay.classList.remove('hidden');
                 editProfileToggle.textContent = 'Edit Profile';
             }
-        }
-
-        editProfileToggle.addEventListener('click', () => {
-            const isEditing = profileEditForm.classList.contains('hidden');
-            toggleEditMode(isEditing);
         });
 
-        cancelEditBtn.addEventListener('click', () => {
-            toggleEditMode(false);
-        });
-
-        profileEditForm.addEventListener('submit', (e) => {
+        cancelEditBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            
-            // Simulation: Save changes
-            profileUserName.textContent = editNameInput.value;
-            profileUserEmail.textContent = editEmailInput.value;
+            profileEditForm.classList.add('hidden');
+            profileInfoDisplay.classList.remove('hidden');
+            editProfileToggle.textContent = 'Edit Profile';
+        });
 
-            alert('Profile saved successfully!');
-            toggleEditMode(false);
+        saveProfileBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // In a real app, this would send data to a server
+            const newName = document.getElementById('edit-name-input').value;
+            const newEmail = document.getElementById('edit-email-input').value;
+
+            document.getElementById('profile-user-name').textContent = newName;
+            document.getElementById('profile-user-email').textContent = newEmail;
+            
+            alert('Profile saved! (Simulated)');
+
+            // Switch back to view mode
+            profileEditForm.classList.add('hidden');
+            profileInfoDisplay.classList.remove('hidden');
+            editProfileToggle.textContent = 'Edit Profile';
         });
 
     </script>
