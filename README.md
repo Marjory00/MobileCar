@@ -51,7 +51,7 @@ These images demonstrate key features and the overall user interface of the Mobi
 
 ### 1. Main Page
 
-<img src="public/images/screenshots/main-page.png" alt="Current Location, Car type, Services provided features" width="400"/>
+<img src="public/images/screenshots/mobile-car-main.png" alt="Current Location, Car type, Services provided features" width="400"/>
 
 
 ### 2. Profile Information Page
