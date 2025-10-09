@@ -51,22 +51,22 @@ These images demonstrate key features and the overall user interface of the Mobi
 
 ### 1. Main Page
 
-<img src="public/images/screenshots/main-page.png" alt="Current Location, Car type, Services provided features" width="450"/>
+<img src="public/images/screenshots/main-page.png" alt="Current Location, Car type, Services provided features" width="350"/>
 
 
 ### 2. Profile Information Page
 
-<img src="public/images/screenshots/my-profile-section.png" alt="Profile Information, Car Details" width="450"/>
+<img src="public/images/screenshots/my-profile-section.png" alt="Profile Information, Car Details" width="350"/>
 
 
 ### 3. Car Details Information Page
 
-<img src="public/images/screenshots/car-confirm-details.png" alt="Car Details Confirmation" width="450"/>
+<img src="public/images/screenshots/car-confirm-details.png" alt="Car Details Confirmation" width="350"/>
 
 
 ### 4. Driver Dashboard
 
-<img src="public/images/screenshots/driver-dashboard.png" alt="Driver Dashboard" width="450"/>
+<img src="public/images/screenshots/driver-dashboard.png" alt="Driver Dashboard" width="350"/>
 
 
 ---
