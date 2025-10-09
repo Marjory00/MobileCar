@@ -6,6 +6,8 @@
 server.js
 server/node_modules/
 index.html
+server/config.js
+package-lock.json
 
 # Logs
 npm-debug.log*
