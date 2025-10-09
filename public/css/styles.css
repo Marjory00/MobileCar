@@ -6,112 +6,143 @@
 /* 🛑 RESTORED: Full Tailwind CSS Preflight and Utility Classes (Manual Compile) 🛑 */
 
 *, ::before, ::after {
-  --tw-border-spacing-x: 0;
-  --tw-border-spacing-y: 0;
-  --tw-translate-x: 0;
-  --tw-translate-y: 0;
-  --tw-rotate: 0;
-  --tw-skew-x: 0;
-  --tw-skew-y: 0;
-  --tw-scale-x: 1;
-  --tw-scale-y: 1;
-  --tw-pan-x: ;
-  --tw-pan-y: ;
-  --tw-pinch-zoom: ;
-  --tw-scroll-snap-strictness: proximity;
-  --tw-gradient-from-position: ;
-  --tw-gradient-via-position: ;
-  --tw-gradient-to-position: ;
-  --tw-ordinal: ;
-  --tw-slashed-zero: ;
-  --tw-numeric-figure: ;
-  --tw-numeric-spacing: ;
-  --tw-numeric-fraction: ;
-  --tw-ring-inset: ;
-  --tw-ring-offset-width: 0px;
-  --tw-ring-offset-color: #fff;
-  --tw-ring-color: rgb(59 130 246 / 0.5);
-  --tw-ring-offset-shadow: 0 0 #0000;
-  --tw-ring-shadow: 0 0 #0000;
-  --tw-shadow: 0 0 #0000;
-  --tw-shadow-colored: 0 0 #0000;
-  --tw-blur: ;
-  --tw-brightness: ;
-  --tw-contrast: ;
-  --tw-grayscale: ;
-  --tw-hue-rotate: ;
-  --tw-invert: ;
-  --tw-saturate: ;
-  --tw-sepia: ;
-  --tw-drop-shadow: ;
-  --tw-backdrop-blur: ;
-  --tw-backdrop-brightness: ;
-  --tw-backdrop-contrast: ;
-  --tw-backdrop-grayscale: ;
-  --tw-backdrop-hue-rotate: ;
-  --tw-backdrop-invert: ;
-  --tw-backdrop-opacity: ;
-  --tw-backdrop-saturate: ;
-  --tw-backdrop-sepia: ;
-  --tw-contain-size: ;
-  --tw-contain-layout: ;
-  --tw-contain-paint: ;
-  --tw-contain-style: ;
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x: ;
+  --tw-pan-y: ;
+  --tw-pinch-zoom: ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position: ;
+  --tw-gradient-via-position: ;
+  --tw-gradient-to-position: ;
+  --tw-ordinal: ;
+  --tw-slashed-zero: ;
+  --tw-numeric-figure: ;
+  --tw-numeric-spacing: ;
+  --tw-numeric-fraction: ;
+  --tw-ring-inset: ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur: ;
+  --tw-brightness: ;
+  --tw-contrast: ;
+  --tw-grayscale: ;
+  --tw-hue-rotate: ;
+  --tw-invert: ;
+  --tw-saturate: ;
+  --tw-sepia: ;
+  --tw-drop-shadow: ;
+  --tw-backdrop-blur: ;
+  --tw-backdrop-brightness: ;
+  --tw-backdrop-contrast: ;
+  --tw-backdrop-grayscale: ;
+  --tw-backdrop-hue-rotate: ;
+  --tw-backdrop-invert: ;
+  --tw-backdrop-opacity: ;
+  --tw-backdrop-saturate: ;
+  --tw-backdrop-sepia: ;
+  --tw-contain-size: ;
+  --tw-contain-layout: ;
+  --tw-contain-paint: ;
+  --tw-contain-style: ;
 }
 
 ::backdrop {
-  --tw-border-spacing-x: 0;
-  --tw-border-spacing-y: 0;
-  --tw-translate-x: 0;
-  --tw-translate-y: 0;
-  --tw-rotate: 0;
-  --tw-skew-x: 0;
-  --tw-skew-y: 0;
-  --tw-scale-x: 1;
-  --tw-scale-y: 1;
-  --tw-pan-x: ;
-  --tw-pan-y: ;
-  --tw-pinch-zoom: ;
-  --tw-scroll-snap-strictness: proximity;
-  --tw-gradient-from-position: ;
-  --tw-gradient-via-position: ;
-  --tw-gradient-to-position: ;
-  --tw-ordinal: ;
-  --tw-slashed-zero: ;
-  --tw-numeric-figure: ;
-  --tw-numeric-spacing: ;
-  --tw-numeric-fraction: ;
-  --tw-ring-inset: ;
-  --tw-ring-offset-width: 0px;
-  --tw-ring-offset-color: #fff;
-  --tw-ring-color: rgb(59 130 246 / 0.5);
-  --tw-ring-offset-shadow: 0 0 #0000;
-  --tw-ring-shadow: 0 0 #0000;
-  --tw-shadow: 0 0 #0000;
-  --tw-shadow-colored: 0 0 #0000;
-  --tw-blur: ;
-  --tw-brightness: ;
-  --tw-contrast: ;
-  --tw-grayscale: ;
-  --tw-hue-rotate: ;
-  --tw-invert: ;
-  --tw-saturate: ;
-  --tw-sepia: ;
-  --tw-drop-shadow: ;
-  --tw-backdrop-blur: ;
-  --tw-backdrop-brightness: ;
-  --tw-backdrop-contrast: ;
-  --tw-backdrop-grayscale: ;
-  --tw-backdrop-hue-rotate: ;
-  --tw-backdrop-invert: ;
-  --tw-backdrop-opacity: ;
-  --tw-backdrop-saturate: ;
-  --tw-backdrop-sepia: ;
-  --tw-contain-size: ;
-  --tw-contain-layout: ;
-  --tw-contain-paint: ;
-  --tw-contain-style: ;
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x: ;
+  --tw-pan-y: ;
+  --tw-pinch-zoom: ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position: ;
+  --tw-gradient-via-position: ;
+  --tw-gradient-to-position: ;
+  --tw-ordinal: ;
+  --tw-slashed-zero: ;
+  --tw-numeric-figure: ;
+  --tw-numeric-spacing: ;
+  --tw-numeric-fraction: ;
+  --tw-ring-inset: ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur: ;
+  --tw-brightness: ;
+  --tw-contrast: ;
+  --tw-grayscale: ;
+  --tw-hue-rotate: ;
+  --tw-invert: ;
+  --tw-saturate: ;
+  --tw-sepia: ;
+  --tw-drop-shadow: ;
+  --tw-backdrop-blur: ;
+  --tw-backdrop-brightness: ;
+  --tw-backdrop-contrast: ;
+  --tw-backdrop-grayscale: ;
+  --tw-backdrop-hue-rotate: ;
+  --tw-backdrop-invert: ;
+  --tw-backdrop-opacity: ;
+  --tw-backdrop-saturate: ;
+  --tw-backdrop-sepia: ;
+  --tw-contain-size: ;
+  --tw-contain-layout: ;
+  --tw-contain-paint: ;
+  --tw-contain-style: ;
 }
+
+/* ------------------------------------------------------------------ */
+
+/* ---------- 4. New Feature: Header Logo Icon ---------------------- */
+
+/* ------------------------------------------------------------------ */
+
+#project-logo {
+  /* Set the image as the background */
+  background-image: url('/images/truck-towing.jpg');
+  /* Ensure the image is properly displayed */
+  background-size: contain;
+  /* Scales the image to fit without cropping */
+  background-repeat: no-repeat;
+  background-position: center;
+  /* Define the physical size of the logo element */
+  width: 50px;
+  /* Standard size for a header icon */
+  height: 50px;
+  /* Standard size for a header icon */
+  /* Make sure it's an inline-block or block element so dimensions apply */
+  display: block;
+  /* Optional: Add a rounded look */
+  border-radius: 4px;
+}
+
+/* Optional Dark Mode adjustment for the logo card/frame (if needed) */
+
+/* .dark #project-logo {
+  filter: brightness(0.8); 
+} */
 
 /* ! tailwindcss v3.4.18 | MIT License | https://tailwindcss.com */
 
@@ -123,19 +154,19 @@
 *,
 ::before,
 ::after {
-  box-sizing: border-box;
-  /* 1 */
-  border-width: 0;
-  /* 2 */
-  border-style: solid;
-  /* 2 */
-  border-color: #e5e7eb;
-  /* 2 */
+  box-sizing: border-box;
+  /* 1 */
+  border-width: 0;
+  /* 2 */
+  border-style: solid;
+  /* 2 */
+  border-color: #e5e7eb;
+  /* 2 */
 }
 
 ::before,
 ::after {
-  --tw-content: '';
+  --tw-content: '';
 }
 
 /*
@@ -150,23 +181,23 @@
 
 html,
 :host {
-  line-height: 1.5;
-  /* 1 */
-  -webkit-text-size-adjust: 100%;
-  /* 2 */
-  -moz-tab-size: 4;
-  /* 3 */
-  -o-tab-size: 4;
-  tab-size: 4;
-  /* 3 */
-  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  /* 4 */
-  font-feature-settings: normal;
-  /* 5 */
-  font-variation-settings: normal;
-  /* 6 */
-  -webkit-tap-highlight-color: transparent;
-  /* 7 */
+  line-height: 1.5;
+  /* 1 */
+  -webkit-text-size-adjust: 100%;
+  /* 2 */
+  -moz-tab-size: 4;
+  /* 3 */
+  -o-tab-size: 4;
+  tab-size: 4;
+  /* 3 */
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* 4 */
+  font-feature-settings: normal;
+  /* 5 */
+  font-variation-settings: normal;
+  /* 6 */
+  -webkit-tap-highlight-color: transparent;
+  /* 7 */
 }
 
 /*
@@ -175,10 +206,10 @@ html,
 */
 
 body {
-  margin: 0;
-  /* 1 */
-  line-height: inherit;
-  /* 2 */
+  margin: 0;
+  /* 1 */
+  line-height: inherit;
+  /* 2 */
 }
 
 /*
@@ -188,12 +219,12 @@ body {
 */
 
 hr {
-  height: 0;
-  /* 1 */
-  color: inherit;
-  /* 2 */
-  border-top-width: 1px;
-  /* 3 */
+  height: 0;
+  /* 1 */
+  color: inherit;
+  /* 2 */
+  border-top-width: 1px;
+  /* 3 */
 }
 
 /*
@@ -201,8 +232,8 @@ Add the correct text decoration in Chrome, Edge, and Safari.
 */
 
 abbr:where([title]) {
-  -webkit-text-decoration: underline dotted;
-  text-decoration: underline dotted;
+  -webkit-text-decoration: underline dotted;
+  text-decoration: underline dotted;
 }
 
 /*
@@ -215,8 +246,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-size: inherit;
-  font-weight: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 /*
@@ -224,8 +255,8 @@ Reset links to optimize for opt-in styling instead of opt-out.
 */
 
 a {
-  color: inherit;
-  text-decoration: inherit;
+  color: inherit;
+  text-decoration: inherit;
 }
 
 /*
@@ -234,7 +265,7 @@ Add the correct font weight in Edge and Safari.
 
 b,
 strong {
-  font-weight: bolder;
+  font-weight: bolder;
 }
 
 /*
@@ -248,14 +279,14 @@ code,
 kbd,
 samp,
 pre {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  /* 1 */
-  font-feature-settings: normal;
-  /* 2 */
-  font-variation-settings: normal;
-  /* 3 */
-  font-size: 1em;
-  /* 4 */
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  /* 1 */
+  font-feature-settings: normal;
+  /* 2 */
+  font-variation-settings: normal;
+  /* 3 */
+  font-size: 1em;
+  /* 4 */
 }
 
 /*
@@ -263,7 +294,7 @@ Add the correct font size in all browsers.
 */
 
 small {
-  font-size: 80%;
+  font-size: 80%;
 }
 
 /*
@@ -272,18 +303,18 @@ Prevent `sub` and `sup` elements from affecting the line height in all browsers.
 
 sub,
 sup {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline;
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
 }
 
 sub {
-  bottom: -0.25em;
+  bottom: -0.25em;
 }
 
 sup {
-  top: -0.5em;
+  top: -0.5em;
 }
 
 /*
@@ -293,12 +324,12 @@ sup {
 */
 
 table {
-  text-indent: 0;
-  /* 1 */
-  border-color: inherit;
-  /* 2 */
-  border-collapse: collapse;
-  /* 3 */
+  text-indent: 0;
+  /* 1 */
+  border-color: inherit;
+  /* 2 */
+  border-collapse: collapse;
+  /* 3 */
 }
 
 /*
@@ -312,26 +343,26 @@ input,
 optgroup,
 select,
 textarea {
-  font-family: inherit;
-  /* 1 */
-  font-feature-settings: inherit;
-  /* 1 */
-  font-variation-settings: inherit;
-  /* 1 */
-  font-size: 100%;
-  /* 1 */
-  font-weight: inherit;
-  /* 1 */
-  line-height: inherit;
-  /* 1 */
-  letter-spacing: inherit;
-  /* 1 */
-  color: inherit;
-  /* 1 */
-  margin: 0;
-  /* 2 */
-  padding: 0;
-  /* 3 */
+  font-family: inherit;
+  /* 1 */
+  font-feature-settings: inherit;
+  /* 1 */
+  font-variation-settings: inherit;
+  /* 1 */
+  font-size: 100%;
+  /* 1 */
+  font-weight: inherit;
+  /* 1 */
+  line-height: inherit;
+  /* 1 */
+  letter-spacing: inherit;
+  /* 1 */
+  color: inherit;
+  /* 1 */
+  margin: 0;
+  /* 2 */
+  padding: 0;
+  /* 3 */
 }
 
 /*
@@ -340,7 +371,7 @@ Remove the inheritance of text transform in Edge and Firefox.
 
 button,
 select {
-  text-transform: none;
+  text-transform: none;
 }
 
 /*
@@ -352,12 +383,12 @@ button,
 input:where([type='button']),
 input:where([type='reset']),
 input:where([type='submit']) {
-  -webkit-appearance: button;
-  /* 1 */
-  background-color: transparent;
-  /* 2 */
-  background-image: none;
-  /* 2 */
+  -webkit-appearance: button;
+  /* 1 */
+  background-color: transparent;
+  /* 2 */
+  background-image: none;
+  /* 2 */
 }
 
 /*
@@ -365,7 +396,7 @@ Use the modern Firefox focus style for all focusable elements.
 */
 
 :-moz-focusring {
-  outline: auto;
+  outline: auto;
 }
 
 /*
@@ -373,7 +404,7 @@ Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/
 */
 
 :-moz-ui-invalid {
-  box-shadow: none;
+  box-shadow: none;
 }
 
 /*
@@ -381,7 +412,7 @@ Add the correct vertical alignment in Chrome and Firefox.
 */
 
 progress {
-  vertical-align: baseline;
+  vertical-align: baseline;
 }
 
 /*
@@ -390,7 +421,7 @@ Correct the cursor style of increment and decrement buttons in Safari.
 
 ::-webkit-inner-spin-button,
 ::-webkit-outer-spin-button {
-  height: auto;
+  height: auto;
 }
 
 /*
@@ -399,10 +430,10 @@ Correct the cursor style of increment and decrement buttons in Safari.
 */
 
 [type='search'] {
-  -webkit-appearance: textfield;
-  /* 1 */
-  outline-offset: -2px;
-  /* 2 */
+  -webkit-appearance: textfield;
+  /* 1 */
+  outline-offset: -2px;
+  /* 2 */
 }
 
 /*
@@ -410,7 +441,7 @@ Remove the inner padding in Chrome and Safari on macOS.
 */
 
 ::-webkit-search-decoration {
-  -webkit-appearance: none;
+  -webkit-appearance: none;
 }
 
 /*
@@ -419,10 +450,10 @@ Remove the inner padding in Chrome and Safari on macOS.
 */
 
 ::-webkit-file-upload-button {
-  -webkit-appearance: button;
-  /* 1 */
-  font: inherit;
-  /* 2 */
+  -webkit-appearance: button;
+  /* 1 */
+  font: inherit;
+  /* 2 */
 }
 
 /*
@@ -430,7 +461,7 @@ Add the correct display in Chrome and Safari.
 */
 
 summary {
-  display: list-item;
+  display: list-item;
 }
 
 /*
@@ -450,24 +481,24 @@ hr,
 figure,
 p,
 pre {
-  margin: 0;
+  margin: 0;
 }
 
 fieldset {
-  margin: 0;
-  padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 legend {
-  padding: 0;
+  padding: 0;
 }
 
 ol,
 ul,
 menu {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 /*
@@ -475,7 +506,7 @@ Reset default styling for dialogs.
 */
 
 dialog {
-  padding: 0;
+  padding: 0;
 }
 
 /*
@@ -483,7 +514,7 @@ Prevent resizing textareas horizontally by default.
 */
 
 textarea {
-  resize: vertical;
+  resize: vertical;
 }
 
 /*
@@ -492,18 +523,18 @@ textarea {
 */
 
 input::-moz-placeholder, textarea::-moz-placeholder {
-  opacity: 1;
-  /* 1 */
-  color: #9ca3af;
-  /* 2 */
+  opacity: 1;
+  /* 1 */
+  color: #9ca3af;
+  /* 2 */
 }
 
 input::placeholder,
 textarea::placeholder {
-  opacity: 1;
-  /* 1 */
-  color: #9ca3af;
-  /* 2 */
+  opacity: 1;
+  /* 1 */
+  color: #9ca3af;
+  /* 2 */
 }
 
 /*
@@ -512,7 +543,7 @@ Set the default cursor for buttons.
 
 button,
 [role="button"] {
-  cursor: pointer;
+  cursor: pointer;
 }
 
 /*
@@ -520,13 +551,13 @@ Make sure disabled buttons don't get the pointer cursor.
 */
 
 :disabled {
-  cursor: default;
+  cursor: default;
 }
 
 /*
 1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
 2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
-    This can trigger a poorly considered lint error in some tools but is included by design.
+    This can trigger a poorly considered lint error in some tools but is included by design.
 */
 
 img,
@@ -537,10 +568,10 @@ audio,
 iframe,
 embed,
 object {
-  display: block;
-  /* 1 */
-  vertical-align: middle;
-  /* 2 */
+  display: block;
+  /* 1 */
+  vertical-align: middle;
+  /* 2 */
 }
 
 /*
@@ -549,545 +580,559 @@ Constrain images and videos to the parent width and preserve their intrinsic asp
 
 img,
 video {
-  max-width: 100%;
-  height: auto;
+  max-width: 100%;
+  height: auto;
 }
 
 /* Make elements with the HTML hidden attribute stay hidden by default */
 
 [hidden]:where(:not([hidden="until-found"])) {
-  display: none;
+  display: none;
 }
 
 .container {
-  width: 100%;
+  width: 100%;
 }
 
 @media (min-width: 640px) {
-  .container {
-    max-width: 640px;
-  }
+  .container {
+    max-width: 640px;
+  }
 }
 
 @media (min-width: 768px) {
-  .container {
-    max-width: 768px;
-  }
+  .container {
+    max-width: 768px;
+  }
 }
 
 @media (min-width: 1024px) {
-  .container {
-    max-width: 1024px;
-  }
+  .container {
+    max-width: 1024px;
+  }
 }
 
 @media (min-width: 1280px) {
-  .container {
-    max-width: 1280px;
-  }
+  .container {
+    max-width: 1280px;
+  }
 }
 
 @media (min-width: 1536px) {
-  .container {
-    max-width: 1536px;
-  }
+  .container {
+    max-width: 1536px;
+  }
 }
 
 .fixed {
-  position: fixed;
+  position: fixed;
 }
 
 .relative {
-  position: relative;
+  position: relative;
 }
 
 .inset-0 {
-  inset: 0px;
+  inset: 0px;
 }
 
 .bottom-0 {
-  bottom: 0px;
+  bottom: 0px;
 }
 
 .bottom-4 {
-  bottom: 1rem;
+  bottom: 1rem;
 }
 
 .left-0 {
-  left: 0px;
+  left: 0px;
 }
 
 .left-4 {
-  left: 1rem;
+  left: 1rem;
 }
 
 .right-0 {
-  right: 0px;
+  right: 0px;
 }
 
 .right-4 {
-  right: 1rem;
+  right: 1rem;
 }
 
 .top-4 {
-  top: 1rem;
+  top: 1rem;
 }
 
 .z-30 {
-  z-index: 30;
+  z-index: 30;
 }
 
 .z-40 {
-  z-index: 40;
+  z-index: 40;
 }
 
 .z-50 {
-  z-index: 50;
+  z-index: 50;
 }
 
 .mx-auto {
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .mb-2 {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .mb-3 {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .mb-4 {
-  margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .mb-6 {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .mb-8 {
-  margin-bottom: 2rem;
+  margin-bottom: 2rem;
 }
 
 .mt-1 {
-  margin-top: 0.25rem;
+  margin-top: 0.25rem;
 }
 
 .mt-2 {
-  margin-top: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .mt-6 {
-  margin-top: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 .mt-auto {
-  margin-top: auto;
+  margin-top: auto;
 }
 
 .flex {
-  display: flex;
+  display: flex;
 }
 
 .grid {
-  display: grid;
+  display: grid;
 }
 
 .hidden {
-  display: none;
+  display: none;
 }
 
 .h-6 {
-  height: 1.5rem;
+  height: 1.5rem;
 }
 
 .h-8 {
-  height: 2rem;
+  height: 2rem;
 }
 
 .min-h-screen {
-  min-height: 100vh;
+  min-height: 100vh;
 }
 
 .w-6 {
-  width: 1.5rem;
+  width: 1.5rem;
 }
 
 .w-8 {
-  width: 2rem;
+  width: 2rem;
 }
 
 .w-full {
-  width: 100%;
+  width: 100%;
 }
 
 .max-w-2xl {
-  max-width: 42rem;
+  max-width: 42rem;
 }
 
 .max-w-md {
-  max-width: 28rem;
+  max-width: 28rem;
 }
 
 .flex-shrink-0 {
-  flex-shrink: 0;
+  flex-shrink: 0;
 }
 
 .flex-grow {
-  flex-grow: 1;
+  flex-grow: 1;
 }
 
 .grid-cols-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .flex-col {
-  flex-direction: column;
+  flex-direction: column;
 }
 
 .items-center {
-  align-items: center;
+  align-items: center;
 }
 
 .justify-center {
-  justify-content: center;
+  justify-content: center;
 }
 
 .justify-between {
-  justify-content: space-between;
+  justify-content: space-between;
 }
 
 .gap-4 {
-  gap: 1rem;
+  gap: 1rem;
 }
 
 .space-x-2 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-x-reverse: 0;
-  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
-  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
 .space-y-3 > :not([hidden]) ~ :not([hidden]) {
-  --tw-space-y-reverse: 0;
-  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
-  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
 }
 
 .overflow-y-auto {
-  overflow-y: auto;
+  overflow-y: auto;
 }
 
 .truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .whitespace-nowrap {
-  white-space: nowrap;
+  white-space: nowrap;
 }
 
 .rounded {
-  border-radius: 0.25rem;
+  border-radius: 0.25rem;
 }
 
 .rounded-full {
-  border-radius: 9999px;
+  border-radius: 9999px;
 }
 
 .rounded-lg {
-  border-radius: 0.5rem;
+  border-radius: 0.5rem;
 }
 
 .rounded-xl {
-  border-radius: 0.75rem;
+  border-radius: 0.75rem;
 }
 
 .border {
-  border-width: 1px;
+  border-width: 1px;
 }
 
 .border-2 {
-  border-width: 2px;
+  border-width: 2px;
 }
 
 .border-b {
-  border-bottom-width: 1px;
+  border-bottom-width: 1px;
 }
 
 .border-t {
-  border-top-width: 1px;
+  border-top-width: 1px;
 }
 
 .border-gray-100 {
-  --tw-border-opacity: 1;
-  border-color: rgb(243 244 246 / var(--tw-border-opacity, 1));
+  --tw-border-opacity: 1;
+  border-color: rgb(243 244 246 / var(--tw-border-opacity, 1));
 }
 
 .border-gray-200 {
-  --tw-border-opacity: 1;
-  border-color: rgb(229 231 235 / var(--tw-border-opacity, 1));
+  --tw-border-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-border-opacity, 1));
 }
 
 .border-gray-300 {
-  --tw-border-opacity: 1;
-  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
 }
 
 .border-indigo-500 {
-  --tw-border-opacity: 1;
-  border-color: rgb(99 102 241 / var(--tw-border-opacity, 1));
+  --tw-border-opacity: 1;
+  border-color: rgb(99 102 241 / var(--tw-border-opacity, 1));
 }
 
 .border-yellow-400 {
-  --tw-border-opacity: 1;
-  border-color: rgb(250 204 21 / var(--tw-border-opacity, 1));
+  --tw-border-opacity: 1;
+  border-color: rgb(250 204 21 / var(--tw-border-opacity, 1));
 }
 
 .bg-black {
-  --tw-bg-opacity: 1;
-  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
 }
 
 .bg-gray-100 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
 }
 
 .bg-gray-200 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));
 }
 
 .bg-gray-50 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1));
 }
 
+/* 🛑 NEW: Add grey background utilities to replace the red one */
+
+.bg-gray-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(75 85 99 / var(--tw-bg-opacity, 1)); /* New default button grey */
+}
+
+.bg-gray-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1)); /* Used for darker hover and dark mode background */
+}
+
+/* 🛑 END NEW */
+
 .bg-green-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(34 197 94 / var(--tw-bg-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(34 197 94 / var(--tw-bg-opacity, 1));
 }
 
 .bg-indigo-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(99 102 241 / var(--tw-bg-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(99 102 241 / var(--tw-bg-opacity, 1));
 }
 
 .bg-pink-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(236 72 153 / var(--tw-bg-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(236 72 153 / var(--tw-bg-opacity, 1));
 }
 
 .bg-red-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
 }
 
 .bg-red-600 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(220 38 38 / var(--tw-bg-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 38 38 / var(--tw-bg-opacity, 1));
 }
 
 .bg-white {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 
 .bg-opacity-50 {
-  --tw-bg-opacity: 0.5;
+  --tw-bg-opacity: 0.5;
 }
 
 .p-2 {
-  padding: 0.5rem;
+  padding: 0.5rem;
 }
 
 .p-3 {
-  padding: 0.75rem;
+  padding: 0.75rem;
 }
 
 .p-4 {
-  padding: 1rem;
+  padding: 1rem;
 }
 
 .p-6 {
-  padding: 1.5rem;
+  padding: 1.5rem;
 }
 
 .py-4 {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .pb-24 {
-  padding-bottom: 6rem;
+  padding-bottom: 6rem;
 }
 
 .pb-3 {
-  padding-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
 }
 
 .pb-6 {
-  padding-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 
 .text-2xl {
-  font-size: 1.5rem;
-  line-height: 2rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
 }
 
 .text-4xl {
-  font-size: 2.25rem;
-  line-height: 2.5rem;
+  font-size: 2.25rem;
+  line-height: 2.5rem;
 }
 
 .text-lg {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
 
 .text-sm {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 }
 
 .text-xl {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 .text-xs {
-  font-size: 0.75rem;
-  line-height: 1rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
 }
 
 .font-bold {
-  font-weight: 700;
+  font-weight: 700;
 }
 
 .font-extrabold {
-  font-weight: 800;
+  font-weight: 800;
 }
 
 .font-medium {
-  font-weight: 500;
+  font-weight: 500;
 }
 
 .font-semibold {
-  font-weight: 600;
+  font-weight: 600;
 }
 
 .tracking-wider {
-  letter-spacing: 0.05em;
+  letter-spacing: 0.05em;
 }
 
 .text-gray-400 {
-  --tw-text-opacity: 1;
-  color: rgb(156 163 175 / var(--tw-text-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity, 1));
 }
 
 .text-gray-500 {
-  --tw-text-opacity: 1;
-  color: rgb(107 114 128 / var(--tw-text-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-text-opacity, 1));
 }
 
 .text-gray-700 {
-  --tw-text-opacity: 1;
-  color: rgb(55 65 81 / var(--tw-text-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity, 1));
 }
 
 .text-gray-800 {
-  --tw-text-opacity: 1;
-  color: rgb(31 41 55 / var(--tw-text-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity, 1));
 }
 
 .text-gray-900 {
-  --tw-text-opacity: 1;
-  color: rgb(17 24 39 / var(--tw-text-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity, 1));
 }
 
 .text-green-600 {
-  --tw-text-opacity: 1;
-  color: rgb(22 163 74 / var(--tw-text-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(22 163 74 / var(--tw-text-opacity, 1));
 }
 
 .text-green-700 {
-  --tw-text-opacity: 1;
-  color: rgb(21 128 61 / var(--tw-text-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(21 128 61 / var(--tw-text-opacity, 1));
 }
 
 .text-indigo-500 {
-  --tw-text-opacity: 1;
-  color: rgb(99 102 241 / var(--tw-text-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(99 102 241 / var(--tw-text-opacity, 1));
 }
 
 .text-indigo-600 {
-  --tw-text-opacity: 1;
-  color: rgb(79 70 229 / var(--tw-text-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(79 70 229 / var(--tw-text-opacity, 1));
 }
 
 .text-red-600 {
-  --tw-text-opacity: 1;
-  color: rgb(220 38 38 / var(--tw-text-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(220 38 38 / var(--tw-text-opacity, 1));
 }
 
 .text-white {
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
 .shadow-2xl {
-  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .shadow-inner {
-  --tw-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
-  --tw-shadow-colored: inset 0 2px 4px 0 var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  --tw-shadow-colored: inset 0 2px 4px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .shadow-lg {
-  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .shadow-md {
-  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .shadow-xl {
-  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .shadow-red-500\/50 {
-  --tw-shadow-color: rgb(239 68 68 / 0.5);
-  --tw-shadow: var(--tw-shadow-colored);
+  --tw-shadow-color: rgb(239 68 68 / 0.5);
+  --tw-shadow: var(--tw-shadow-colored);
 }
 
 .transition {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
 .transition-colors {
-  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
 .transition-transform {
-  transition-property: transform;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
 /* ------------------------------------------------------------------ */
@@ -1099,48 +1144,48 @@ video {
 /* Animation for the Job Alert Modal */
 
 @keyframes pulse-ring {
-  0% {
-    box-shadow: 0 0 0 0px rgba(239, 68, 68, 0.7);
-    /* Red-500 */
-  }
+  0% {
+    box-shadow: 0 0 0 0px rgba(239, 68, 68, 0.7);
+    /* Red-500 */
+  }
 
-  100% {
-    box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);
-  }
+  100% {
+    box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);
+  }
 }
 
 #job-alert-modal {
-  /* Apply a continuous, subtle pulsing ring to simulate urgency */
-  animation: pulse-ring 1.5s infinite;
+  /* Apply a continuous, subtle pulsing ring to simulate urgency */
+  animation: pulse-ring 1.5s infinite;
 }
 
 /* Ensure the alert modal's child element stands out on top of the backdrop */
 
 #job-alert-modal > div {
-  animation: none;
-  /* Stop the inner card from pulsing with the whole modal */
-  transform: scale(1.05);
-  /* Slightly enlarge the content */
+  animation: none;
+  /* Stop the inner card from pulsing with the whole modal */
+  transform: scale(1.05);
+  /* Slightly enlarge the content */
 }
 
 /* Styling for Signature Pad in Sign-Off Modal - FIX APPLIED HERE */
 
 #sign-off-modal .signature-pad {
-  /* Placeholder for the actual canvas/input field for the signature */
-  min-height: 100px;
-  /* FIX: Use hex codes directly to resolve color variable issues */
-  background-color: #f3f4f6;
-  /* bg-gray-100 */
-  border: 1px solid #d1d5db;
-  /* border-gray-300 */
+  /* Placeholder for the actual canvas/input field for the signature */
+  min-height: 100px;
+  /* FIX: Use hex codes directly to resolve color variable issues */
+  background-color: #f3f4f6;
+  /* bg-gray-100 */
+  border: 1px solid #d1d5db;
+  /* border-gray-300 */
 }
 
 .dark #sign-off-modal .signature-pad {
-  /* FIX: Use hex codes directly to resolve color variable issues */
-  background-color: #374151;
-  /* dark:bg-gray-700 */
-  border-color: #4b5563;
-  /* dark:border-gray-600 */
+  /* FIX: Use hex codes directly to resolve color variable issues */
+  background-color: #374151;
+  /* dark:bg-gray-700 */
+  border-color: #4b5563;
+  /* dark:border-gray-600 */
 }
 
 /* ------------------------------------------------------------------ */
@@ -1152,11 +1197,14 @@ video {
 /* 1. Global Setup */
 
 body {
-  /* Smooth transition for theme change */
-  transition: background-color 0.3s ease, color 0.3s ease;
-  /* Ensure body takes full vertical space on mobile devices */
-  min-height: 100vh;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  /* Smooth transition for theme change */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  /* Ensure body takes full vertical space on mobile devices */
+  min-height: 100vh;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  /* 🛑 UPDATE: Change default background to light blue */
+  background-color: #eff6ff;
+  /* New: bg-blue-50 */
 }
 
 /* 2. Custom Scrollbar Styling (Optional, but useful for modern look) */
@@ -1164,33 +1212,33 @@ body {
 /* For WebKit (Chrome, Safari) */
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  /* Light mode track */
+  background: #f1f1f1;
+  /* Light mode track */
 }
 
 .dark ::-webkit-scrollbar-track {
-  background: #1f2937;
-  /* Dark mode track (gray-800) */
+  background: #1f2937;
+  /* Dark mode track (gray-800) */
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #a1a1aa;
-  /* Light mode thumb (gray-400) */
-  border-radius: 4px;
+  background: #a1a1aa;
+  /* Light mode thumb (gray-400) */
+  border-radius: 4px;
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: #4b5563;
-  /* Dark mode thumb (gray-600) */
+  background: #4b5563;
+  /* Dark mode thumb (gray-600) */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
-  /* Hover color */
+  background: #6b7280;
+  /* Hover color */
 }
 
 /* 3. Button Focus Styles (Ensuring clear accessibility outline) */
@@ -1199,70 +1247,149 @@ button:focus-visible,
 select:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-  outline: 2px solid #4f46e5;
-  /* Tailwind indigo-600 */
-  outline-offset: 2px;
+  outline: 2px solid #4f46e5;
+  /* Tailwind indigo-600 */
+  outline-offset: 2px;
 }
 
 /* 4. Service Request Section - Icon Hover Effect (Pure CSS for light effect) */
 
 .service-icon-card {
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .service-icon-card:hover {
-  /* Corrected to scale */
-  transform: scale(1.02);
-  /* Softens the shadow for a lifted look */
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  /* Corrected to scale */
+  transform: scale(1.02);
+  /* Softens the shadow for a lifted look */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 /* 5. Mobile Layout Container Max Width */
 
 #app-container {
-  /* NOTE: This ID doesn't appear in the HTML you provided, but is kept for reference. */
-  /* Adds space for the floating DEMO buttons at the bottom */
-  padding-bottom: 70px;
+  /* NOTE: This ID doesn't appear in the HTML you provided, but is kept for reference. */
+  /* Adds space for the floating DEMO buttons at the bottom */
+  padding-bottom: 70px;
 }
 
 /* 6. Utility Class Fixes (Completing truncated or missing dark mode utilities) */
 
 .hover\:scale-\[1\.02\]:hover {
-  --tw-scale-x: 1.02;
-  --tw-scale-y: 1.02;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  --tw-scale-x: 1.02;
+  --tw-scale-y: 1.02;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .hover\:bg-green-600:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(22 163 74 / var(--tw-bg-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(22 163 74 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:bg-indigo-600:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(79 70 229 / var(--tw-bg-opacity, 1));
+  --tw-bg-opacity: 1;
+  background-color: rgb(79 70 229 / var(--tw-bg-opacity, 1));
 }
+
+/* 🛑 FIX: Add custom grey hover utility to support Delete Account button styling */
+
+.hover\:bg-gray-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1)); /* Light Mode: gray-700 */
+}
+
+.dark .hover\:bg-gray-800:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1)); /* Dark Mode: gray-800 */
+}
+
+/* 🛑 REMOVED: Previous red hover custom utilities are now removed 🛑 */
 
 /* 🛑 NEW: Critical Dark Mode and Display Fixes 🛑 */
 
 /* If the app or profile uses a utility to show/hide content, it may have been cut off. */
 
 .dark .hidden {
-  display: none;
+  display: none;
 }
 
 .dark .block {
-  display: block;
+  display: block;
 }
 
 .dark .text-white {
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
 /* Check for missing dark mode background utility (for main profile containers) */
 
 .dark .bg-gray-900 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(17 24 39 / var(--tw-bg-opacity, 1));
+  /* 🛑 UPDATE: Change dark mode background to dark blue */
+  --tw-bg-opacity: 1;
+  background-color: #1e3a8a;
+  /* New: bg-blue-900 */
+}
+
+/* ------------------------------------------------------------------ */
+
+/* ---------- 3. New Feature: Driving Mode UI Enhancement ----------- */
+
+/* ------------------------------------------------------------------ */
+
+/* Base style for the large toggle button */
+
+.driving-mode-toggle {
+  /* Enforces a highly contrasting color scheme for reduced distraction */
+  background-color: #1f2937;
+  /* Gray-800 */
+  color: #fff;
+  border: 2px solid #4f46e5;
+  /* Indigo-600 */
+  transition: all 0.3s ease;
+  font-size: 1.25rem;
+  /* text-xl */
+  font-weight: 700;
+  /* font-bold */
+  text-transform: uppercase;
+}
+
+/* Active / ON state for Driving Mode */
+
+.driving-mode-toggle.active {
+  background-color: #4f46e5;
+  /* Indigo-600 */
+  border-color: #a78bfa;
+  /* Violet-400 (for a glow effect) */
+  /* Adds a subtle external glow to emphasize it's ON */
+  box-shadow: 0 0 15px rgba(79, 70, 229, 0.8);
+}
+
+/* Styles for high-visibility text within the header when driving mode is active */
+
+.driving-mode-active-text {
+  color: #fca5a5;
+  /* Red-300 for a warning/attention color in the dark mode-like setting */
+  font-weight: 800;
+  /* font-extrabold */
+  letter-spacing: 0.1em;
+  /* tracking-widest */
+}
+
+/* Ensures primary navigation elements are enlarged and simplified in driving mode */
+
+.driving-mode-active .nav-item {
+  min-height: 80px;
+  /* Larger tap target */
+  font-size: 1.5rem;
+  /* text-2xl */
+  padding: 1rem;
+  transition: background-color 0.1s;
+}
+
+/* Quick hover feedback for driving mode buttons */
+
+.driving-mode-active .nav-item:hover {
+  background-color: rgba(79, 70, 229, 0.2);
+  /* Subtle indigo highlight */
 }

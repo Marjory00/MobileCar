@@ -5,6 +5,7 @@
 /driver.js
 server.js
 server/node_modules/
+index.html
 
 # Logs
 npm-debug.log*

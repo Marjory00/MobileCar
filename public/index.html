@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MobileCar Assistance</title>
+    <title>MobileCar Roadside</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/css/styles.css"> 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -19,8 +19,12 @@
         <div id="customer-app" class="max-w-xl mx-auto w-full flex flex-col flex-grow p-4 sm:p-6 pb-24">
             
             <header class="flex justify-between items-center py-4 mb-6 sticky top-0 bg-gray-100 dark:bg-gray-900 z-30">
-                <h1 class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">Roadside Assist</h1>
-                <button id="profile-btn" onclick="ShowProfile('user-profile-view')" class="p-2 text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition">
+                <div class="flex items-center space-x-3">
+                    <img src="/images/red-car.jpg" alt="MobileCar Logo" class="h-8 w-auto">
+                    
+                    <h1 class="text-3xl font-extrabold text-indigo-600 dark:text-indigo-400">MobileCar</h1>
+                </div>
+                                <button id="profile-btn" onclick="ShowProfile('user-profile-view')" class="p-2 text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -49,6 +53,10 @@
                     </div>
                     <button id="change-vehicle-btn" class="text-sm text-indigo-600 dark:text-indigo-400 font-medium hover:underline">Change</button>
                 </div>
+            </section>
+
+            <section id="hero-image-container" class="mb-6 rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700">
+                <img src="/images/truck-towing.jpg" alt="A flatbed tow truck assisting a car on the side of a road" class="w-full object-cover" style="max-height: 200px;">
             </section>
 
             <section id="service-selection-grid" class="flex-grow">
@@ -86,9 +94,10 @@
                 </div>
                 
                 <div class="py-6 mt-6">
-                    <button id="request-assistance-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-extrabold py-4 rounded-xl text-lg tracking-wider transition-colors shadow-lg shadow-red-500/50 focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-opacity-50">
+                    <button id="request-assistance-btn" class="w-full bg-red-600 hover:bg-red-700 text-white font-extrabold py-4 rounded-xl text-lg tracking-wider transition-colors shadow-lg shadow-red-500/50 focus:outline-none focus:ring-4 focus:ring-red-500 focus:ring-opacity-50" disabled>
                         REQUEST ASSISTANCE
                     </button>
+                    <p id="service-selection-message" class="text-sm text-center text-red-500 dark:text-red-400 mt-2 hidden">Please select a service before requesting assistance.</p>
                 </div>
             </section>
             
@@ -147,7 +156,9 @@
                 </button>
             </div>
         </div>
-    </div> <div id="user-profile-view" class="hidden fixed inset-0 bg-gray-50 dark:bg-gray-900 z-[99] overflow-y-auto p-4 sm:p-6">
+    </div> 
+    
+    <div id="user-profile-view" class="hidden fixed inset-0 bg-gray-50 dark:bg-gray-900 z-[99] overflow-y-auto p-4 sm:p-6">
         <header class="flex justify-between items-center py-4 mb-6 sticky top-0 bg-gray-50 dark:bg-gray-900 z-10 max-w-xl mx-auto">
             <h2 class="text-3xl font-bold text-gray-900 dark:text-white">My Profile</h2>
             <button id="close-profile-btn" onclick="HideAllViews()" class="p-2 text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 transition">
@@ -223,22 +234,22 @@
                 <h3 class="text-xl font-semibold mb-4 text-gray-900 dark:text-white">Service History</h3>
                 <ul id="service-history-list" class="divide-y divide-gray-200 dark:divide-gray-700">
                     <li class="p-3">
-                        <p class="font-semibold">Flat Tire Service</p>
+                        <p class="font-semibold text-gray-900 dark:text-white">Flat Tire Service</p>
                         <p class="text-sm text-gray-500 dark:text-gray-400">Oct 1, 2025 · Completed · $85.00</p>
                     </li>
                     <li class="p-3">
-                        <p class="font-semibold">Jump Start</p>
+                        <p class="font-semibold text-gray-900 dark:text-white">Jump Start</p>
                         <p class="text-sm text-gray-500 dark:text-gray-400">Sep 15, 2025 · Completed · $50.00</p>
                     </li>
                 </ul>
-            </div>
-
-            <div class="pt-4 space-y-4">
-                <button onclick="alert('Simulated: Account deletion process initiated. This is irreversible!')" class="w-full text-center text-sm font-medium text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-200 p-3 border border-red-200 dark:border-red-800 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/50 transition duration-150">
-                    ⚠️ Delete Account Permanently
-                </button>
-                <button onclick="ShowProfile('driver-profile-view')" class="w-full p-4 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition shadow-md">Switch to Driver Mode</button>
-            </div>
+            </div><div class="pt-4 space-y-4 p-5 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+        <button onclick="alert('Simulated: Account deletion process initiated. This is irreversible!')" class="w-full text-center p-4 rounded-xl transition duration-150
+        text-white font-semibold
+        bg-gray-600 hover:bg-gray-700
+        shadow-md">
+        ⚠️ Delete Account
+    </button>
+    <button onclick="ShowProfile('driver-profile-view')" class="w-full p-4 bg-indigo-600 text-white font-semibold rounded-xl hover:bg-indigo-700 transition shadow-md">Switch to Driver Mode</button></div>
         </section>
     </div>
 
@@ -252,14 +263,14 @@
         </header>
         <section class="max-w-md mx-auto space-y-6">
             <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
-                <h3 class="text-xl font-semibold mb-3">Status: <span class="text-green-600 dark:text-green-400">Available</span></h3>
-                <p>Rating: **4.8 / 5.0**</p>
-                <p>Jobs Completed: **154**</p>
+                <h3 class="text-xl font-semibold mb-3 text-gray-900 dark:text-white">Status: <span class="text-green-600 dark:text-green-400">Available</span></h3>
+                <p class="text-gray-900 dark:text-white">Rating: **4.8 / 5.0**</p>
+                <p class="text-gray-900 dark:text-white">Jobs Completed: **154**</p>
                 <button class="mt-4 w-full p-3 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition">Go Offline</button>
             </div>
             <div id="driver-job-status" class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hidden">
-                <h3 class="text-xl font-semibold mb-3">Current Job</h3>
-                <p id="driver-job-details">Waiting for job...</p>
+                <h3 class="text-xl font-semibold mb-3 text-gray-900 dark:text-white">Current Job</h3>
+                <p id="driver-job-details" class="text-gray-900 dark:text-white">Waiting for job...</p>
             </div>
             <button onclick="HideAllViews()" class="w-full p-4 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-white font-semibold rounded-xl hover:bg-gray-400 dark:hover:bg-gray-600 transition shadow-md">Switch to Customer Mode</button>
         </section>
@@ -277,7 +288,7 @@
                 </button>
             </header>
             <div class="p-5 space-y-4">
-                <div class="flex justify-between items-center"><p>Service & Tax:</p><p id="service-fee-display" class="font-semibold text-sm text-right">$85.00</p></div>
+                <div class="flex justify-between items-center"><p class="text-gray-900 dark:text-white">Service & Tax:</p><p id="service-fee-display" class="font-semibold text-sm text-right text-gray-900 dark:text-white">$85.00</p></div>
                 <div class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg flex justify-between items-center">
                     <div class="flex flex-col"><p class="text-xs text-gray-500 dark:text-gray-400">Payment Method</p><p id="payment-method-display" class="font-bold text-gray-900 dark:text-white">Visa ending in 4242</p></div>
                     <button id="change-payment-btn" class="text-sm text-indigo-600 dark:text-indigo-400 font-medium hover:underline">Change</button>
@@ -359,159 +370,244 @@
             });
             const viewToShow = document.getElementById(viewId);
             if (viewToShow) viewToShow.classList.remove('hidden');
-            
-            // Dispatch a refresh event for the profile view to load the latest data
-            if (viewId === 'user-profile-view') {
-                // Not strictly necessary in this static example but good practice
-                 // document.dispatchEvent(new CustomEvent('openProfileView')); 
-            }
         }
 
         // --- Core Application Logic (Simulated) ---
 
-        // 1. Modal Logic
+        // 1. Theme Toggle Logic
+        const htmlElement = document.documentElement;
+        const themeToggle = document.getElementById('theme-toggle');
+
+        function toggleTheme() {
+            if (htmlElement.classList.contains('dark')) {
+                htmlElement.classList.remove('dark');
+                themeToggle.textContent = '🌙'; // Moon for light mode
+                localStorage.setItem('theme', 'light');
+            } else {
+                htmlElement.classList.add('dark');
+                themeToggle.textContent = '☀️'; // Sun for dark mode
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        
+        // Initial theme check on load
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            htmlElement.classList.add('dark');
+            themeToggle.textContent = '☀️';
+        } else {
+            themeToggle.textContent = '🌙';
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+
+
+        // 2. Modal Logic (Details Modal - for Vehicle/Location change and Request Confirmation)
         const detailsModal = document.getElementById('details-modal');
         const changeVehicleBtn = document.getElementById('change-vehicle-btn');
         const closeDetailsModal = document.getElementById('close-details-modal');
         const confirmDetailsBtn = document.getElementById('confirm-details-btn');
         const vehicleSelect = document.getElementById('vehicle-profile-select');
         const vehicleDisplay = document.getElementById('vehicle-display');
+        const locationDisplay = document.getElementById('location-display');
+        const manualLocationInput = document.getElementById('manual-location-input');
         
-        changeVehicleBtn.addEventListener('click', () => detailsModal.classList.remove('hidden'));
-        closeDetailsModal.addEventListener('click', () => detailsModal.classList.add('hidden'));
-        confirmDetailsBtn.addEventListener('click', () => {
-            const selectedVehicle = vehicleSelect.options[vehicleSelect.selectedIndex].text.split(',')[0].trim();
-            vehicleDisplay.textContent = selectedVehicle;
+        // Open modal when 'Change' or 'Request Assistance' is clicked (if service selected)
+        function openDetailsModal() {
+            // Pre-fill fields with current displayed info
+            manualLocationInput.value = locationDisplay.textContent.replace('Simulated Location: ', '').trim();
+            
+            // Set the selected option based on the current display
+            let currentVehicleText = vehicleDisplay.textContent;
+            let found = false;
+            for (let i = 0; i < vehicleSelect.options.length; i++) {
+                if (vehicleSelect.options[i].value === currentVehicleText || vehicleSelect.options[i].textContent.includes(currentVehicleText)) {
+                    vehicleSelect.value = vehicleSelect.options[i].value;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found && vehicleSelect.options.length > 0) {
+                 vehicleSelect.selectedIndex = 0; // Default to first option if current isn't found
+            }
+
+            detailsModal.classList.remove('hidden');
+        }
+        
+        changeVehicleBtn.addEventListener('click', openDetailsModal);
+
+        // Close details modal
+        closeDetailsModal.addEventListener('click', () => {
             detailsModal.classList.add('hidden');
         });
 
-        // Payment Modal Logic
+        // Save and Continue (Confirms details, in a real app this would move to a confirmation/payment screen)
+        confirmDetailsBtn.addEventListener('click', () => {
+            // Update the main UI with the selected vehicle and location
+            vehicleDisplay.textContent = vehicleSelect.value;
+            locationDisplay.textContent = `Simulated Location: ${manualLocationInput.value}`;
+            alert(`Details updated. Service: ${currentService} at ${manualLocationInput.value} with vehicle ${vehicleSelect.value}. Ready to request assistance.`);
+            detailsModal.classList.add('hidden');
+        });
+        
+        // Payment Modal (Simulated to open after a successful job, or simply to show the flow)
         const paymentModal = document.getElementById('payment-modal');
-        document.getElementById('close-payment-modal').addEventListener('click', () => paymentModal.classList.add('hidden'));
-        document.getElementById('complete-payment-btn').addEventListener('click', () => {
-            alert("Simulated: Payment completed! Thank you.");
+        const closePaymentModal = document.getElementById('close-payment-modal');
+        const completePaymentBtn = document.getElementById('complete-payment-btn');
+
+        closePaymentModal.addEventListener('click', () => {
             paymentModal.classList.add('hidden');
-            // Hide tracking view after payment in a real scenario
-            document.getElementById('tracking-container').classList.add('hidden'); 
+        });
+        
+        completePaymentBtn.addEventListener('click', () => {
+            alert('Payment Successful! Thank you for using MobileCar.');
+            paymentModal.classList.add('hidden');
+            document.getElementById('tracking-container').classList.add('hidden');
+            document.getElementById('request-form-container').classList.remove('hidden');
         });
 
-
-        // 2. Profile Edit Toggle
-        const editToggle = document.getElementById('edit-profile-toggle');
-        const profileDisplay = document.getElementById('profile-info-display');
-        const profileEditForm = document.getElementById('profile-edit-form');
-        const cancelEditBtn = document.getElementById('cancel-edit-btn');
-        const saveProfileBtn = document.getElementById('save-profile-btn');
-
-        function toggleProfileEdit(isEditing) {
-            if (isEditing) {
-                profileDisplay.classList.add('hidden');
-                profileEditForm.classList.remove('hidden');
-                editToggle.textContent = 'View Profile';
-                
-                // Initialize form inputs with current display values
-                document.getElementById('edit-name-input').value = document.getElementById('profile-user-name').textContent;
-                document.getElementById('edit-email-input').value = document.getElementById('profile-user-email').textContent;
-            } else {
-                profileDisplay.classList.remove('hidden');
-                profileEditForm.classList.add('hidden');
-                editToggle.textContent = 'Edit Profile';
-            }
-        }
-
-        editToggle.addEventListener('click', () => {
-            const isEditing = profileEditForm.classList.contains('hidden');
-            toggleProfileEdit(isEditing);
-        });
-
-        cancelEditBtn.addEventListener('click', () => toggleProfileEdit(false));
-
-        profileEditForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            // Simulate saving data
-            document.getElementById('profile-user-name').textContent = document.getElementById('edit-name-input').value;
-            document.getElementById('profile-user-email').textContent = document.getElementById('edit-email-input').value;
-            alert("Simulated: Profile saved!");
-            toggleProfileEdit(false);
-        });
-
-
-        // 3. Service Selection and Request Button
-        let selectedService = null;
+        // 3. Service Selection Logic
         const serviceCards = document.querySelectorAll('.service-icon-card');
-        const requestBtn = document.getElementById('request-assistance-btn');
-        const trackingContainer = document.getElementById('tracking-container');
-        const closeTrackingBtn = document.getElementById('close-tracking-btn');
+        const requestAssistanceBtn = document.getElementById('request-assistance-btn');
+        const serviceSelectionMessage = document.getElementById('service-selection-message');
+        let currentService = null;
 
         serviceCards.forEach(card => {
-            card.addEventListener('click', function() {
-                serviceCards.forEach(c => c.classList.remove('border-indigo-500', 'dark:border-indigo-400', 'ring-2', 'ring-indigo-500'));
-                this.classList.add('border-indigo-500', 'dark:border-indigo-400', 'ring-2', 'ring-indigo-500');
-                selectedService = this.getAttribute('data-service');
-                requestBtn.textContent = `REQUEST ${selectedService.toUpperCase()}`;
+            card.addEventListener('click', () => {
+                const service = card.getAttribute('data-service');
+                
+                // Deselect all cards
+                serviceCards.forEach(c => {
+                    c.classList.remove('border-indigo-500', 'dark:border-indigo-400', 'shadow-xl');
+                    c.classList.add('border-gray-200', 'dark:border-gray-700', 'shadow-md');
+                });
+
+                // Select the current card
+                card.classList.add('border-indigo-500', 'dark:border-indigo-400', 'shadow-xl');
+                card.classList.remove('border-gray-200', 'dark:border-gray-700', 'shadow-md');
+                
+                currentService = service;
+                requestAssistanceBtn.removeAttribute('disabled');
+                serviceSelectionMessage.classList.add('hidden');
             });
         });
 
-        requestBtn.addEventListener('click', () => {
-            if (!selectedService) {
-                alert("Please select a service first!");
+        // 4. Request Assistance Logic
+        const trackingContainer = document.getElementById('tracking-container');
+        const requestFormContainer = document.getElementById('request-form-container');
+
+        requestAssistanceBtn.addEventListener('click', () => {
+            if (!currentService) {
+                serviceSelectionMessage.classList.remove('hidden');
                 return;
             }
-            // Simulate service request
-            alert(`Simulated: Requesting **${selectedService}** for **${vehicleDisplay.textContent}** at **${document.getElementById('location-display').textContent}**.`);
             
-            // Show tracking view and hide request form container
+            // Simulation: Start Request
+            alert(`Requesting: ${currentService} at ${locationDisplay.textContent.replace('Simulated Location: ', '')}...`);
+            
+            // Hide selection form
+            requestFormContainer.classList.add('hidden');
+            
+            // Show tracking view
             trackingContainer.classList.remove('hidden');
-            document.getElementById('status-text').textContent = 'Searching...';
-            // Simulate finding a provider
-            setTimeout(() => {
-                document.getElementById('status-text').textContent = 'En Route';
-                document.getElementById('eta-display').textContent = '12 min';
-            }, 3000);
             
-            // Scroll to the bottom to show tracking
-            document.getElementById('customer-app').scrollTop = document.getElementById('customer-app').scrollHeight;
-        });
+            // Update tracking details based on the request (simulated)
+            document.getElementById('status-text').textContent = 'En Route';
+            document.getElementById('request-id-display').textContent = `REQ-${Math.floor(Math.random() * 10000) + 10000}`;
+            document.getElementById('provider-name-display').textContent = 'Alex M.';
+            document.getElementById('eta-display').textContent = '15 min';
 
-        closeTrackingBtn.addEventListener('click', () => {
-            trackingContainer.classList.add('hidden');
-            selectedService = null;
-            requestBtn.textContent = 'REQUEST ASSISTANCE';
-            serviceCards.forEach(c => c.classList.remove('border-indigo-500', 'dark:border-indigo-400', 'ring-2', 'ring-indigo-500'));
+            // Simulate completion after 10 seconds
+            setTimeout(() => {
+                document.getElementById('status-text').textContent = 'Arrived';
+                document.getElementById('eta-display').textContent = '0 min';
+                alert('Your service provider has arrived!');
+                
+                // Simulate job completion and payment after a few more seconds
+                setTimeout(() => {
+                    trackingContainer.classList.add('hidden');
+                    paymentModal.classList.remove('hidden');
+                    // Reset service selection state
+                    currentService = null;
+                    requestAssistanceBtn.setAttribute('disabled', 'true');
+                    serviceCards.forEach(c => {
+                        c.classList.remove('border-indigo-500', 'dark:border-indigo-400', 'shadow-xl');
+                        c.classList.add('border-gray-200', 'dark:border-gray-700', 'shadow-md');
+                    });
+                }, 5000); // 5 seconds to simulate service time
+            }, 10000); // 10 seconds to simulate travel time
         });
-
-        // 4. Dark Mode Toggle
-        const themeToggle = document.getElementById('theme-toggle');
-        const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         
-        // Initialize theme on load
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && isSystemDark)) {
-            document.documentElement.classList.add('dark');
-            themeToggle.innerHTML = '☀️';
-        } else {
-            document.documentElement.classList.remove('dark');
-            themeToggle.innerHTML = '🌙';
-        }
-
-        themeToggle.addEventListener('click', () => {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.theme = 'light';
-                themeToggle.innerHTML = '🌙';
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.theme = 'dark';
-                themeToggle.innerHTML = '☀️';
+        // Cancel Request Logic
+        const cancelRequestBtn = document.getElementById('cancel-request');
+        cancelRequestBtn.addEventListener('click', () => {
+            const confirmed = confirm('Are you sure you want to cancel your assistance request?');
+            if (confirmed) {
+                alert('Request has been cancelled.');
+                trackingContainer.classList.add('hidden');
+                requestFormContainer.classList.remove('hidden');
+                // Reset service selection state
+                currentService = null;
+                requestAssistanceBtn.setAttribute('disabled', 'true');
+                serviceCards.forEach(c => {
+                    c.classList.remove('border-indigo-500', 'dark:border-indigo-400', 'shadow-xl');
+                    c.classList.add('border-gray-200', 'dark:border-gray-700', 'shadow-md');
+                });
             }
         });
 
-        // Set initial location/vehicle text from modal defaults for a better start
-        document.addEventListener('DOMContentLoaded', () => {
-             document.getElementById('location-display').textContent = document.getElementById('manual-location-input').value;
-             document.getElementById('vehicle-display').textContent = vehicleSelect.value;
+        // Close Tracking View Button (Hides the sticky tracking bar)
+        document.getElementById('close-tracking-btn').addEventListener('click', () => {
+            trackingContainer.classList.add('hidden');
+            alert('Tracking minimized. You can still see your request in your service history (simulated).');
         });
-        
-    </script>
 
-    </body>
+
+        // 5. Profile Edit Logic
+        const profileInfoDisplay = document.getElementById('profile-info-display');
+        const profileEditForm = document.getElementById('profile-edit-form');
+        const editProfileToggle = document.getElementById('edit-profile-toggle');
+        const cancelEditBtn = document.getElementById('cancel-edit-btn');
+        const editNameInput = document.getElementById('edit-name-input');
+        const editEmailInput = document.getElementById('edit-email-input');
+        const profileUserName = document.getElementById('profile-user-name');
+        const profileUserEmail = document.getElementById('profile-user-email');
+
+        function toggleEditMode(showEdit) {
+            if (showEdit) {
+                // Populate form fields with current displayed info
+                editNameInput.value = profileUserName.textContent;
+                editEmailInput.value = profileUserEmail.textContent;
+
+                profileInfoDisplay.classList.add('hidden');
+                profileEditForm.classList.remove('hidden');
+                editProfileToggle.textContent = 'View Profile';
+            } else {
+                profileInfoDisplay.classList.remove('hidden');
+                profileEditForm.classList.add('hidden');
+                editProfileToggle.textContent = 'Edit Profile';
+            }
+        }
+
+        editProfileToggle.addEventListener('click', () => {
+            const isEditing = profileEditForm.classList.contains('hidden');
+            toggleEditMode(isEditing);
+        });
+
+        cancelEditBtn.addEventListener('click', () => {
+            toggleEditMode(false);
+        });
+
+        profileEditForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Simulation: Save changes
+            profileUserName.textContent = editNameInput.value;
+            profileUserEmail.textContent = editEmailInput.value;
+
+            alert('Profile saved successfully!');
+            toggleEditMode(false);
+        });
+
+    </script>
+</body>
 </html>
