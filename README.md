@@ -1,9 +1,15 @@
 
-# 🚗 MobileCar (MobileFive)
+# 🚗 MobileCar App
 
+---
 ### Author:
 Built and developed by Marjory D. Marquez
 
+### Portfolio Project Note
+
+This work is a component of my portfolio. Please note that some source code has been deliberately excluded to ensure copyright protection and to safeguard proprietary information.
+
+---
 
 **On-Demand Automotive Service Platform**
 
