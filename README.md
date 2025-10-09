@@ -49,27 +49,24 @@ This project is built using a modern full-stack architecture for robust real-tim
 
 These images demonstrate key features and the overall user interface of the MobileCar Application.
 
-
 ### 1. Main Page
 
-![Current Location, Car type, Services provided features](/images/screenshots/main-page.png)
+![Current Location, Car type, Services provided features](images/screenshots/main-page.png)
 
 
 ### 2. Profile Information Page
 
-![Profile Information, Car Details](/images/screenshots/my-profile-section.png)
+![Profile Information, Car Details](images/screenshots/my-profile-section.png)
 
 
 ### 3. Car Details Information Page
 
-![Car Details Confirmation](/images/screenshots/car-confirm-details.png)
+![Car Details Confirmation](images/screenshots/car-confirm-details.png)
 
 
 ### 4. Driver Dashboard
 
-![Driver Dasboard](/images/screenshots/driver-dashboard.png)
-
-
+![Driver Dasboard](images/screenshots/driver-dashboard.png)
 
 ---
 
