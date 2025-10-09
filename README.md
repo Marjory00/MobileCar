@@ -62,7 +62,7 @@ These images demonstrate key features and the overall user interface of the Mobi
 
 ### 3. Car Details Information Page
 
-![Car Details Confirmation](images/screenshots/car-confirm-details.png)
+![Car Details Confirmation](public\images\screenshots\car-confirm-details.png)
 
 
 ### 4. Driver Dashboard
