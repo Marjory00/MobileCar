@@ -3,11 +3,15 @@
 /init.js
 /payment.js
 /driver.js
-server.js
 server/node_modules/
 index.html
 server/config.js
 package-lock.json
+
+# Prevent server/backend files from being committed
+server.js
+/server/server.js
+/backend/server.js
 
 # Logs
 npm-debug.log*
