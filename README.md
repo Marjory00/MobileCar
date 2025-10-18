@@ -1,17 +1,17 @@
 
-# 🚗 MobileCar App
+# MobileCar App
 ## On-Demand Automotive Service Platform (Portfolio Case Study)
 
 ---
 ### Author:
 Built and developed by **Marjory D. Marquez**
 
-#### 🔒 Portfolio Project Note
+#### Portfolio Project Note
 **This work is a key component of my professional portfolio.** Some sections of the source code (primarily core business logic and secrets) have been deliberately omitted to protect proprietary and copyrighted material, focusing the repository on architecture and front-end implementation.
 
 ---
 
-## 💡 Case Study: Addressing Roadside Service Inefficiency
+## Case Study: Addressing Roadside Service Inefficiency
 
 ### The Problem
 
@@ -19,7 +19,7 @@ Traditional roadside assistance often suffers from a lack of **transparency** (u
 
 ---
 
-## ✨ Key Features & Objectives (The Solution)
+## Key Features & Objectives (The Solution)
 
 
 | Category | Objective/Feature | Description |
@@ -45,7 +45,7 @@ Traditional roadside assistance often suffers from a lack of **transparency** (u
 
 ---
 
-## 🛠️ Technology Stack (The Execution)
+## Technology Stack (The Execution)
 
 This project is built using a modern full-stack architecture, demonstrating proficiency in both client-side design and server-side business logic.
 
@@ -63,7 +63,7 @@ This project is built using a modern full-stack architecture, demonstrating prof
 
 ***
 
-## 📸 Application Overview Images Screenshots
+## Application Overview Images Screenshots
 
 These images demonstrate key features and the overall user interface of the MobileCar Application.
 
@@ -89,7 +89,7 @@ These images demonstrate key features and the overall user interface of the Mobi
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 Follow these steps to set up and run the full-stack application on your local machine.
 
@@ -130,7 +130,7 @@ You must have **Node.js** and **npm** installed.
 
 ---
 
-## 💡 How to Use the Demo
+## How to Use the Demo
 
 The application uses floating buttons at the bottom-right of the screen to switch between user roles.
 
